@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - CTC SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/modern-design.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <main>
+        <!-- Enhanced Hero Section -->
+        <section class="hero-enhanced relative min-h-screen flex flex-col justify-center items-center overflow-hidden text-white">
+            <header id="header-container" class="absolute top-0 left-0 w-full z-50"></header>
+            <!-- Video Background -->
+            <div class="absolute inset-0 w-full h-full z-0">
+                <video autoplay loop muted playsinline class="w-full h-full object-cover">
+                    <source src="./assets/images/video_bgr.mp4" type="video/mp4">
+                    Trình duyệt của bạn không hỗ trợ thẻ video.
+                </video>
+                <!-- Darker Overlay for Better Contrast -->
+                <div class="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-indigo-900/60 to-black/80"></div>
+            </div>
+
+            <!-- Floating Particles -->
+            <div class="particles-container absolute inset-0 z-10">
+                <div class="particle particle-1"></div> <div class="particle particle-2"></div>
+                <div class="particle particle-3"></div> <div class="particle particle-4"></div>
+                <div class="particle particle-5"></div> <div class="particle particle-6"></div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="relative z-20 flex flex-col items-center justify-center text-center w-full px-4 pt-20">
+                <!-- Badge -->
+                <div class="hero-badge inline-flex items-center px-5 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6 animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <i class="fas fa-sun text-yellow-300 mr-2"></i>
+                    <span class="text-sm font-medium">Giải Pháp Năng Lượng Xanh #1 Miền Trung</span>
+                </div>
+
+                <!-- Title -->
+                <h1 class="hero-title text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tighter mb-4 animate-fade-in-up drop-shadow-xl" style="animation-delay: 0.4s;" data-translate-key="heroTitle">
+                    <span class="block text-white">Năng Lượng</span>
+                    <span class="block bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-400 bg-clip-text text-transparent">Mặt Trời</span>
+                </h1>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-light text-gray-200 mb-6 animate-fade-in-up" style="animation-delay: 0.5s;">Bền Vững Cho Miền Trung</h2>
+
+                <!-- Subtitle -->
+                <p class="hero-subtitle text-lg md:text-xl max-w-3xl mx-auto text-gray-300 mb-10 leading-relaxed animate-fade-in-up" style="animation-delay: 0.6s;" data-translate-key="heroSubtitle">
+                    CTC mang đến giải pháp điện mặt trời chất lượng cao, phù hợp với điều kiện đặc thù của Đà Nẵng và các tỉnh lân cận.
+                </p>
+
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-in-up" style="animation-delay: 0.8s;">
+                    <a href="phan_tich.html" class="btn-modern btn-primary text-lg px-8 py-4 group relative overflow-hidden">
+                        <span class="relative z-10 flex items-center"><i class="fas fa-chart-line mr-3 group-hover:animate-bounce"></i> Phân Tích Ngay</span>
+                    </a>
+                    <a href="products.html" class="btn-modern btn-glass text-lg px-8 py-4 group relative overflow-hidden">
+                        <span class="relative z-10 flex items-center"><i class="fas fa-solar-panel mr-3 group-hover:animate-spin"></i> Xem Sản Phẩm</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="relative z-20 w-full max-w-6xl mx-auto px-4 mt-auto pb-8 animate-fade-in-up" style="animation-delay: 1s;">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+                    <div class="stats-card-enhanced group text-center">
+                        <div class="stats-icon"><i class="fas fa-award text-yellow-400"></i></div>
+                        <div class="stats-number" data-target="20" data-suffix="+">0+</div>
+                        <div class="stats-label">Năm Kinh Nghiệm</div>
+                    </div>
+                    <div class="stats-card-enhanced group text-center">
+                        <div class="stats-icon"><i class="fas fa-bolt text-green-400"></i></div>
+                        <div class="stats-number" data-target="500" data-suffix="+">0+</div>
+                        <div class="stats-label">Dự Án Hoàn Thành</div>
+                    </div>
+                    <div class="stats-card-enhanced group text-center">
+                        <div class="stats-icon"><i class="fas fa-heart text-red-400"></i></div>
+                        <div class="stats-number" data-target="99.99" data-suffix="%" data-decimal="2">0%</div>
+                        <div class="stats-label">Khách Hàng Hài Lòng</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="scroll-indicator absolute bottom-4 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+                    <div class="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Enhanced About Section -->
+        <section id="about-summary" class="py-20 lg:py-24 bg-gradient-to-br from-white to-blue-50 overflow-hidden">
+            <div class="container-modern relative">
+                <!-- Background Decoration -->
+                <div class="absolute top-10 right-10 w-64 h-64 bg-gradient-to-br from-blue-100 to-green-100 rounded-full opacity-20 animate-float"></div>
+                <div class="absolute bottom-10 left-10 w-48 h-48 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-full opacity-20 animate-float-delayed"></div>
+                
+                <div class="grid lg:grid-cols-2 gap-16 items-center relative z-10">
+                    <div class="about-image-container animate-on-scroll" data-animation="slide-in-left">
+                        <div class="modern-card p-8 hover-lift relative overflow-hidden group">
+                            <img src="/assets/images/nl_mat_troi.jpg" alt="Kỹ sư CTC đang làm việc" class="w-full h-80 object-cover rounded-lg transform group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="absolute top-4 right-4 w-12 h-12 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-4 group-hover:translate-x-0">
+                                <i class="fas fa-play text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="about-content space-y-6 animate-on-scroll" data-animation="slide-in-right">
+                        <div class="badge badge-info animate-pulse" data-translate-key="aboutUsLabel">
+                            <i class="fas fa-building mr-2"></i>
+                            VỀ CTC
+                        </div>
+                        
+                        <h2 class="text-4xl lg:text-5xl font-bold text-gradient animate-on-scroll" data-animation="fade-in-up" data-translate-key="aboutUsTitle">
+                            Uy Tín và Kinh Nghiệm Tại Miền Trung
+                        </h2>
+                        
+                        <p class="text-lg text-gray-600 leading-relaxed animate-on-scroll" data-animation="fade-in-up" data-delay="0.2" data-translate-key="aboutUsDesc1">
+                            Thành lập từ năm 2004, <strong class="text-blue-600">CÔNG TY CỔ PHẦN XÂY LẮP BƯU ĐIỆN MIỀN TRUNG (CTC)</strong> tự hào mang đến các giải pháp năng lượng mặt trời tiên tiến, được xây dựng trên nền tảng kinh nghiệm dày dặn trong lĩnh vực xây lắp và viễn thông.
+                        </p>
+                        
+                        <!-- Enhanced Key Features -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+                            <div class="feature-item flex items-center space-x-3 p-3 rounded-lg hover:bg-white/50 transition-all duration-300 animate-on-scroll" data-animation="fade-in-up" data-delay="0.3">
+                                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+                                    <i class="fas fa-check text-white"></i>
+                                </div>
+                                <span class="font-medium text-gray-700 hover:text-blue-600 transition-colors">Chất lượng đảm bảo</span>
+                            </div>
+                            
+                            <div class="feature-item flex items-center space-x-3 p-3 rounded-lg hover:bg-white/50 transition-all duration-300 animate-on-scroll" data-animation="fade-in-up" data-delay="0.4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+                                    <i class="fas fa-tools text-white"></i>
+                                </div>
+                                <span class="font-medium text-gray-700 hover:text-green-600 transition-colors">Thi công chuyên nghiệp</span>
+                            </div>
+                            
+                            <div class="feature-item flex items-center space-x-3 p-3 rounded-lg hover:bg-white/50 transition-all duration-300 animate-on-scroll" data-animation="fade-in-up" data-delay="0.5">
+                                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+                                    <i class="fas fa-headset text-white"></i>
+                                </div>
+                                <span class="font-medium text-gray-700 hover:text-purple-600 transition-colors">Hỗ trợ 24/7</span>
+                            </div>
+                            
+                            <div class="feature-item flex items-center space-x-3 p-3 rounded-lg hover:bg-white/50 transition-all duration-300 animate-on-scroll" data-animation="fade-in-up" data-delay="0.6">
+                                <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+                                    <i class="fas fa-shield-alt text-white"></i>
+                                </div>
+                                <span class="font-medium text-gray-700 hover:text-orange-600 transition-colors">Bảo hành dài hạn</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4 pt-6 animate-on-scroll" data-animation="fade-in-up" data-delay="0.7">
+                            <a href="about.html" class="btn-modern btn-primary group relative overflow-hidden">
+                                <span class="relative z-10 flex items-center">
+                                    <i class="fas fa-arrow-right mr-2 group-hover:translate-x-1 transition-transform"></i>
+                                    Tìm hiểu thêm về chúng tôi
+                                </span>
+                                <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                            </a>
+                            <a href="projects.html" class="btn-modern btn-outline group">
+                                <i class="fas fa-eye mr-2 group-hover:animate-pulse"></i>
+                                Xem dự án
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Services Preview Section -->
+        <section class="py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-green-50 relative overflow-hidden">
+            <!-- Animated Background Elements -->
+            <div class="absolute top-0 left-0 w-full h-full">
+                <div class="absolute top-20 left-10 w-32 h-32 bg-blue-200/30 rounded-full animate-float"></div>
+                <div class="absolute top-40 right-20 w-24 h-24 bg-green-200/30 rounded-full animate-float-delayed"></div>
+                <div class="absolute bottom-20 left-1/3 w-40 h-40 bg-yellow-200/20 rounded-full animate-float"></div>
+            </div>
+            
+            <div class="container-modern relative z-10">
+                <div class="text-center mb-16 animate-on-scroll" data-animation="fade-in-up">
+                    <div class="badge badge-success mb-4 animate-pulse">
+                        <i class="fas fa-cogs mr-2"></i>
+                        DỊCH VỤ
+                    </div>
+                    <h2 class="text-4xl lg:text-5xl font-bold text-gradient mb-6 animate-on-scroll" data-animation="fade-in-up" data-delay="0.1">
+                        Giải Pháp Toàn Diện
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto animate-on-scroll" data-animation="fade-in-up" data-delay="0.2">
+                        Từ tư vấn thiết kế đến lắp đặt và bảo trì, chúng tôi cung cấp dịch vụ trọn gói cho hệ thống điện mặt trời
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="service-card modern-card p-8 text-center hover-lift group relative overflow-hidden animate-on-scroll" data-animation="scale-in" data-delay="0.3">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-2xl group-hover:scale-110 transition-all duration-500">
+                                <i class="fas fa-drafting-compass text-white text-2xl group-hover:animate-spin"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 group-hover:text-blue-600 transition-colors">Tư Vấn & Thiết Kế</h3>
+                            <p class="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors">
+                                Khảo sát thực địa và thiết kế hệ thống tối ưu cho từng công trình
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card modern-card p-8 text-center hover-lift group relative overflow-hidden animate-on-scroll" data-animation="scale-in" data-delay="0.4">
+                        <div class="absolute inset-0 bg-gradient-to-br from-green-500/5 to-green-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-2xl group-hover:scale-110 transition-all duration-500">
+                                <i class="fas fa-hammer text-white text-2xl group-hover:animate-bounce"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 group-hover:text-green-600 transition-colors">Lắp Đặt Chuyên Nghiệp</h3>
+                            <p class="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors">
+                                Đội ngũ kỹ thuật viên giàu kinh nghiệm, thi công đúng tiêu chuẩn
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card modern-card p-8 text-center hover-lift group relative overflow-hidden animate-on-scroll" data-animation="scale-in" data-delay="0.5">
+                        <div class="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-2xl group-hover:scale-110 transition-all duration-500">
+                                <i class="fas fa-wrench text-white text-2xl group-hover:animate-pulse"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 group-hover:text-orange-600 transition-colors">Bảo Trì & Hỗ Trợ</h3>
+                            <p class="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors">
+                                Dịch vụ bảo trì định kỳ và hỗ trợ kỹ thuật 24/7
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12 animate-on-scroll" data-animation="fade-in-up" data-delay="0.6">
+                    <a href="services.html" class="btn-modern btn-primary text-lg px-8 py-4 group relative overflow-hidden">
+                        <span class="relative z-10 flex items-center">
+                            <i class="fas fa-list mr-2 group-hover:animate-bounce"></i>
+                            Xem Tất Cả Dịch Vụ
+                        </span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="footer-container"></div>
+    <script src="/js/main-fixed.js"></script>
+    <script>
+        // Enhanced Animation Controller
+        class AnimationController {
+            constructor() {
+                this.observers = new Map();
+                this.init();
+            }
+
+            init() {
+                // Initialize scroll-triggered animations
+                this.initScrollAnimations();
+                
+                // Initialize parallax effects
+                this.initParallaxEffects();
+                
+                // Initialize dynamic background
+                this.initDynamicBackground();
+                
+                // Initialize performance optimizations
+                this.initPerformanceOptimizations();
+            }
+
+            initScrollAnimations() {
+                const animatedElements = document.querySelectorAll('.animate-on-scroll');
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const delay = entry.target.dataset.delay || 0;
+                            setTimeout(() => {
+                                entry.target.classList.add('animate');
+                            }, delay * 1000);
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                });
+
+                animatedElements.forEach(el => observer.observe(el));
+                this.observers.set('scroll', observer);
+            }
+
+            initParallaxEffects() {
+                const heroBackground = document.querySelector('.hero-bg-image');
+                const particles = document.querySelectorAll('.particle');
+                
+                let ticking = false;
+                
+                const updateParallax = () => {
+                    const scrolled = window.pageYOffset;
+                    const rate = scrolled * -0.5;
+                    
+                    if (heroBackground) {
+                        heroBackground.style.transform = `translateY(${rate}px) scale(1.05)`;
+                    }
+                    
+                    particles.forEach((particle, index) => {
+                        const speed = 0.2 + (index * 0.1);
+                        const yPos = scrolled * speed;
+                        particle.style.transform = `translateY(${yPos}px)`;
+                    });
+                    
+                    ticking = false;
+                };
+                
+                const requestParallax = () => {
+                    if (!ticking) {
+                        requestAnimationFrame(updateParallax);
+                        ticking = true;
+                    }
+                };
+                
+                window.addEventListener('scroll', requestParallax, { passive: true });
+            }
+
+            initDynamicBackground() {
+                const heroSection = document.querySelector('.hero-enhanced');
+                if (!heroSection) return;
+                
+                // Dynamic gradient based on time
+                const updateGradient = () => {
+                    const now = new Date();
+                    const hour = now.getHours();
+                    const minute = now.getMinutes();
+                    const timeProgress = (hour * 60 + minute) / 1440; // 0-1 through the day
+                    
+                    const overlay = heroSection.querySelector('.hero-overlay');
+                    if (overlay) {
+                        const hue1 = 220 + (timeProgress * 60); // Blue to purple range
+                        const hue2 = 160 + (timeProgress * 40); // Green to blue range
+                        
+                        overlay.style.background = `linear-gradient(135deg, 
+                            hsla(${hue1}, 70%, 25%, 0.8) 0%, 
+                            hsla(${hue1 + 20}, 60%, 35%, 0.7) 35%, 
+                            hsla(${hue2}, 60%, 30%, 0.8) 100%
+                        )`;
+                    }
+                };
+                
+                updateGradient();
+                setInterval(updateGradient, 60000); // Update every minute
+            }
+
+            initPerformanceOptimizations() {
+                // Reduce animations on low-end devices
+                if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) {
+                    document.documentElement.style.setProperty('--animation-duration', '0.3s');
+                    
+                    // Disable particle animations on low-end devices
+                    const particles = document.querySelectorAll('.particle');
+                    particles.forEach(particle => {
+                        particle.style.animation = 'none';
+                    });
+                }
+                
+                // Pause animations when page is not visible
+                document.addEventListener('visibilitychange', () => {
+                    const animatedElements = document.querySelectorAll('[class*="animate"]');
+                    animatedElements.forEach(el => {
+                        if (document.hidden) {
+                            el.style.animationPlayState = 'paused';
+                        } else {
+                            el.style.animationPlayState = 'running';
+                        }
+                    });
+                });
+                
+                // Prefers reduced motion support
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    document.documentElement.style.setProperty('--animation-duration', '0.01s');
+                    
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        *, *::before, *::after {
+                            animation-duration: 0.01ms !important;
+                            animation-iteration-count: 1 !important;
+                            transition-duration: 0.01ms !important;
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            }
+
+            // Public methods for controlling animations
+            pauseAllAnimations() {
+                const animatedElements = document.querySelectorAll('[class*="animate"]');
+                animatedElements.forEach(el => {
+                    el.style.animationPlayState = 'paused';
+                });
+            }
+
+            resumeAllAnimations() {
+                const animatedElements = document.querySelectorAll('[class*="animate"]');
+                animatedElements.forEach(el => {
+                    el.style.animationPlayState = 'running';
+                });
+            }
+
+            destroy() {
+                this.observers.forEach(observer => observer.disconnect());
+                this.observers.clear();
+            }
+        }
+
+        // Initialize animations when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.animationController = new AnimationController();
+            
+            // Add smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Add loading states for images
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                if (!img.complete) {
+                    img.style.opacity = '0';
+                    img.style.transition = 'opacity 0.5s ease';
+                    
+                    img.addEventListener('load', () => {
+                        img.style.opacity = '1';
+                    });
+                }
+            });
+        });
+
+        // Number counting animation
+        function animateNumber(element, target, duration = 2500, decimals = 0, suffix = '') {
+            const start = 0;
+            const startTime = performance.now();
+            
+            function updateNumber(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Use easeOutCubic for smooth animation
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                const current = start + (target - start) * easeProgress;
+                
+                // Format number with decimals if specified
+                let displayValue = decimals > 0 ? current.toFixed(decimals) : Math.floor(current);
+                
+                // Add comma separator for large numbers
+                if (target >= 1000 && decimals === 0) {
+                    displayValue = Math.floor(current).toLocaleString();
+                }
+                
+                element.textContent = displayValue + suffix;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateNumber);
+                }
+            }
+            
+            requestAnimationFrame(updateNumber);
+        }
+
+        // Initialize stats animations
+        function initializeStatsAnimations() {
+            const statsNumbers = document.querySelectorAll('.stats-number[data-target]');
+            
+            if (statsNumbers.length === 0) {
+                console.warn('No stats numbers found for animation');
+                return;
+            }
+            
+            // Create intersection observer to trigger animations when visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+                        entry.target.classList.add('animated');
+                        
+                        const target = parseFloat(entry.target.dataset.target);
+                        const suffix = entry.target.dataset.suffix || '';
+                        const decimals = parseInt(entry.target.dataset.decimal) || 0;
+                        
+                        // Add slight delay for staggered effect
+                        const delay = Array.from(statsNumbers).indexOf(entry.target) * 300;
+                        
+                        setTimeout(() => {
+                            animateNumber(entry.target, target, 2500, decimals, suffix);
+                        }, delay);
+                    }
+                });
+            }, {
+                threshold: 0.3,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            statsNumbers.forEach(number => {
+                observer.observe(number);
+            });
+        }
+
+        // Initialize stats animations when page loads
+        setTimeout(() => {
+            initializeStatsAnimations();
+        }, 1000);
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (window.animationController) {
+                window.animationController.destroy();
+            }
+        });
+    </script>
+    <script src="/js/main.js"></script>
+    <script src="/js/components-loader.js"></script>
+    <script src="/js/sticky-header.js"></script>
+</body>
+</html>

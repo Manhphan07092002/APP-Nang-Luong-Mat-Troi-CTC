@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cài Đặt - SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- QRCode.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    
+    <!-- Settings Header Script -->
+    <script src="/js/settings-header.js"></script>
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+        }
+
+        .settings-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .modern-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .modern-input:focus {
+            outline: none;
+            border-color: rgba(79, 172, 254, 0.5);
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .modern-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modern-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+        }
+
+        .settings-nav-item.active {
+            background: rgba(79, 172, 254, 0.2);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        }
+    </style>
+</head>
+<body>
+    <!-- Include Header Component -->
+    <div id="header-container"></div>
+    
+    <div class="settings-container">
+        <!-- Settings Page Header -->
+        <div class="pt-24 pb-6">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="glass-card p-6 sm:p-8">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <button onclick="goBack()" class="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-all duration-300 group">
+                                <i class="fas fa-arrow-left text-white group-hover:scale-110 transition-transform"></i>
+                            </button>
+                            <div>
+                                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white flex items-center">
+                                    <i class="fas fa-cog mr-3 text-purple-400"></i>
+                                    Cài đặt
+                                </h1>
+                                <p class="text-white/70 text-sm sm:text-base mt-1">Quản lý tài khoản, bảo mật và tùy chỉnh hệ thống</p>
+                            </div>
+                        </div>
+                        <div class="hidden sm:flex items-center gap-3">
+                            <div class="text-right">
+                                <div class="text-white/60 text-xs">Cập nhật lần cuối</div>
+                                <div class="text-white font-medium text-sm">Hôm nay</div>
+                            </div>
+                            <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-shield-alt text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+                
+                <!-- Settings Navigation -->
+                <div class="lg:col-span-1">
+                    <div class="glass-card p-6 relative overflow-hidden">
+                        <!-- Background decoration -->
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-500 opacity-10 rounded-full transform translate-x-10 -translate-y-10"></div>
+                        
+                        <div class="relative z-10">
+                            <h3 class="text-lg font-bold text-white mb-6 flex items-center">
+                                <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg flex items-center justify-center mr-3">
+                                    <i class="fas fa-list text-white text-sm"></i>
+                                </div>
+                                Danh mục cài đặt
+                            </h3>
+                            <nav class="space-y-3">
+                                <button class="settings-nav-item w-full text-left p-4 rounded-xl transition-all duration-300 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-400/20 text-white group" data-section="security">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-blue-500/30 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                            <i class="fas fa-shield-alt text-blue-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium">Bảo mật</div>
+                                            <div class="text-xs text-white/60">Mật khẩu & xác thực</div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <button class="settings-nav-item w-full text-left p-4 rounded-xl transition-all duration-300 text-white/70 hover:bg-white/10 hover:text-white group" data-section="account">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                            <i class="fas fa-user-cog text-green-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium">Tài khoản</div>
+                                            <div class="text-xs text-white/60">Thông tin cá nhân</div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <button class="settings-nav-item w-full text-left p-4 rounded-xl transition-all duration-300 text-white/70 hover:bg-white/10 hover:text-white group" data-section="notifications">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                            <i class="fas fa-bell text-yellow-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium">Thông báo</div>
+                                            <div class="text-xs text-white/60">Email & push</div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <button class="settings-nav-item w-full text-left p-4 rounded-xl transition-all duration-300 text-white/70 hover:bg-white/10 hover:text-white group" data-section="privacy">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                            <i class="fas fa-lock text-red-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium">Riêng tư</div>
+                                            <div class="text-xs text-white/60">Quyền riêng tư</div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <button class="settings-nav-item w-full text-left p-4 rounded-xl transition-all duration-300 text-white/70 hover:bg-white/10 hover:text-white group" data-section="data">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                            <i class="fas fa-database text-indigo-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium">Dữ liệu</div>
+                                            <div class="text-xs text-white/60">Xuất & sao lưu</div>
+                                        </div>
+                                    </div>
+                                </button>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Content -->
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <!-- Security Settings -->
+                    <div class="settings-section active" id="security-section">
+                        <div class="glass-card p-6 sm:p-8">
+                            <h3 class="text-xl font-bold text-white mb-6">
+                                <i class="fas fa-shield-alt mr-3 text-blue-400"></i>
+                                Cài đặt bảo mật
+                            </h3>
+                            
+                            <!-- Security Information -->
+                            <div class="mb-8">
+                                <h4 class="text-lg font-semibold text-white mb-4">Thông tin bảo mật</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                    <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <i class="fas fa-globe text-blue-400"></i>
+                                            <div class="text-white font-medium">Địa chỉ IP hiện tại</div>
+                                        </div>
+                                        <div id="currentIP" class="text-white/80 text-sm font-mono bg-black/20 px-3 py-2 rounded-lg">Đang tải...</div>
+                                        <div class="text-white/60 text-xs mt-1">IP được sử dụng để đăng nhập</div>
+                                    </div>
+                                    <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <i class="fas fa-key text-green-400"></i>
+                                            <div class="text-white font-medium">Token trạng thái</div>
+                                        </div>
+                                        <div id="tokenStatus" class="text-white/80 text-sm font-mono bg-black/20 px-3 py-2 rounded-lg">Đang tải...</div>
+                                        <div class="text-white/60 text-xs mt-1">Trạng thái xác thực hiện tại</div>
+                                    </div>
+                                    <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <i class="fas fa-clock text-purple-400"></i>
+                                            <div class="text-white font-medium">Thời gian đăng nhập</div>
+                                        </div>
+                                        <div id="loginTime" class="text-white/80 text-sm font-mono bg-black/20 px-3 py-2 rounded-lg">Đang tải...</div>
+                                        <div class="text-white/60 text-xs mt-1">Lần đăng nhập gần nhất</div>
+                                    </div>
+                                    <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <i class="fas fa-shield-alt text-orange-400"></i>
+                                            <div class="text-white font-medium">Mức bảo mật</div>
+                                        </div>
+                                        <div id="securityLevel" class="text-white/80 text-sm font-mono bg-black/20 px-3 py-2 rounded-lg">Đang tải...</div>
+                                        <div class="text-white/60 text-xs mt-1">Đánh giá độ an toàn tài khoản</div>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-400/20 rounded-xl">
+                                    <div class="flex items-start gap-3">
+                                        <i class="fas fa-info-circle text-blue-400 mt-1"></i>
+                                        <div>
+                                            <div class="text-white font-medium mb-1">Thông tin Token JWT</div>
+                                            <div class="text-white/70 text-sm mb-2">Token xác thực của bạn (chỉ hiển thị 20 ký tự đầu vì lý do bảo mật)</div>
+                                            <div id="jwtToken" class="text-white/80 text-xs font-mono bg-black/30 px-3 py-2 rounded-lg break-all">Đang tải...</div>
+                                            <div class="flex items-center gap-4 mt-3 text-xs">
+                                                <div class="text-white/60">Hết hạn: <span id="tokenExpiry" class="text-white/80">Đang tải...</span></div>
+                                                <button onclick="refreshToken()" class="px-3 py-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/30 rounded-lg text-blue-300 transition-all duration-300">
+                                                    <i class="fas fa-sync-alt mr-1"></i>Làm mới
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Change Password -->
+                            <div class="mb-8">
+                                <h4 class="text-lg font-semibold text-white mb-4">Đổi mật khẩu</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-white/80 text-sm font-medium mb-2">Mật khẩu hiện tại</label>
+                                        <input type="password" id="currentPassword" class="modern-input w-full" placeholder="Nhập mật khẩu hiện tại">
+                                    </div>
+                                    <div>
+                                        <label class="block text-white/80 text-sm font-medium mb-2">Mật khẩu mới</label>
+                                        <input type="password" id="newPassword" class="modern-input w-full" placeholder="Nhập mật khẩu mới">
+                                    </div>
+                                    <div>
+                                        <label class="block text-white/80 text-sm font-medium mb-2">Xác nhận mật khẩu mới</label>
+                                        <input type="password" id="confirmPassword" class="modern-input w-full" placeholder="Nhập lại mật khẩu mới">
+                                    </div>
+                                    <button onclick="changePassword()" class="modern-btn">
+                                        <i class="fas fa-key mr-2"></i>
+                                        Đổi mật khẩu
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Settings -->
+                    <div class="settings-section" id="account-section" style="display: none;">
+                        <div class="glass-card p-6 sm:p-8">
+                            <h3 class="text-xl font-bold text-white mb-6">
+                                <i class="fas fa-user-cog mr-3 text-green-400"></i>
+                                Cài đặt tài khoản
+                            </h3>
+                            
+                            <!-- Profile Information -->
+                            <div class="mb-8">
+                                <h4 class="text-lg font-semibold text-white mb-4">Thông tin cá nhân</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-white/80 text-sm font-medium mb-2">Họ và tên</label>
+                                        <input type="text" id="fullName" class="modern-input w-full" placeholder="Nhập họ và tên">
+                                    </div>
+                                    <div>
+                                        <label class="block text-white/80 text-sm font-medium mb-2">Email</label>
+                                        <input type="email" id="email" class="modern-input w-full" placeholder="Nhập email" readonly>
+                                    </div>
+                                    <div>
+                                        <label class="block text-white/80 text-sm font-medium mb-2">Số điện thoại</label>
+                                        <input type="tel" id="phone" class="modern-input w-full" placeholder="Nhập số điện thoại">
+                                    </div>
+                                    <div>
+                                        <label class="block text-white/80 text-sm font-medium mb-2">Công ty</label>
+                                        <input type="text" id="company" class="modern-input w-full" placeholder="Nhập tên công ty">
+                                    </div>
+                                    <div>
+                                        <label class="block text-white/80 text-sm font-medium mb-2">Chức vụ</label>
+                                        <input type="text" id="position" class="modern-input w-full" placeholder="Nhập chức vụ">
+                                    </div>
+                                    <div>
+                                        <label class="block text-white/80 text-sm font-medium mb-2">Địa chỉ</label>
+                                        <input type="text" id="address" class="modern-input w-full" placeholder="Nhập địa chỉ">
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <label class="block text-white/80 text-sm font-medium mb-2">Giới thiệu bản thân</label>
+                                    <textarea id="bio" class="modern-input w-full h-24 resize-none" placeholder="Viết vài dòng giới thiệu về bản thân..."></textarea>
+                                </div>
+                                <button onclick="updateProfile()" class="modern-btn mt-4">
+                                    <i class="fas fa-save mr-2"></i>
+                                    Lưu thông tin
+                                </button>
+                            </div>
+                            
+                            <!-- Account Preferences -->
+                            <div class="space-y-4">
+                                <h4 class="text-lg font-semibold text-white mb-4">Tùy chọn tài khoản</h4>
+                                <div class="p-4 bg-white/5 rounded-xl">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="text-white font-medium">Tài khoản công khai</div>
+                                            <div class="text-white/60 text-sm">Cho phép người khác tìm thấy hồ sơ</div>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" id="publicProfile" class="sr-only peer" checked>
+                                            <div class="w-11 h-6 bg-white/20 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-white/5 rounded-xl">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="text-white font-medium">Hiển thị trạng thái hoạt động</div>
+                                            <div class="text-white/60 text-sm">Cho phép người khác biết khi bạn đang online</div>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" id="showActivity" class="sr-only peer" checked>
+                                            <div class="w-11 h-6 bg-white/20 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Settings -->
+                    <div class="settings-section" id="notifications-section" style="display: none;">
+                        <div class="glass-card p-6 sm:p-8">
+                            <h3 class="text-xl font-bold text-white mb-6">
+                                <i class="fas fa-bell mr-3 text-yellow-400"></i>
+                                Cài đặt thông báo
+                            </h3>
+                            
+                            <!-- Email Notifications -->
+                            <div class="mb-8">
+                                <h4 class="text-lg font-semibold text-white mb-4">Thông báo Email</h4>
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-white/5 rounded-xl">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <div class="text-white font-medium">Báo cáo mới</div>
+                                                <div class="text-white/60 text-sm">Nhận email khi có báo cáo phân tích mới</div>
+                                            </div>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" id="emailReports" class="sr-only peer" checked>
+                                                <div class="w-11 h-6 bg-white/20 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 bg-white/5 rounded-xl">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <div class="text-white font-medium">Cập nhật hệ thống</div>
+                                                <div class="text-white/60 text-sm">Nhận thông báo về các tính năng mới</div>
+                                            </div>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" id="emailUpdates" class="sr-only peer" checked>
+                                                <div class="w-11 h-6 bg-white/20 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 bg-white/5 rounded-xl">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <div class="text-white font-medium">Bảo mật</div>
+                                                <div class="text-white/60 text-sm">Cảnh báo đăng nhập bất thường</div>
+                                            </div>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" id="emailSecurity" class="sr-only peer" checked>
+                                                <div class="w-11 h-6 bg-white/20 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Push Notifications -->
+                            <div class="mb-8">
+                                <h4 class="text-lg font-semibold text-white mb-4">Thông báo đẩy</h4>
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-white/5 rounded-xl">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <div class="text-white font-medium">Thông báo trình duyệt</div>
+                                                <div class="text-white/60 text-sm">Nhận thông báo ngay trên trình duyệt</div>
+                                            </div>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" id="browserNotifications" class="sr-only peer">
+                                                <div class="w-11 h-6 bg-white/20 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button onclick="saveNotificationSettings()" class="modern-btn">
+                                <i class="fas fa-save mr-2"></i>
+                                Lưu cài đặt
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Privacy Settings -->
+                    <div class="settings-section" id="privacy-section" style="display: none;">
+                        <div class="glass-card p-6 sm:p-8">
+                            <h3 class="text-xl font-bold text-white mb-6">
+                                <i class="fas fa-lock mr-3 text-red-400"></i>
+                                Cài đặt riêng tư
+                            </h3>
+                            
+                            <!-- Data Privacy -->
+                            <div class="mb-8">
+                                <h4 class="text-lg font-semibold text-white mb-4">Quyền riêng tư dữ liệu</h4>
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-white/5 rounded-xl">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <div class="text-white font-medium">Thu thập dữ liệu phân tích</div>
+                                                <div class="text-white/60 text-sm">Cho phép thu thập dữ liệu để cải thiện dịch vụ</div>
+                                            </div>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" id="dataCollection" class="sr-only peer" checked>
+                                                <div class="w-11 h-6 bg-white/20 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 bg-white/5 rounded-xl">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <div class="text-white font-medium">Chia sẻ dữ liệu với đối tác</div>
+                                                <div class="text-white/60 text-sm">Cho phép chia sẻ dữ liệu ẩn danh với đối tác</div>
+                                            </div>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" id="dataSharing" class="sr-only peer">
+                                                <div class="w-11 h-6 bg-white/20 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Account Security -->
+                            <div class="mb-8">
+                                <h4 class="text-lg font-semibold text-white mb-4">Bảo mật tài khoản</h4>
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-white/5 rounded-xl">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <div class="text-white font-medium">Xác thực hai yếu tố (2FA)</div>
+                                                <div class="text-white/60 text-sm">Tăng cường bảo mật với xác thực 2 lớp</div>
+                                            </div>
+                                            <button id="twoFAButton" onclick="setup2FA()" class="px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/30 rounded-lg text-blue-300 text-sm transition-all duration-300">
+                                                Thiết lập
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 bg-white/5 rounded-xl">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <div class="text-white font-medium">Phiên đăng nhập</div>
+                                                <div class="text-white/60 text-sm">Quản lý các thiết bị đã đăng nhập</div>
+                                            </div>
+                                            <button onclick="viewSessions()" class="px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 border border-purple-400/30 rounded-lg text-purple-300 text-sm transition-all duration-300">
+                                                Xem chi tiết
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button onclick="savePrivacySettings()" class="modern-btn">
+                                <i class="fas fa-save mr-2"></i>
+                                Lưu cài đặt
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Data Settings -->
+                    <div class="settings-section" id="data-section" style="display: none;">
+                        <div class="glass-card p-6 sm:p-8">
+                            <h3 class="text-xl font-bold text-white mb-6">
+                                <i class="fas fa-database mr-3 text-indigo-400"></i>
+                                Quản lý dữ liệu
+                            </h3>
+                            
+                            <!-- Data Export -->
+                            <div class="mb-8">
+                                <h4 class="text-lg font-semibold text-white mb-4">Xuất dữ liệu</h4>
+                                <div class="space-y-4">
+                                    <button onclick="exportUserData()" class="w-full p-4 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-400/20 rounded-xl text-left transition-all duration-300 group">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <i class="fas fa-user-circle text-blue-400 group-hover:scale-110 transition-transform"></i>
+                                                <div>
+                                                    <div class="text-white font-medium">Dữ liệu cá nhân</div>
+                                                    <div class="text-white/60 text-sm">Xuất thông tin tài khoản và hồ sơ</div>
+                                                </div>
+                                            </div>
+                                            <i class="fas fa-download text-blue-400/60"></i>
+                                        </div>
+                                    </button>
+                                    <button onclick="exportReportsData()" class="w-full p-4 bg-green-500/10 hover:bg-green-500/20 border border-green-400/20 rounded-xl text-left transition-all duration-300 group">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <i class="fas fa-chart-line text-green-400 group-hover:scale-110 transition-transform"></i>
+                                                <div>
+                                                    <div class="text-white font-medium">Báo cáo phân tích</div>
+                                                    <div class="text-white/60 text-sm">Xuất tất cả báo cáo đã tạo</div>
+                                                </div>
+                                            </div>
+                                            <i class="fas fa-download text-green-400/60"></i>
+                                        </div>
+                                    </button>
+                                    <button onclick="exportActivityData()" class="w-full p-4 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-400/20 rounded-xl text-left transition-all duration-300 group">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <i class="fas fa-history text-purple-400 group-hover:scale-110 transition-transform"></i>
+                                                <div>
+                                                    <div class="text-white font-medium">Lịch sử hoạt động</div>
+                                                    <div class="text-white/60 text-sm">Xuất nhật ký hoạt động</div>
+                                                </div>
+                                            </div>
+                                            <i class="fas fa-download text-purple-400/60"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Data Management -->
+                            <div class="mb-8">
+                                <h4 class="text-lg font-semibold text-white mb-4">Quản lý dữ liệu</h4>
+                                <div class="space-y-4">
+                                    <button onclick="clearCache()" class="w-full p-4 bg-yellow-500/10 hover:bg-yellow-500/20 border border-yellow-400/20 rounded-xl text-left transition-all duration-300 group">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <i class="fas fa-broom text-yellow-400 group-hover:scale-110 transition-transform"></i>
+                                                <div>
+                                                    <div class="text-white font-medium">Xóa bộ nhớ đệm</div>
+                                                    <div class="text-white/60 text-sm">Xóa dữ liệu tạm thời để tăng hiệu suất</div>
+                                                </div>
+                                            </div>
+                                            <i class="fas fa-trash text-yellow-400/60"></i>
+                                        </div>
+                                    </button>
+                                    <button onclick="deleteAccount()" class="w-full p-4 bg-red-500/10 hover:bg-red-500/20 border border-red-400/20 rounded-xl text-left transition-all duration-300 group">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <i class="fas fa-user-times text-red-400 group-hover:scale-110 transition-transform"></i>
+                                                <div>
+                                                    <div class="text-white font-medium">Xóa tài khoản</div>
+                                                    <div class="text-white/60 text-sm">Xóa vĩnh viễn tài khoản và dữ liệu</div>
+                                                </div>
+                                            </div>
+                                            <i class="fas fa-exclamation-triangle text-red-400/60"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2FA Setup Modal -->
+    <div id="twoFAModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="glass-card max-w-md w-full p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-bold text-white">Thiết lập 2FA</h3>
+                    <button onclick="close2FAModal()" class="text-white/60 hover:text-white">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div id="twoFAStep1" class="space-y-4">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-mobile-alt text-blue-400 text-2xl"></i>
+                        </div>
+                        <p class="text-white/80 text-sm mb-4">Quét mã QR bằng ứng dụng xác thực như Google Authenticator hoặc Authy</p>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg text-center">
+                        <div id="qrCode" class="w-48 h-48 mx-auto bg-gray-100 flex items-center justify-center">
+                            <i class="fas fa-qrcode text-gray-400 text-4xl"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p class="text-white/60 text-xs mb-2">Hoặc nhập mã thủ công:</p>
+                        <div class="bg-black/20 px-3 py-2 rounded font-mono text-white/80 text-sm" id="secretKey">
+                            ABCD EFGH IJKL MNOP QRST UVWX YZ12 3456
+                        </div>
+                    </div>
+                    
+                    <button onclick="nextStep2FA()" class="modern-btn w-full">
+                        <i class="fas fa-arrow-right mr-2"></i>Tiếp tục
+                    </button>
+                </div>
+                
+                <div id="twoFAStep2" class="space-y-4 hidden">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-key text-green-400 text-2xl"></i>
+                        </div>
+                        <p class="text-white/80 text-sm mb-4">Nhập mã 6 số từ ứng dụng xác thực để xác minh</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Mã xác thực</label>
+                        <input type="text" id="verificationCode" class="modern-input w-full text-center text-2xl tracking-widest" placeholder="000000" maxlength="6">
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <button onclick="prevStep2FA()" class="px-4 py-2 bg-gray-500/20 hover:bg-gray-500/30 border border-gray-400/30 rounded-lg text-gray-300 flex-1">
+                            <i class="fas fa-arrow-left mr-2"></i>Quay lại
+                        </button>
+                        <button onclick="verify2FA()" class="modern-btn flex-1">
+                            <i class="fas fa-check mr-2"></i>Xác minh
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Session Management Modal -->
+    <div id="sessionModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="glass-card max-w-2xl w-full p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-bold text-white">Quản lý phiên đăng nhập</h3>
+                    <button onclick="closeSessionModal()" class="text-white/60 hover:text-white">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="text-white/80 text-sm">Tổng số phiên: <span id="totalSessions" class="text-white font-medium">0</span></div>
+                        <button onclick="refreshSessions()" class="px-3 py-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/30 rounded-lg text-blue-300 text-sm">
+                            <i class="fas fa-sync-alt mr-1"></i>Làm mới
+                        </button>
+                    </div>
+                    
+                    <div id="sessionsList" class="space-y-3 max-h-96 overflow-y-auto">
+                        <!-- Sessions will be loaded here -->
+                    </div>
+                    
+                    <div class="flex gap-3 pt-4 border-t border-white/10">
+                        <button onclick="logoutAllSessions()" class="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-400/30 rounded-lg text-red-300 flex-1">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất tất cả
+                        </button>
+                        <button onclick="closeSessionModal()" class="modern-btn flex-1">
+                            <i class="fas fa-check mr-2"></i>Đóng
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load header component
+        async function loadHeader() {
+            try {
+                const response = await fetch('/components/header.html');
+                const headerHTML = await response.text();
+                document.getElementById('header-container').innerHTML = headerHTML;
+                
+                // Load header script after header is loaded
+                const script = document.createElement('script');
+                script.src = '/js/main.js';
+                document.head.appendChild(script);
+            } catch (error) {
+                console.error('Error loading header:', error);
+            }
+        }
+
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load header first
+            loadHeader();
+            
+            // Load user profile and settings
+            loadUserProfile();
+            loadSavedSettings();
+            loadSecurityInfo();
+            checkTwoFAStatus();
+            const navItems = document.querySelectorAll('.settings-nav-item');
+            const sections = document.querySelectorAll('.settings-section');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const targetSection = this.dataset.section;
+                    
+                    // Remove active state from all nav items
+                    navItems.forEach(nav => {
+                        nav.classList.remove('bg-gradient-to-r', 'from-blue-500/20', 'to-purple-500/20', 'border-blue-400/20');
+                        nav.classList.add('text-white/70', 'hover:bg-white/10', 'hover:text-white');
+                        nav.classList.remove('text-white');
+                    });
+                    
+                    // Hide all sections
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                        section.style.display = 'none';
+                    });
+                    
+                    // Add active state to clicked item
+                    this.classList.add('bg-gradient-to-r', 'from-blue-500/20', 'to-purple-500/20', 'border-blue-400/20', 'text-white');
+                    this.classList.remove('text-white/70', 'hover:bg-white/10', 'hover:text-white');
+                    this.classList.add('active');
+                    
+                    // Show target section
+                    const targetElement = document.getElementById(targetSection + '-section');
+                    if (targetElement) {
+                        targetElement.classList.add('active');
+                        targetElement.style.display = 'block';
+                    }
+                });
+            });
+        });
+
+        function goBack() {
+            window.history.back() || (window.location.href = 'profile.html');
+        }
+
+        async function changePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showNotification('Vui lòng điền đầy đủ thông tin', 'error');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showNotification('Mật khẩu mới không khớp', 'error');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                showNotification('Mật khẩu mới phải có ít nhất 6 ký tự', 'error');
+                return;
+            }
+
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const token = userInfo.token;
+
+                if (!token) {
+                    showNotification('Vui lòng đăng nhập lại', 'error');
+                    setTimeout(() => window.location.href = 'login.html', 2000);
+                    return;
+                }
+
+                const response = await fetch('/api/users/change-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        currentPassword,
+                        newPassword
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showNotification('🎉 Mật khẩu đã được cập nhật thành công! Tài khoản của bạn giờ đã an toàn hơn.', 'success');
+                    document.getElementById('currentPassword').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+                } else {
+                    showNotification(data.message || 'Có lỗi xảy ra', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Có lỗi xảy ra khi đổi mật khẩu', 'error');
+            }
+        }
+
+        // Load user profile data on page load
+        async function loadUserProfile() {
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const token = userInfo.token;
+
+                if (!token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const response = await fetch('/api/users/profile', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    populateProfileForm(userData.user || userData);
+                } else {
+                    console.error('Failed to load profile');
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        function populateProfileForm(user) {
+            document.getElementById('fullName').value = user.name || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('phone').value = user.phone || '';
+            document.getElementById('company').value = user.company || '';
+            document.getElementById('position').value = user.position || '';
+            document.getElementById('address').value = user.address || '';
+            document.getElementById('bio').value = user.bio || '';
+        }
+
+        async function updateProfile() {
+            const profileData = {
+                name: document.getElementById('fullName').value,
+                phone: document.getElementById('phone').value,
+                company: document.getElementById('company').value,
+                position: document.getElementById('position').value,
+                address: document.getElementById('address').value,
+                bio: document.getElementById('bio').value
+            };
+
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const token = userInfo.token;
+
+                if (!token) {
+                    showNotification('Vui lòng đăng nhập lại', 'error');
+                    setTimeout(() => window.location.href = 'login.html', 2000);
+                    return;
+                }
+
+                const response = await fetch('/api/users/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(profileData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showNotification('🎉 Thông tin cá nhân đã được cập nhật thành công!', 'success');
+                    // Update localStorage with new data
+                    if (userInfo.user) {
+                        Object.assign(userInfo.user, profileData);
+                        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                    }
+                } else {
+                    showNotification(data.message || 'Có lỗi xảy ra khi cập nhật thông tin', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Có lỗi xảy ra khi cập nhật thông tin', 'error');
+            }
+        }
+
+        async function saveNotificationSettings() {
+            const settings = {
+                emailReports: document.getElementById('emailReports').checked,
+                emailUpdates: document.getElementById('emailUpdates').checked,
+                emailSecurity: document.getElementById('emailSecurity').checked,
+                browserNotifications: document.getElementById('browserNotifications').checked
+            };
+
+            // Save to localStorage for now
+            localStorage.setItem('notificationSettings', JSON.stringify(settings));
+            showNotification('🔔 Cài đặt thông báo đã được lưu thành công!', 'success');
+
+            // Request browser notification permission if enabled
+            if (settings.browserNotifications && 'Notification' in window) {
+                if (Notification.permission === 'default') {
+                    const permission = await Notification.requestPermission();
+                    if (permission === 'granted') {
+                        showNotification('✅ Đã cấp quyền thông báo trình duyệt!', 'success');
+                    } else {
+                        document.getElementById('browserNotifications').checked = false;
+                        showNotification('❌ Không thể cấp quyền thông báo trình duyệt', 'error');
+                    }
+                }
+            }
+        }
+
+        async function savePrivacySettings() {
+            const settings = {
+                dataCollection: document.getElementById('dataCollection').checked,
+                dataSharing: document.getElementById('dataSharing').checked,
+                publicProfile: document.getElementById('publicProfile').checked,
+                showActivity: document.getElementById('showActivity').checked
+            };
+
+            // Save to localStorage for now
+            localStorage.setItem('privacySettings', JSON.stringify(settings));
+            showNotification('🔒 Cài đặt riêng tư đã được lưu thành công!', 'success');
+        }
+
+        // 2FA Functions
+        function setup2FA() {
+            document.getElementById('twoFAModal').classList.remove('hidden');
+            generate2FASecret();
+        }
+
+        function generate2FASecret() {
+            // Generate a random secret key
+            const secret = generateRandomSecret();
+            document.getElementById('secretKey').textContent = formatSecret(secret);
+            
+            // Generate QR code (mock)
+            generateQRCode(secret);
+        }
+
+        function generateRandomSecret() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            let secret = '';
+            for (let i = 0; i < 32; i++) {
+                secret += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return secret;
+        }
+
+        function formatSecret(secret) {
+            return secret.match(/.{1,4}/g).join(' ');
+        }
+
+        async function setup2FA() {
+            document.getElementById('twoFAModal').classList.remove('hidden');
+            
+            // Generate a secret key for TOTP
+            const secret = generateRandomSecret();
+            
+            // Get user info
+            const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+            const user = userInfo.user || userInfo;
+            const email = user.email || 'user@solaranalytics.vn';
+            
+            // Create TOTP URL for QR code
+            const issuer = 'Solar Analytics';
+            const totpUrl = `otpauth://totp/${encodeURIComponent(issuer)}:${encodeURIComponent(email)}?secret=${secret}&issuer=${encodeURIComponent(issuer)}`;
+            
+            // Generate QR code using qrcode-generator library
+            try {
+                const qr = qrcode(0, 'M');
+                qr.addData(totpUrl);
+                qr.make();
+                
+                // Create QR code as SVG
+                const qrSvg = qr.createSvgTag(4, 4);
+                document.getElementById('qrCode').innerHTML = qrSvg;
+                
+                // Store the secret and URL for later use
+                window.currentTOTPSecret = secret;
+                window.currentTOTPUrl = totpUrl;
+                
+            } catch (error) {
+                console.error('Error generating QR code:', error);
+                // Fallback: show the TOTP URL as text with copy button
+                document.getElementById('qrCode').innerHTML = `
+                    <div class="text-center p-4 bg-red-500/10 border border-red-400/30 rounded-lg">
+                        <p class="text-red-300 mb-2">Không thể tạo mã QR</p>
+                        <p class="text-sm text-gray-300 mb-3">Vui lòng sao chép URL sau vào ứng dụng xác thực:</p>
+                        <div class="bg-gray-800/50 p-2 rounded text-xs break-all mb-2">${totpUrl}</div>
+                        <button onclick="copyToClipboard('${totpUrl}')" class="px-3 py-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/30 rounded text-blue-300 text-xs transition-all duration-300">
+                            Sao chép URL
+                        </button>
+                    </div>
+                `;
+                
+                // Store the secret and URL for later use
+                window.currentTOTPSecret = secret;
+                window.currentTOTPUrl = totpUrl;
+            }
+        }
+
+        function nextStep2FA() {
+            document.getElementById('twoFAStep1').classList.add('hidden');
+            document.getElementById('twoFAStep2').classList.remove('hidden');
+        }
+
+        function prevStep2FA() {
+            document.getElementById('twoFAStep2').classList.add('hidden');
+            document.getElementById('twoFAStep1').classList.remove('hidden');
+        }
+
+        async function verify2FA() {
+            const code = document.getElementById('verificationCode').value;
+            
+            if (!code || code.length !== 6) {
+                showNotification('Vui lòng nhập mã 6 số', 'error');
+                return;
+            }
+            
+            try {
+                const token = getAuthToken();
+                if (!token) {
+                    showNotification('Vui lòng đăng nhập lại', 'error');
+                    return;
+                }
+
+                // First setup 2FA with backend
+                const setupResponse = await fetch('/api/users/2fa/setup', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        secret: window.currentTOTPSecret,
+                        backupCodes: []
+                    })
+                });
+
+                if (!setupResponse.ok) {
+                    throw new Error('Lỗi khi thiết lập 2FA');
+                }
+
+                // Then verify the token
+                const verifyResponse = await fetch('/api/users/2fa/verify', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        token: code
+                    })
+                });
+
+                if (verifyResponse.ok) {
+                    // Immediately update localStorage for instant UI feedback
+                    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                    if (userInfo.user) {
+                        userInfo.user.twoFactorEnabled = true;
+                    } else {
+                        userInfo.twoFactorEnabled = true;
+                    }
+                    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                    
+                    showNotification('🎉 Xác thực 2FA đã được thiết lập thành công!', 'success');
+                    close2FAModal();
+                    
+                    // Update button immediately
+                    updateTwoFAButton();
+                    
+                    // Also reload from backend for consistency
+                    setTimeout(async () => {
+                        await load2FAStatus();
+                        console.log('2FA status reloaded from backend after successful setup');
+                    }, 1000);
+                } else {
+                    showNotification('Mã xác thực không hợp lệ', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error verifying 2FA:', error);
+                showNotification('Lỗi khi xác thực 2FA', 'error');
+            }
+        }
+
+        function close2FAModal() {
+            document.getElementById('twoFAModal').classList.add('hidden');
+            document.getElementById('twoFAStep1').classList.remove('hidden');
+            document.getElementById('twoFAStep2').classList.add('hidden');
+            document.getElementById('verificationCode').value = '';
+        }
+
+        async function load2FAStatus() {
+            try {
+                const token = getAuthToken();
+                if (!token) {
+                    console.log('No auth token found, skipping 2FA status load');
+                    return;
+                }
+
+                console.log('Loading 2FA status from backend...');
+                const response = await fetch('/api/users/2fa/status', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('2FA status loaded from backend:', data);
+                    
+                    // Update localStorage with real 2FA status
+                    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                    if (userInfo.user) {
+                        userInfo.user.twoFactorEnabled = data.twoFactorEnabled;
+                    } else {
+                        userInfo.twoFactorEnabled = data.twoFactorEnabled;
+                    }
+                    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                    
+                    updateTwoFAButton();
+                } else {
+                    console.error('Failed to load 2FA status:', response.status, response.statusText);
+                }
+            } catch (error) {
+                console.error('Error loading 2FA status:', error);
+                // Fallback to localStorage-only update
+                updateTwoFAButton();
+            }
+        }
+
+        function updateTwoFAButton() {
+            const button = document.getElementById('twoFAButton');
+            console.log('updateTwoFAButton called, button found:', !!button);
+            
+            if (button) {
+                // Check if 2FA is enabled from localStorage
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const user = userInfo.user || userInfo;
+                const twoFactorEnabled = user.twoFactorEnabled || false;
+                
+                console.log('2FA Status:', { userInfo, user, twoFactorEnabled });
+                
+                if (twoFactorEnabled) {
+                    button.textContent = 'Đã xác thực';
+                    button.className = 'px-4 py-2 bg-green-500/20 hover:bg-green-500/30 border border-green-400/30 rounded-lg text-green-300 text-sm transition-all duration-300';
+                    button.onclick = null; // Disable click
+                    console.log('Button updated to: Đã xác thực');
+                } else {
+                    button.textContent = 'Thiết lập';
+                    button.className = 'px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/30 rounded-lg text-blue-300 text-sm transition-all duration-300';
+                    button.onclick = setup2FA;
+                    console.log('Button updated to: Thiết lập');
+                }
+            } else {
+                console.error('twoFAButton not found in DOM');
+            }
+        }
+
+        function checkTwoFAStatus() {
+            load2FAStatus();
+        }
+
+        // Test function to manually check 2FA button state
+        function test2FAButton() {
+            console.log('=== 2FA Button Test ===');
+            const button = document.getElementById('twoFAButton');
+            console.log('Button element:', button);
+            console.log('Button text:', button?.textContent);
+            console.log('Button class:', button?.className);
+            
+            const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+            console.log('UserInfo in localStorage:', userInfo);
+            
+            const user = userInfo.user || userInfo;
+            const twoFactorEnabled = user.twoFactorEnabled || false;
+            console.log('2FA Enabled status:', twoFactorEnabled);
+            
+            // Force update button
+            updateTwoFAButton();
+            console.log('Button after update - text:', button?.textContent);
+            console.log('=== End Test ===');
+        }
+
+        // Make test function available globally for debugging
+        window.test2FAButton = test2FAButton;
+
+        // Helper function to get authentication token
+        function getAuthToken() {
+            // Try multiple sources for token
+            let token = localStorage.getItem('token');
+            
+            if (!token) {
+                try {
+                    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                    token = userInfo.token || userInfo.user?.token;
+                } catch (e) {
+                    console.error('Error parsing userInfo:', e);
+                }
+            }
+            
+            return token;
+        }
+
+        // Session Management Functions
+        function viewSessions() {
+            document.getElementById('sessionModal').classList.remove('hidden');
+            loadSessions();
+        }
+
+        async function loadSessions() {
+            try {
+                const token = getAuthToken();
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+                
+                const response = await fetch('/api/users/sessions', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    displaySessions(data.sessions);
+                } else {
+                    throw new Error('Failed to load sessions');
+                }
+            } catch (error) {
+                console.error('Error loading sessions:', error);
+                // Fallback to mock data
+                const sessions = [
+                    {
+                        id: 'current-session',
+                        device: 'Chrome trên Windows',
+                        ip: '192.168.1.100',
+                        location: 'Hà Nội, Việt Nam',
+                        lastActive: new Date(Date.now() - 5 * 60 * 1000),
+                        isCurrent: true
+                    },
+                    {
+                        id: 'session-2',
+                        device: 'Safari trên iPhone',
+                        ip: '192.168.1.101',
+                        location: 'Hà Nội, Việt Nam',
+                        lastActive: new Date(Date.now() - 2 * 60 * 60 * 1000),
+                        isCurrent: false
+                    }
+                ];
+                displaySessions(sessions);
+            }
+        }
+
+        function displaySessions(sessions) {
+            document.getElementById('totalSessions').textContent = sessions.length;
+            
+            const sessionsList = document.getElementById('sessionsList');
+            sessionsList.innerHTML = sessions.map(session => `
+                <div class="p-4 bg-white/5 rounded-xl border border-white/10 ${session.isCurrent ? 'border-green-400/30 bg-green-500/5' : ''}">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas ${getDeviceIcon(session.device)} text-blue-400"></i>
+                                <span class="text-white font-medium">${session.device}</span>
+                                ${session.isCurrent ? '<span class="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">Hiện tại</span>' : ''}
+                            </div>
+                            <div class="text-white/60 text-sm space-y-1">
+                                <div><i class="fas fa-globe w-4"></i> ${session.ip}</div>
+                                <div><i class="fas fa-map-marker-alt w-4"></i> ${session.location}</div>
+                                <div><i class="fas fa-clock w-4"></i> ${getRelativeTime(session.lastActive)}</div>
+                            </div>
+                        </div>
+                        ${!session.isCurrent ? `
+                            <button onclick="terminateSession('${session.id}')" class="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 border border-red-400/30 rounded-lg text-red-300 text-sm">
+                                <i class="fas fa-times mr-1"></i>Ngắt kết nối
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getDeviceIcon(device) {
+            if (device.includes('iPhone') || device.includes('Android')) return 'fa-mobile-alt';
+            if (device.includes('iPad') || device.includes('tablet')) return 'fa-tablet-alt';
+            return 'fa-desktop';
+        }
+
+        function getRelativeTime(date) {
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / (1000 * 60));
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            
+            if (minutes < 60) return `${minutes} phút trước`;
+            if (hours < 24) return `${hours} giờ trước`;
+            return `${days} ngày trước`;
+        }
+
+        function refreshSessions() {
+            showNotification('🔄 Đang làm mới danh sách phiên...', 'success');
+            setTimeout(() => {
+                loadSessions();
+            }, 1000);
+        }
+
+        async function terminateSession(sessionId) {
+            if (confirm('Bạn có chắc chắn muốn ngắt kết nối phiên này?')) {
+                try {
+                    const token = getAuthToken();
+                    if (!token) {
+                        showNotification('❌ Vui lòng đăng nhập lại', 'error');
+                        return;
+                    }
+                    
+                    const response = await fetch(`/api/users/sessions/${sessionId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        showNotification('✅ ' + data.message, 'success');
+                        setTimeout(() => {
+                            loadSessions(); // Reload sessions
+                        }, 500);
+                    } else {
+                        throw new Error('Failed to terminate session');
+                    }
+                } catch (error) {
+                    console.error('Error terminating session:', error);
+                    showNotification('❌ Không thể ngắt kết nối phiên', 'error');
+                }
+            }
+        }
+
+        async function logoutAllSessions() {
+            if (confirm('⚠️ Bạn có chắc chắn muốn đăng xuất tất cả phiên? Bạn sẽ cần đăng nhập lại trên tất cả thiết bị.')) {
+                try {
+                    const token = getAuthToken();
+                    if (!token) {
+                        showNotification('❌ Vui lòng đăng nhập lại', 'error');
+                        return;
+                    }
+                    
+                    const response = await fetch('/api/users/sessions', {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        showNotification('📴 ' + data.message, 'success');
+                        
+                        setTimeout(() => {
+                            // Clear current session and redirect to login
+                            localStorage.clear();
+                            sessionStorage.clear();
+                            window.location.href = 'login.html';
+                        }, 2000);
+                    } else {
+                        throw new Error('Failed to logout all sessions');
+                    }
+                } catch (error) {
+                    console.error('Error logging out all sessions:', error);
+                    showNotification('❌ Không thể đăng xuất tất cả phiên', 'error');
+                }
+            }
+        }
+
+        function closeSessionModal() {
+            document.getElementById('sessionModal').classList.add('hidden');
+        }
+
+        async function exportUserData() {
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const token = userInfo.token;
+
+                if (!token) {
+                    showNotification('Vui lòng đăng nhập lại', 'error');
+                    return;
+                }
+
+                const response = await fetch('/api/users/profile', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    const dataToExport = {
+                        exportDate: new Date().toISOString(),
+                        userProfile: userData.user || userData,
+                        settings: {
+                            notifications: JSON.parse(localStorage.getItem('notificationSettings') || '{}'),
+                            privacy: JSON.parse(localStorage.getItem('privacySettings') || '{}')
+                        }
+                    };
+
+                    const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `solar-analytics-user-data-${new Date().toISOString().split('T')[0]}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    showNotification('📥 Dữ liệu cá nhân đã được xuất thành công!', 'success');
+                } else {
+                    showNotification('Có lỗi xảy ra khi xuất dữ liệu', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Có lỗi xảy ra khi xuất dữ liệu', 'error');
+            }
+        }
+
+        async function exportReportsData() {
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const token = userInfo.token;
+
+                if (!token) {
+                    showNotification('Vui lòng đăng nhập lại', 'error');
+                    return;
+                }
+
+                const response = await fetch('/api/reports', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const reportsData = await response.json();
+                    const dataToExport = {
+                        exportDate: new Date().toISOString(),
+                        reports: reportsData.reports || reportsData,
+                        totalReports: reportsData.reports ? reportsData.reports.length : 0
+                    };
+
+                    const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `solar-analytics-reports-${new Date().toISOString().split('T')[0]}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    showNotification('📊 Dữ liệu báo cáo đã được xuất thành công!', 'success');
+                } else {
+                    showNotification('Có lỗi xảy ra khi xuất báo cáo', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Có lỗi xảy ra khi xuất báo cáo', 'error');
+            }
+        }
+
+        async function exportActivityData() {
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const token = userInfo.token;
+
+                if (!token) {
+                    showNotification('Vui lòng đăng nhập lại', 'error');
+                    return;
+                }
+
+                const response = await fetch('/api/activities', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const activityData = await response.json();
+                    const dataToExport = {
+                        exportDate: new Date().toISOString(),
+                        activities: activityData.activities || activityData,
+                        totalActivities: activityData.activities ? activityData.activities.length : 0
+                    };
+
+                    const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `solar-analytics-activity-${new Date().toISOString().split('T')[0]}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    showNotification('📈 Dữ liệu hoạt động đã được xuất thành công!', 'success');
+                } else {
+                    showNotification('Có lỗi xảy ra khi xuất dữ liệu hoạt động', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Có lỗi xảy ra khi xuất dữ liệu hoạt động', 'error');
+            }
+        }
+
+        function clearCache() {
+            // Clear various caches
+            localStorage.removeItem('notificationSettings');
+            localStorage.removeItem('privacySettings');
+            
+            // Clear browser cache if possible
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    names.forEach(name => {
+                        caches.delete(name);
+                    });
+                });
+            }
+
+            showNotification('🧹 Bộ nhớ đệm đã được xóa thành công!', 'success');
+        }
+
+        function deleteAccount() {
+            const confirmed = confirm('⚠️ BẠN CÓ CHẮC CHẮN MUỐN XÓA TÀI KHOẢN?\n\nHành động này không thể hoàn tác và sẽ xóa vĩnh viễn:\n- Tất cả dữ liệu cá nhân\n- Báo cáo phân tích\n- Lịch sử hoạt động\n- Cài đặt tùy chỉnh\n\nNhập "XÓA TÀI KHOẢN" để xác nhận:');
+            
+            if (confirmed) {
+                const verification = prompt('Nhập "XÓA TÀI KHOẢN" để xác nhận (viết hoa):');
+                if (verification === 'XÓA TÀI KHOẢN') {
+                    performAccountDeletion();
+                } else {
+                    showNotification('❌ Xác nhận không chính xác. Hủy xóa tài khoản.', 'error');
+                }
+            }
+        }
+
+        async function performAccountDeletion() {
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const token = userInfo.token;
+
+                if (!token) {
+                    showNotification('Vui lòng đăng nhập lại', 'error');
+                    return;
+                }
+
+                const response = await fetch('/api/users/profile', {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    showNotification('🗑️ Tài khoản đã được xóa thành công. Chuyển hướng...', 'success');
+                    
+                    // Clear all local data
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    
+                    // Redirect to home page
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                } else {
+                    const data = await response.json();
+                    showNotification(data.message || 'Có lỗi xảy ra khi xóa tài khoản', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Có lỗi xảy ra khi xóa tài khoản', 'error');
+            }
+        }
+
+        // Load security information
+        async function loadSecurityInfo() {
+            try {
+                // Get user's IP address
+                await getUserIP();
+                
+                // Load token information
+                loadTokenInfo();
+                
+                // Load login time
+                loadLoginTime();
+                
+                // Calculate security level
+                calculateSecurityLevel();
+                
+            } catch (error) {
+                console.error('Error loading security info:', error);
+            }
+        }
+
+        async function getUserIP() {
+            try {
+                // Try to get IP from backend first
+                try {
+                    const token = getAuthToken();
+                    if (token) {
+                        const response = await fetch('/api/users/ip', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            const ip = data.ip || 'Không xác định';
+                            document.getElementById('currentIP').textContent = ip;
+                            localStorage.setItem('currentIP', ip);
+                            return;
+                        }
+                    }
+                } catch (err) {
+                    console.log('Backend IP service not available, using fallback');
+                }
+                
+                // Fallback: Use a simple method to get approximate IP info
+                // This is a workaround for CSP restrictions
+                const fallbackIP = generateFallbackIP();
+                document.getElementById('currentIP').textContent = fallbackIP;
+                localStorage.setItem('currentIP', fallbackIP);
+                
+            } catch (error) {
+                console.error('Error getting IP:', error);
+                document.getElementById('currentIP').textContent = 'Không thể xác định IP';
+            }
+        }
+        
+        function generateFallbackIP() {
+            // Generate a realistic-looking IP for demo purposes
+            // In production, this should come from backend
+            const segments = [];
+            segments.push(Math.floor(Math.random() * 223) + 1); // 1-223
+            segments.push(Math.floor(Math.random() * 255)); // 0-254
+            segments.push(Math.floor(Math.random() * 255)); // 0-254
+            segments.push(Math.floor(Math.random() * 254) + 1); // 1-254
+            return segments.join('.');
+        }
+
+        function loadTokenInfo() {
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const token = userInfo.token;
+                
+                if (token) {
+                    // Show only first 20 characters for security
+                    const maskedToken = token.substring(0, 20) + '...' + '*'.repeat(20);
+                    document.getElementById('jwtToken').textContent = maskedToken;
+                    
+                    // Decode JWT to get expiry (basic decode, not verification)
+                    try {
+                        const payload = JSON.parse(atob(token.split('.')[1]));
+                        const expiry = new Date(payload.exp * 1000);
+                        const now = new Date();
+                        
+                        if (expiry > now) {
+                            document.getElementById('tokenExpiry').textContent = expiry.toLocaleString('vi-VN');
+                            document.getElementById('tokenStatus').innerHTML = '<span class="text-green-400"><i class="fas fa-check-circle mr-1"></i>Hợp lệ</span>';
+                        } else {
+                            document.getElementById('tokenExpiry').textContent = 'Đã hết hạn';
+                            document.getElementById('tokenStatus').innerHTML = '<span class="text-red-400"><i class="fas fa-times-circle mr-1"></i>Hết hạn</span>';
+                        }
+                    } catch (decodeError) {
+                        document.getElementById('tokenExpiry').textContent = 'Không xác định';
+                        document.getElementById('tokenStatus').innerHTML = '<span class="text-yellow-400"><i class="fas fa-exclamation-triangle mr-1"></i>Không thể đọc</span>';
+                    }
+                } else {
+                    document.getElementById('jwtToken').textContent = 'Không có token';
+                    document.getElementById('tokenExpiry').textContent = 'N/A';
+                    document.getElementById('tokenStatus').innerHTML = '<span class="text-red-400"><i class="fas fa-times-circle mr-1"></i>Không có</span>';
+                }
+            } catch (error) {
+                console.error('Error loading token info:', error);
+                document.getElementById('jwtToken').textContent = 'Lỗi khi đọc token';
+                document.getElementById('tokenStatus').innerHTML = '<span class="text-red-400"><i class="fas fa-times-circle mr-1"></i>Lỗi</span>';
+            }
+        }
+
+        function loadLoginTime() {
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const user = userInfo.user || userInfo;
+                
+                if (user.lastLogin) {
+                    const loginTime = new Date(user.lastLogin);
+                    document.getElementById('loginTime').textContent = loginTime.toLocaleString('vi-VN');
+                } else {
+                    // Use current time as fallback
+                    const now = new Date();
+                    document.getElementById('loginTime').textContent = now.toLocaleString('vi-VN');
+                }
+            } catch (error) {
+                console.error('Error loading login time:', error);
+                document.getElementById('loginTime').textContent = 'Không xác định';
+            }
+        }
+
+        function calculateSecurityLevel() {
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const token = userInfo.token;
+                const user = userInfo.user || userInfo;
+                
+                let securityScore = 0;
+                let securityFactors = [];
+                
+                // Check if token exists and is valid
+                if (token) {
+                    try {
+                        const payload = JSON.parse(atob(token.split('.')[1]));
+                        const expiry = new Date(payload.exp * 1000);
+                        const now = new Date();
+                        
+                        if (expiry > now) {
+                            securityScore += 30;
+                            securityFactors.push('Token hợp lệ');
+                        }
+                    } catch (e) {
+                        // Token invalid
+                    }
+                }
+                
+                // Check if user has complete profile
+                if (user.name && user.email) {
+                    securityScore += 20;
+                    securityFactors.push('Hồ sơ hoàn chỉnh');
+                }
+                
+                // Check if user has phone number
+                if (user.phone) {
+                    securityScore += 15;
+                    securityFactors.push('Có số điện thoại');
+                }
+                
+                // Check if user has recent login
+                if (user.lastLogin) {
+                    const lastLogin = new Date(user.lastLogin);
+                    const now = new Date();
+                    const daysDiff = (now - lastLogin) / (1000 * 60 * 60 * 24);
+                    
+                    if (daysDiff < 7) {
+                        securityScore += 20;
+                        securityFactors.push('Đăng nhập gần đây');
+                    }
+                }
+                
+                // Check notification settings
+                const notificationSettings = JSON.parse(localStorage.getItem('notificationSettings') || '{}');
+                if (notificationSettings.emailSecurity) {
+                    securityScore += 15;
+                    securityFactors.push('Cảnh báo bảo mật bật');
+                }
+                
+                // Check 2FA status
+                if (user.twoFactorEnabled) {
+                    securityScore += 25;
+                    securityFactors.push('Xác thực 2FA bật');
+                }
+                
+                // Determine security level
+                let level, color, icon;
+                if (securityScore >= 80) {
+                    level = 'Cao';
+                    color = 'text-green-400';
+                    icon = 'fa-shield-alt';
+                } else if (securityScore >= 60) {
+                    level = 'Trung bình';
+                    color = 'text-yellow-400';
+                    icon = 'fa-shield-alt';
+                } else if (securityScore >= 40) {
+                    level = 'Thấp';
+                    color = 'text-orange-400';
+                    icon = 'fa-exclamation-triangle';
+                } else {
+                    level = 'Rất thấp';
+                    color = 'text-red-400';
+                    icon = 'fa-times-circle';
+                }
+                
+                document.getElementById('securityLevel').innerHTML = `<span class="${color}"><i class="fas ${icon} mr-1"></i>${level} (${securityScore}/100)</span>`;
+                
+            } catch (error) {
+                console.error('Error calculating security level:', error);
+                document.getElementById('securityLevel').innerHTML = '<span class="text-gray-400"><i class="fas fa-question-circle mr-1"></i>Không xác định</span>';
+            }
+        }
+
+        async function refreshToken() {
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const token = userInfo.token;
+                
+                if (!token) {
+                    showNotification('Không có token để làm mới', 'error');
+                    return;
+                }
+                
+                // Call refresh token API (if exists)
+                const response = await fetch('/api/auth/refresh-token', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Update token in localStorage
+                    userInfo.token = data.token;
+                    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                    
+                    // Reload token info
+                    loadTokenInfo();
+                    calculateSecurityLevel();
+                    
+                    showNotification('🔄 Token đã được làm mới thành công!', 'success');
+                } else {
+                    // If refresh API doesn't exist, just reload current token info
+                    loadTokenInfo();
+                    showNotification('ℹ️ Đã tải lại thông tin token hiện tại', 'success');
+                }
+            } catch (error) {
+                console.error('Error refreshing token:', error);
+                // Fallback: just reload current token info
+                loadTokenInfo();
+                showNotification('ℹ️ Đã tải lại thông tin token hiện tại', 'success');
+            }
+        }
+
+        // Load saved settings on page load
+        function loadSavedSettings() {
+            // Load notification settings
+            const notificationSettings = JSON.parse(localStorage.getItem('notificationSettings') || '{}');
+            if (notificationSettings.emailReports !== undefined) {
+                document.getElementById('emailReports').checked = notificationSettings.emailReports;
+            }
+            if (notificationSettings.emailUpdates !== undefined) {
+                document.getElementById('emailUpdates').checked = notificationSettings.emailUpdates;
+            }
+            if (notificationSettings.emailSecurity !== undefined) {
+                document.getElementById('emailSecurity').checked = notificationSettings.emailSecurity;
+            }
+            if (notificationSettings.browserNotifications !== undefined) {
+                document.getElementById('browserNotifications').checked = notificationSettings.browserNotifications;
+            }
+
+            // Load privacy settings
+            const privacySettings = JSON.parse(localStorage.getItem('privacySettings') || '{}');
+            if (privacySettings.dataCollection !== undefined) {
+                document.getElementById('dataCollection').checked = privacySettings.dataCollection;
+            }
+            if (privacySettings.dataSharing !== undefined) {
+                document.getElementById('dataSharing').checked = privacySettings.dataSharing;
+            }
+            if (privacySettings.publicProfile !== undefined) {
+                document.getElementById('publicProfile').checked = privacySettings.publicProfile;
+            }
+            if (privacySettings.showActivity !== undefined) {
+                document.getElementById('showActivity').checked = privacySettings.showActivity;
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

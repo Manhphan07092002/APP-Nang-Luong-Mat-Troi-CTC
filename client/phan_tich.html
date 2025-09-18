@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân Tích - SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/tooltips.css">
+    <style>
+        :root {
+            --primary-50: #eff6ff;
+            --primary-100: #dbeafe;
+            --primary-500: #3b82f6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-medium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-large: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        body { 
+            font-family: 'Be Vietnam Pro', sans-serif; 
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        /* Ensure header stays fixed at top */
+        #header-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        #header-container header {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 1000 !important;
+        }
+        
+        .modern-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            box-shadow: var(--shadow-large);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .modern-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .form-title {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .form-title::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .form-fieldset {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .form-fieldset:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .form-legend {
+            background: var(--gradient-primary);
+            color: white;
+            font-size: 1.125rem;
+            font-weight: 700;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-legend::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+        }
+        
+        .form-label {
+            display: block;
+            color: #374151;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-label::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: var(--primary-500);
+            border-radius: 50%;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            background: white;
+            transform: translateY(-1px);
+        }
+        
+        .form-input:hover {
+            border-color: var(--primary-300);
+        }
+        
+        .tab-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 0.5rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 0.875rem 1.5rem;
+            font-weight: 600;
+            color: #6b7280;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .tab-btn span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .tab-btn:hover::before {
+            opacity: 0.1;
+        }
+        
+        .tab-btn.active {
+            color: white;
+            background: var(--gradient-primary);
+            box-shadow: var(--shadow-soft);
+            transform: translateY(-1px);
+        }
+        
+        .tab-btn.active::before {
+            opacity: 1;
+        }
+        
+        .tab-panel {
+            display: none;
+            animation: fadeInUp 0.3s ease;
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .range-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            background: linear-gradient(90deg, #e5e7eb 0%, var(--primary-500) 90%, var(--primary-600) 100%);
+            border-radius: 4px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+        }
+        
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .range-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .calculate-btn {
+            background: var(--gradient-primary);
+            color: white;
+            font-weight: 700;
+            padding: 1.25rem 3rem;
+            border-radius: 50px;
+            border: none;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .calculate-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-large);
+        }
+        
+        .calculate-btn:hover::before {
+            left: 100%;
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .calculate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            height: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .error-message::before {
+            content: '⚠️';
+            font-size: 1rem;
+        }
+        
+        .monthly-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+        }
+        
+        .monthly-input {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 0.75rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .monthly-input:focus {
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .floating-elements::before,
+        .floating-elements::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.05);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-elements::before {
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+        
+        .floating-elements::after {
+            bottom: -100px;
+            left: -100px;
+            animation-delay: 3s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .form-title {
+                font-size: 2rem;
+            }
+            
+            .form-fieldset {
+                padding: 1.5rem;
+            }
+            
+            .calculate-btn {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div id="header-container"></div>
+
+    <main class="container mx-auto max-w-7xl p-4 sm:p-6">
+        <div id="analysis-form-container">
+            <form id="analysis-form" class="modern-container p-6 sm:p-8" novalidate>
+                <div class="floating-elements"></div>
+                <h2 class="form-title">🔋 Phân Tích Năng Lượng Mặt Trời</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-8">
+                    <div class="space-y-8">
+                        <fieldset class="form-fieldset">
+                            <legend class="form-legend">👤 Thông tin khách hàng</legend>
+                            <div class="space-y-4 pt-2">
+                                <div>
+                                    <label for="survey-name" class="form-label">Tên khách hàng / Doanh nghiệp *</label>
+                                    <input type="text" id="survey-name" class="form-input" required>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="survey-phone" class="form-label">Số điện thoại</label>
+                                        <input type="tel" id="survey-phone" class="form-input">
+                                    </div>
+                                    <div>
+                                        <label for="survey-email" class="form-label">Email</label>
+                                        <input type="email" id="survey-email" class="form-input">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="survey-address" class="form-label">Địa chỉ lắp đặt</label>
+                                    <input type="text" id="survey-address" class="form-input">
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="survey-customer-type" class="form-label">Đối tượng khách hàng</label>
+                                        <select id="survey-customer-type" class="form-input">
+                                            <option value="Hộ gia đình">Hộ gia đình</option>
+                                            <option value="Kinh doanh">Kinh doanh</option>
+                                            <option value="Sản xuất">Sản xuất</option>
+                                            <option value="Hành chính sự nghiệp">Hành chính sự nghiệp</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="survey-region" class="form-label">Vùng miền</label>
+                                        <select id="survey-region" class="form-input">
+                                            <option value="Miền Trung/Nam">Miền Trung/Nam</option>
+                                            <option value="Miền Bắc">Miền Bắc</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                         <fieldset class="form-fieldset">
+                            <legend class="form-legend">🔧 Thông số Hệ thống & Chi phí</legend>
+                            <div class="space-y-4 pt-2">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="investment-cost" class="form-label">Chi phí / kWp (VNĐ) *</label>
+                                        <input type="text" inputmode="numeric" id="investment-cost" class="form-input" value="15.000.000">
+                                    </div>
+                                    <div>
+                                        <label for="panel-wattage" class="form-label">Công suất pin (Wp) *</label>
+                                        <input type="text" inputmode="numeric" id="panel-wattage" class="form-input" value="550">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="system-type" class="form-label">Loại hệ thống</label>
+                                    <select id="system-type" class="form-input">
+                                        <option value="Hòa lưới">Hòa lưới</option>
+                                        <option value="Hybrid">Hybrid</option>
+                                    </select>
+                                </div>
+                                <div id="hybrid-cost-section" class="hidden">
+                                    <label for="storage-investment-cost" class="form-label">Chi phí / kWh lưu trữ (VNĐ)</label>
+                                    <input type="text" inputmode="numeric" id="storage-investment-cost" class="form-input" value="18.000.000">
+                                </div>
+                                <div>
+                                    <label for="day-usage-ratio" class="form-label mb-2">☀️ Tỷ lệ sử dụng ban ngày: <span id="day-usage-value" class="font-bold text-blue-600">90%</span></label>
+                                    <input type="range" id="day-usage-ratio" min="0" max="100" value="90" class="range-slider w-full">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="space-y-8">
+                        <fieldset class="form-fieldset">
+                            <legend class="form-legend">💡 Thông số Tiêu thụ</legend>
+                            <div class="tab-container flex mb-6">
+                                <button type="button" id="tab-vnd" class="tab-btn active"><span>💰 Theo Tiền Điện</span></button>
+                                <button type="button" id="tab-kwh" class="tab-btn"><span>⚡ Theo kWh</span></button>
+                            </div>
+                            <div id="panel-vnd" class="tab-panel active">
+                                <div class="space-y-4">
+                                    <div>
+                                        <label for="monthly-bill" class="form-label">Tiền điện trung bình/tháng (VNĐ) *</label>
+                                        <input type="text" inputmode="numeric" id="monthly-bill" class="form-input">
+                                    </div>
+                                    <div class="text-center my-2 text-gray-500 text-sm font-semibold">HOẶC NHẬP CHI TIẾT 12 THÁNG</div>
+                                    <div id="monthly-bills-grid" class="monthly-grid">
+                                        </div>
+                                    <div class="flex justify-end items-center gap-4 pt-2 border-t">
+                                         <span class="font-bold">Tổng:</span>
+                                         <span id="total-12-months" class="font-bold text-lg text-blue-600">0 VNĐ</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="panel-kwh" class="tab-panel">
+                                <label for="monthly-kwh" class="form-label">Lượng điện tiêu thụ/tháng (kWh)</label>
+                                <input type="text" inputmode="numeric" id="monthly-kwh" class="form-input">
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <div id="form-error-message" class="error-message text-center mt-6 font-medium"></div>
+                <div class="mt-8 flex justify-center">
+                    <button type="submit" id="calculate-btn" class="calculate-btn">
+                        🚀 Tính Toán & Lưu Báo Cáo
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="result-container" class="hidden mt-8">
+            </div>
+    </main>
+
+    <div id="footer-container"></div>
+    
+    <script src="/js/components-loader.js"></script>
+    <script src="/js/sticky-header.js"></script>
+    <script src="/js/main.js"></script>
+    <script type="module" src="/js/analysis-page.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hướng Dẫn Mua Hàng - CTC</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        .step-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 2.5rem; /* Position below the icon */
+            transform: translateX(-50%);
+            width: 100%;
+            height: 2px;
+            background-color: #e5e7eb; /* gray-200 */
+            z-index: -1;
+        }
+        @media (min-width: 768px) {
+            .step-item::after {
+                width: 100%;
+                top: 2.5rem; 
+                left: 50%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- Header -->
+    <header id="header-container" class="sticky-header"></header>
+
+    <main class="container mx-auto px-4 py-8 lg:py-16">
+        <!-- Page Title -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800">Hướng Dẫn Mua Hàng</h1>
+            <p class="text-lg text-gray-600 mt-2">Quy trình mua sắm chuyên nghiệp, minh bạch và hiệu quả tại CTC.</p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
+            <!-- Sticky Sidebar Navigation -->
+            <aside class="lg:w-1/4 lg:sticky top-28 self-start">
+                <nav class="sidebar-nav" id="policy-nav">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800">Nội dung chính</h3>
+                    <div class="nav-links-container">
+                        <a href="#process" class="nav-link">Quy Trình Mua Hàng</a>
+                        <a href="#payment" class="nav-link">Thanh Toán & Ưu Đãi</a>
+                        <a href="#faq" class="nav-link">Câu Hỏi Thường Gặp</a>
+                        <a href="#start" class="nav-link">Bắt Đầu Dự Án</a>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="lg:w-3/4 space-y-12">
+                <!-- Purchasing Process -->
+                <section id="process" class="policy-content-section content-card scroll-mt-24">
+                    <div class="section-title-icon">
+                        <i class="fas fa-tasks"></i>
+                        <h2>Quy Trình Mua Hàng 6 Bước</h2>
+                    </div>
+                    <div class="relative border-l-2 border-blue-200 pl-8 space-y-12">
+                        <div class="timeline-item"><div class="timeline-dot-blue">1</div><h3 class="font-bold text-lg">Tư Vấn & Khảo Sát</h3><p class="text-gray-600">Đội ngũ chuyên gia của chúng tôi sẽ lắng nghe nhu cầu, khảo sát thực tế và tư vấn giải pháp phù hợp nhất với dự án của bạn.</p></div>
+                        <div class="timeline-item"><div class="timeline-dot-blue">2</div><h3 class="font-bold text-lg">Báo Giá & Giải Pháp</h3><p class="text-gray-600">Dựa trên thông tin khảo sát, chúng tôi sẽ gửi báo giá chi tiết và phương án kỹ thuật tối ưu, minh bạch về chi phí và thiết bị.</p></div>
+                        <div class="timeline-item"><div class="timeline-dot-blue">3</div><h3 class="font-bold text-lg">Ký Kết Hợp Đồng</h3><p class="text-gray-600">Sau khi thống nhất các điều khoản, hai bên sẽ tiến hành ký kết hợp đồng pháp lý để đảm bảo quyền lợi và trách nhiệm.</p></div>
+                        <div class="timeline-item"><div class="timeline-dot-blue">4</div><h3 class="font-bold text-lg">Thanh Toán Linh Hoạt</h3><p class="text-gray-600">Chúng tôi cung cấp nhiều phương thức thanh toán đa dạng (tiền mặt, chuyển khoản, trả góp) theo tiến độ đã thỏa thuận.</p></div>
+                        <div class="timeline-item"><div class="timeline-dot-blue">5</div><h3 class="font-bold text-lg">Giao Hàng & Lắp Đặt</h3><p class="text-gray-600">Sản phẩm sẽ được vận chuyển nhanh chóng và đội ngũ kỹ thuật viên chuyên nghiệp sẽ tiến hành lắp đặt, cài đặt hệ thống.</p></div>
+                        <div class="timeline-item"><div class="timeline-dot-blue">6</div><h3 class="font-bold text-lg">Hỗ Trợ & Bảo Hành</h3><p class="text-gray-600">Bàn giao, hướng dẫn sử dụng và kích hoạt chính sách bảo hành chính hãng. Chúng tôi luôn sẵn sàng hỗ trợ kỹ thuật 24/7.</p></div>
+                    </div>
+                </section>
+
+                <!-- Payment & Programs -->
+                <section id="payment" class="policy-content-section content-card scroll-mt-24">
+                    <div class="section-title-icon">
+                        <i class="fas fa-credit-card"></i>
+                        <h2>Thanh Toán & Các Chương Trình Ưu Đãi</h2>
+                    </div>
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-xl font-bold mb-4">Phương Thức Thanh Toán</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-center bg-gray-50 p-4 rounded-lg"><i class="fas fa-money-bill-wave text-green-500 text-2xl mr-4"></i><div><h4 class="font-semibold">Tiền mặt (COD)</h4><p class="text-sm text-gray-600">Thanh toán trực tiếp khi nhận hàng.</p></div></div>
+                                <div class="flex items-center bg-gray-50 p-4 rounded-lg"><i class="fas fa-university text-blue-500 text-2xl mr-4"></i><div><h4 class="font-semibold">Chuyển khoản</h4><p class="text-sm text-gray-600">Qua tài khoản ngân hàng của công ty.</p></div></div>
+                                <div class="flex items-center bg-gray-50 p-4 rounded-lg"><i class="fas fa-credit-card text-purple-500 text-2xl mr-4"></i><div><h4 class="font-semibold">Cổng thanh toán</h4><p class="text-sm text-gray-600">Qua VNPAY, Momo an toàn, tiện lợi.</p></div></div>
+                                <div class="flex items-center bg-gray-50 p-4 rounded-lg"><i class="fas fa-hand-holding-usd text-yellow-500 text-2xl mr-4"></i><div><h4 class="font-semibold">Trả góp 0%</h4><p class="text-sm text-gray-600">Qua thẻ tín dụng của các ngân hàng liên kết.</p></div></div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-4">Chương Trình Đặc Biệt</h3>
+                             <ul class="list-styled space-y-3">
+                                <li><i class="fa-solid fa-check"></i><span><b>Khuyến Mãi & Giảm Giá:</b> Luôn có các chương trình hấp dẫn, giảm giá cho khách hàng thân thiết và các đơn hàng lớn.</span></li>
+                                <li><i class="fa-solid fa-check"></i><span><b>Khách Hàng Thân Thiết:</b> Tích điểm đổi quà, nhận ưu đãi độc quyền và quà tặng sinh nhật cho thành viên CTC.</span></li>
+                                <li><i class="fa-solid fa-check"></i><span><b>Giải Pháp Doanh Nghiệp:</b> Chính sách giá và hỗ trợ đặc biệt cho các dự án, khách hàng doanh nghiệp và nhà thầu.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQ Section -->
+                <section id="faq" class="policy-content-section content-card scroll-mt-24">
+                    <div class="section-title-icon">
+                        <i class="fas fa-question-circle"></i>
+                        <h2>Câu Hỏi Thường Gặp (FAQ)</h2>
+                    </div>
+                    <div class="space-y-4" x-data="{ open: null }">
+                        <div class="border-b"><button @click="open = open === 1 ? null : 1" class="w-full text-left py-4 font-semibold flex justify-between items-center"><span>Tôi có thể theo dõi đơn hàng của mình ở đâu?</span><i class="fas transition-transform" :class="{ 'fa-chevron-down': open !== 1, 'fa-chevron-up': open === 1 }"></i></button><div x-show="open === 1" x-collapse class="pb-4 text-gray-700"><p>Sau khi đặt hàng, bạn sẽ nhận được mã vận đơn qua email/SMS. Bạn có thể dùng mã này để theo dõi trên website của đối tác vận chuyển hoặc liên hệ hotline của chúng tôi để được hỗ trợ.</p></div></div>
+                        <div class="border-b"><button @click="open = open === 2 ? null : 2" class="w-full text-left py-4 font-semibold flex justify-between items-center"><span>CTC có hỗ trợ lắp đặt tận nơi không?</span><i class="fas transition-transform" :class="{ 'fa-chevron-down': open !== 2, 'fa-chevron-up': open === 2 }"></i></button><div x-show="open === 2" x-collapse class="pb-4 text-gray-700"><p>Có. Chúng tôi cung cấp dịch vụ khảo sát và lắp đặt chuyên nghiệp trên toàn quốc. Chi phí sẽ được báo giá chi tiết tùy thuộc vào độ phức tạp và vị trí của dự án.</p></div></div>
+                        <div class="border-b"><button @click="open = open === 3 ? null : 3" class="w-full text-left py-4 font-semibold flex justify-between items-center"><span>Chính sách trả góp hoạt động như thế nào?</span><i class="fas transition-transform" :class="{ 'fa-chevron-down': open !== 3, 'fa-chevron-up': open === 3 }"></i></button><div x-show="open === 3" x-collapse class="pb-4 text-gray-700"><p>Chúng tôi hỗ trợ trả góp 0% lãi suất qua thẻ tín dụng của các ngân hàng liên kết. Kỳ hạn linh hoạt từ 3 đến 12 tháng. Vui lòng liên hệ bộ phận kinh doanh để biết chi tiết.</p></div></div>
+                    </div>
+                </section>
+
+                <!-- CTA Section -->
+                <section id="start" class="policy-content-section scroll-mt-24">
+                    <div class="cta-showcase">
+                        <div class="cta-showcase-content">
+                            <h2>Sẵn Sàng Bắt Đầu Dự Án Của Bạn?</h2>
+                            <p>Liên hệ ngay với đội ngũ kinh doanh của chúng tôi để nhận được tư vấn và báo giá tốt nhất cho giải pháp năng lượng mặt trời của bạn.</p>
+                            <a href="contact.html" class="btn-primary-cta">
+                                Liên Hệ Ngay <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/components-loader.js"></script>
+    <script src="/js/sticky-header.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.policy-content-section');
+            const navLinks = document.querySelectorAll('#policy-nav a');
+
+            if (navLinks.length > 0) {
+                navLinks[0].classList.add('active');
+            }
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-40% 0px -60% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        // Manually update active class on click for instant feedback
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        this.classList.add('active');
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

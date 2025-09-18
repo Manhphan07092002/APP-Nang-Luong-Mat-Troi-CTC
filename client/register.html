@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký - SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/auth.css">
+    <link rel="stylesheet" href="/assets/css/modern-design.css">
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-cyan-50">
+    <div class="w-full max-w-md p-4 fade-in">
+        <!-- Modern Logo Section -->
+        <div class="text-center mb-8">
+            <a href="/" class="inline-flex items-center gap-3 hover-lift">
+                <div class="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center">
+                    <i class="fas fa-solar-panel text-white text-xl"></i>
+                </div>
+                <span class="text-3xl font-bold text-gradient">SolarAnalytics</span>
+            </a>
+            <p class="text-gray-600 mt-2">Hệ thống phân tích năng lượng mặt trời</p>
+        </div>
+
+        <!-- Modern Register Form -->
+        <div class="modern-card p-8 scale-in">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gradient mb-2">Đăng Ký</h2>
+                <p class="text-gray-600">Tạo tài khoản mới để bắt đầu</p>
+            </div>
+            
+            <!-- Error Message -->
+            <div id="error-message" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg relative mb-6 text-sm" role="alert">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <div>
+                        <strong class="font-bold">Lỗi!</strong>
+                        <span class="block sm:inline ml-1" id="error-text">Nội dung lỗi sẽ hiện ở đây.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div id="success-message" class="hidden bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg relative mb-6 text-sm" role="alert">
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <div>
+                        <strong class="font-bold">Thành công!</strong>
+                        <span class="block sm:inline ml-1" id="success-text">Đăng ký thành công!</span>
+                    </div>
+                </div>
+            </div>
+
+            <form id="register-form" novalidate class="space-y-6">
+                <div class="form-group">
+                    <label class="form-label" for="fullName">
+                        <i class="fas fa-user mr-2"></i>
+                        Họ và tên
+                    </label>
+                    <input class="form-input" id="fullName" type="text" placeholder="Nguyễn Văn A" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">
+                        <i class="fas fa-envelope mr-2"></i>
+                        Email
+                    </label>
+                    <input class="form-input" id="email" type="email" placeholder="email@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="phone">
+                        <i class="fas fa-phone mr-2"></i>
+                        Số điện thoại
+                    </label>
+                    <input class="form-input" id="phone" type="tel" placeholder="0123456789" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">
+                        <i class="fas fa-lock mr-2"></i>
+                        Mật khẩu
+                    </label>
+                    <div class="relative">
+                        <input class="form-input pr-12" id="password" type="password" placeholder="••••••••••" required>
+                        <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600" onclick="togglePassword('password')">
+                            <i class="fas fa-eye" id="password-toggle"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="confirmPassword">
+                        <i class="fas fa-lock mr-2"></i>
+                        Xác nhận mật khẩu
+                    </label>
+                    <div class="relative">
+                        <input class="form-input pr-12" id="confirmPassword" type="password" placeholder="••••••••••" required>
+                        <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600" onclick="togglePassword('confirmPassword')">
+                            <i class="fas fa-eye" id="confirmPassword-toggle"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <input type="checkbox" id="terms" class="mt-1 rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required>
+                    <label for="terms" class="ml-3 text-sm text-gray-600">
+                        Tôi đồng ý với 
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Điều khoản sử dụng</a> 
+                        và 
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Chính sách bảo mật</a>
+                    </label>
+                </div>
+                
+                <button id="submit-btn" class="btn-modern btn-primary w-full text-lg py-4" type="submit">
+                    <i class="fas fa-user-plus mr-2"></i>
+                    <span id="submit-text">Đăng Ký</span>
+                    <i class="fas fa-spinner fa-spin ml-2 hidden" id="submit-spinner"></i>
+                </button>
+            </form>
+            
+            <!-- Divider -->
+            <div class="relative my-8">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-200"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-4 bg-white text-gray-500">hoặc</span>
+                </div>
+            </div>
+            
+            <!-- Login Link -->
+            <div class="text-center">
+                <p class="text-gray-600 mb-4">Đã có tài khoản?</p>
+                <a class="btn-modern btn-outline w-full" href="/login.html">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    Đăng nhập ngay
+                </a>
+            </div>
+        </div>
+
+        <!-- Features Preview -->
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+            <div class="glass-effect p-4 rounded-lg">
+                <i class="fas fa-chart-line text-2xl text-blue-500 mb-2"></i>
+                <p class="text-sm text-gray-600">Phân tích chi tiết</p>
+            </div>
+            <div class="glass-effect p-4 rounded-lg">
+                <i class="fas fa-mobile-alt text-2xl text-green-500 mb-2"></i>
+                <p class="text-sm text-gray-600">Tương thích mobile</p>
+            </div>
+            <div class="glass-effect p-4 rounded-lg">
+                <i class="fas fa-shield-alt text-2xl text-purple-500 mb-2"></i>
+                <p class="text-sm text-gray-600">Bảo mật cao</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword(fieldId) {
+            const passwordInput = document.getElementById(fieldId);
+            const toggleIcon = document.getElementById(fieldId + '-toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Show message function
+        function showMessage(type, message) {
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            
+            // Hide both messages first
+            errorDiv.classList.add('hidden');
+            successDiv.classList.add('hidden');
+            
+            if (type === 'error') {
+                document.getElementById('error-text').textContent = message;
+                errorDiv.classList.remove('hidden');
+            } else if (type === 'success' || type === 'info') {
+                document.getElementById('success-text').textContent = message;
+                successDiv.classList.remove('hidden');
+            }
+
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                errorDiv.classList.add('hidden');
+                successDiv.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Form validation
+        function validateForm() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+
+            if (!fullName) {
+                showMessage('error', 'Vui lòng nhập họ và tên');
+                return false;
+            }
+
+            if (!email) {
+                showMessage('error', 'Vui lòng nhập email');
+                return false;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showMessage('error', 'Email không hợp lệ');
+                return false;
+            }
+
+            if (!phone) {
+                showMessage('error', 'Vui lòng nhập số điện thoại');
+                return false;
+            }
+
+            const phoneRegex = /^[0-9]{10,11}$/;
+            if (!phoneRegex.test(phone)) {
+                showMessage('error', 'Số điện thoại không hợp lệ');
+                return false;
+            }
+
+            if (!password) {
+                showMessage('error', 'Vui lòng nhập mật khẩu');
+                return false;
+            }
+
+            if (password.length < 6) {
+                showMessage('error', 'Mật khẩu phải có ít nhất 6 ký tự');
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                showMessage('error', 'Mật khẩu xác nhận không khớp');
+                return false;
+            }
+
+            if (!terms) {
+                showMessage('error', 'Vui lòng đồng ý với điều khoản sử dụng');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Enhanced form submission with loading state
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+
+            const submitBtn = document.getElementById('submit-btn');
+            const submitText = document.getElementById('submit-text');
+            const submitSpinner = document.getElementById('submit-spinner');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitText.textContent = 'Đang đăng ký...';
+            submitSpinner.classList.remove('hidden');
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                phone: document.getElementById('phone').value,
+                address: '', // Optional field, not in current form
+                employeeId: '' // Optional field, not in current form
+            };
+            
+            // Store user data for later registration completion
+            localStorage.setItem('pendingUserData', JSON.stringify(formData));
+            
+            // Determine verification type (prefer email if available, otherwise phone)
+            const verificationType = formData.email ? 'email' : 'phone';
+            const verificationTarget = formData.email || formData.phone;
+            
+            if (!verificationTarget) {
+                showMessage('error', 'Vui lòng cung cấp email hoặc số điện thoại để xác thực tài khoản.');
+                submitBtn.disabled = false;
+                submitText.textContent = 'Đăng Ký';
+                submitSpinner.classList.add('hidden');
+                return;
+            }
+            
+            // Send verification code
+            fetch('/api/auth/send-verification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: verificationType === 'email' ? verificationTarget : null,
+                    phone: verificationType === 'phone' ? verificationTarget : null,
+                    type: verificationType
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Reset loading state
+                submitBtn.disabled = false;
+                submitText.textContent = 'Đăng Ký';
+                submitSpinner.classList.add('hidden');
+                
+                if (data.success) {
+                    // Store verification info
+                    localStorage.setItem('verificationType', verificationType);
+                    localStorage.setItem('verificationTarget', verificationTarget);
+                    
+                    showMessage('success', `✅ ${data.message}`);
+                    
+                    // Show verification code in development mode
+                    if (data.verificationCode) {
+                        console.log('Development verification code:', data.verificationCode);
+                        showMessage('info', `Mã xác thực (Dev): ${data.verificationCode}`);
+                    }
+                    
+                    // Redirect to verification page after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = `/verify.html?type=${verificationType}&target=${encodeURIComponent(verificationTarget)}`;
+                    }, 2000);
+                } else {
+                    showMessage('error', data.message || 'Không thể gửi mã xác thực. Vui lòng thử lại.');
+                }
+            })
+            .catch(error => {
+                console.error('Verification send error:', error);
+                // Reset loading state
+                submitBtn.disabled = false;
+                submitText.textContent = 'Đăng Ký';
+                submitSpinner.classList.add('hidden');
+                
+                showMessage('error', 'Có lỗi xảy ra khi gửi mã xác thực. Vui lòng kiểm tra kết nối và thử lại.');
+            });
+        });
+
+        // Real-time password confirmation validation
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                this.classList.add('border-red-300');
+                this.classList.remove('border-gray-200');
+            } else {
+                this.classList.remove('border-red-300');
+                this.classList.add('border-gray-200');
+            }
+        });
+    </script>
+</body>
+</html>

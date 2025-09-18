@@ -1,0 +1,242 @@
+<!-- components/sidebar.html -->
+<style>
+    :root {
+        --sidebar-bg: #FFFFFF;
+        --sidebar-width: 260px;
+        --text-primary: #333;
+        --text-secondary: #777;
+        --accent-color: #0066FF;
+        --hover-bg: #F0F5FF;
+        --border-color: #EAECEF;
+    }
+
+    .admin-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: var(--sidebar-width);
+        background-color: var(--sidebar-bg);
+        border-right: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease;
+        z-index: 1100;
+    }
+
+    .sidebar-header {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .sidebar-header .logo {
+        width: 40px;
+        height: 40px;
+        background-color: var(--accent-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        font-size: 20px;
+    }
+
+    .sidebar-header .brand-name {
+        font-weight: 600;
+        font-size: 18px;
+        color: var(--text-primary);
+    }
+
+    .sidebar-nav {
+        flex-grow: 1;
+        padding: 15px 10px;
+        overflow-y: auto;
+    }
+
+    .sidebar-nav .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        border-radius: 8px;
+        color: var(--text-secondary);
+        font-weight: 500;
+        margin-bottom: 5px;
+        transition: all 0.2s ease;
+    }
+
+    .sidebar-nav .nav-link i {
+        width: 24px;
+        margin-right: 15px;
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .sidebar-nav .nav-link:hover {
+        background-color: var(--hover-bg);
+        color: var(--accent-color);
+    }
+
+    .sidebar-nav .nav-link.active {
+        background-color: var(--hover-bg);
+        color: var(--accent-color);
+        font-weight: 600;
+        position: relative;
+    }
+    
+    .sidebar-nav .nav-link.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 60%;
+        width: 4px;
+        background-color: var(--accent-color);
+        border-radius: 0 4px 4px 0;
+    }
+
+    .sidebar-footer {
+        padding: 20px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .admin-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background-color: var(--hover-bg);
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    .admin-profile .avatar {
+        width: 40px;
+        height: 40px;
+        background-color: var(--accent-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-weight: bold;
+    }
+
+    .admin-profile .user-info .name {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 14px;
+    }
+
+    .admin-profile .user-info .role {
+        font-size: 12px;
+        color: var(--text-secondary);
+    }
+
+    .logout-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 12px;
+        background-color: #D93F3F;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .logout-btn:hover {
+        background-color: #B92F2F;
+    }
+
+    .logout-btn i {
+        margin-right: 10px;
+    }
+
+    /* Adjust main content */
+    body {
+        padding-left: var(--sidebar-width);
+    }
+</style>
+
+<nav class="admin-sidebar">
+    <div class="sidebar-header">
+        <div class="logo"><i class="fas fa-solar-panel"></i></div>
+        <span class="brand-name">SolarAnalytics</span>
+    </div>
+    <ul class="nav flex-column sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="dashboard.html">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="user-management.html">
+                <i class="fas fa-users"></i> Quản lý Users
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="products.html">
+                <i class="fas fa-box"></i> Quản lý Sản phẩm
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="reports-management.html">
+                <i class="fas fa-file-alt"></i> Quản lý Reports
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="analytics.html">
+                <i class="fas fa-chart-line"></i> Phân tích
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="access-stats.html">
+                <i class="fas fa-eye"></i> Thống kê Truy cập
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="security-management.html">
+                <i class="fas fa-shield-alt"></i> Bảo mật
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="server-monitoring.html">
+                <i class="fas fa-server"></i> Giám sát Server
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="achievements-management.html">
+                <i class="fas fa-trophy"></i> Thành tích
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="session-logs.html">
+                <i class="fas fa-history"></i> Session Logs
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="admin-management.html">
+                <i class="fas fa-user-shield"></i> Quản lý Admin
+            </a>
+        </li>
+    </ul>
+    <div class="sidebar-footer">
+        <div class="admin-profile">
+            <div class="avatar" id="sidebar-admin-avatar">A</div>
+            <div class="user-info">
+                <div class="name" id="sidebar-admin-name">Admin User</div>
+                <div class="role" id="sidebar-admin-role">Administrator</div>
+            </div>
+        </div>
+        <button class="logout-btn" id="logout-button">
+            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+        </button>
+    </div>
+</nav>

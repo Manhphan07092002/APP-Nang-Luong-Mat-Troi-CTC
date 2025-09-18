@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dự Án - SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/assets/css/modern-design.css" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 50%, #581c87 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 50%, #581c87 100%);
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="stars" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.08)"/><circle cx="40" cy="80" r="0.8" fill="rgba(255,255,255,0.12)"/><circle cx="70" cy="10" r="1.2" fill="rgba(255,255,255,0.09)"/></pattern></defs><rect width="100" height="100" fill="url(%23stars)"/></svg>');
+            animation: twinkle 20s ease-in-out infinite;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-top: 80px;
+            padding-top: 4rem;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%);
+            animation: rotate 40s linear infinite;
+        }
+
+        .hero-title {
+            background: linear-gradient(135deg, #ffffff 0%, #fbbf24 50%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        /* Project Cards */
+        .project-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(50px) rotateX(10deg);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.8s;
+        }
+
+        .project-card:hover::before {
+            left: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-30px) rotateX(0deg) scale(1.03);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .project-image {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.1) rotate(2deg);
+            filter: brightness(1.1) saturate(1.2);
+        }
+
+        .project-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(59, 130, 246, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-overlay {
+            transform: scale(1.1) rotate(360deg);
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+        }
+
+        .project-content {
+            padding: 2.5rem;
+        }
+
+        .project-category {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            animation: shimmer 2s infinite;
+        }
+
+        .project-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .project-description {
+            color: #6b7280;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .project-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .project-metric {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(30, 58, 138, 0.1);
+            border-radius: 16px;
+            border: 1px solid rgba(30, 58, 138, 0.2);
+        }
+
+        .project-metric-value {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-metric-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .tech-tag {
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            background: #f59e0b;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .project-link:hover::before {
+            left: 100%;
+        }
+
+        .project-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(30, 58, 138, 0.4);
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .filter-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .filter-button:hover,
+        .filter-button.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        /* Keyframe Animations */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 20px rgba(255,255,255,0.5); }
+            100% { text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        /* Header Sticky Styles */
+        .header-scrolled {
+            background: rgba(255, 255, 255, 0.98) !important;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .project-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fixed Header -->
+    <header id="header-container" class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-lg transition-all duration-300">
+        <!-- Header will be loaded dynamically -->
+    </header>
+
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section py-20 px-4 text-center relative z-10">
+            <div class="max-w-6xl mx-auto">
+                <h1 class="hero-title text-6xl md:text-7xl font-bold mb-8 fade-in-up">
+                    Dự Án Tiêu Biểu
+                </h1>
+                <p class="text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto fade-in-up" style="animation-delay: 0.2s;">
+                    Khám phá những giải pháp năng lượng mặt trời đột phá và thành công mà chúng tôi đã triển khai
+                </p>
+                <div class="flex flex-col sm:flex-row gap-6 justify-center fade-in-up" style="animation-delay: 0.4s;">
+                    <button class="bg-gradient-to-r from-yellow-500 to-orange-600 text-white px-8 py-4 rounded-full hover:from-yellow-600 hover:to-orange-700 transition-all duration-300 font-semibold">
+                        <i class="fas fa-filter mr-2"></i>Lọc Dự Án
+                    </button>
+                    <button class="bg-gradient-to-r from-yellow-500 to-orange-600 text-white px-8 py-4 rounded-full hover:from-yellow-600 hover:to-orange-700 transition-all duration-300 font-semibold">
+                        <i class="fas fa-download mr-2"></i>Tải Brochure
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Section -->
+        <section class="py-8 px-4 relative z-10">
+            <div class="max-w-6xl mx-auto">
+                <div class="filter-section fade-in-up">
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold text-white mb-4">
+                            <i class="fas fa-search text-yellow-400 mr-3"></i>
+                            Tìm Kiếm Theo Danh Mục
+                        </h3>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <button class="filter-button active" data-filter="all">
+                            <i class="fas fa-th-large mr-2"></i>Tất Cả
+                        </button>
+                        <button class="filter-button" data-filter="industrial">
+                            <i class="fas fa-industry mr-2"></i>Công Nghiệp
+                        </button>
+                        <button class="filter-button" data-filter="commercial">
+                            <i class="fas fa-building mr-2"></i>Thương Mại
+                        </button>
+                        <button class="filter-button" data-filter="residential">
+                            <i class="fas fa-home mr-2"></i>Dân Dụng
+                        </button>
+                        <button class="filter-button" data-filter="tourism">
+                            <i class="fas fa-umbrella-beach mr-2"></i>Du Lịch
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Grid Section -->
+        <section class="py-16 px-4 relative z-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16 fade-in-up">
+                    <h2 class="text-5xl font-bold text-white mb-6">
+                        <i class="fas fa-solar-panel text-yellow-400 mr-4"></i>
+                        Dự Án Đã Triển Khai
+                    </h2>
+                    <p class="text-xl text-white/80 max-w-3xl mx-auto">
+                        Hơn 1000+ dự án thành công trên khắp Việt Nam với tổng công suất lắp đặt 500+ MWp
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 projects-grid">
+                    <!-- Project Card 1 - Industrial -->
+                    <div class="project-card" data-category="industrial">
+                        <div class="project-image">
+                            <img src="/assets/images/mt_1.jpg" alt="Nhà máy sản xuất">
+                            <div class="project-badge">500 kWp</div>
+                            <div class="project-overlay">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-category">Công Nghiệp</div>
+                            <h3 class="project-title">Hệ Thống Điện Mặt Trời Nhà Máy Sản Xuất</h3>
+                            <p class="project-description">
+                                Giải pháp năng lượng quy mô lớn cho nhà máy sản xuất, giúp giảm 70% chi phí điện năng và đạt mục tiêu phát triển bền vững.
+                            </p>
+                            <div class="project-metrics">
+                                <div class="project-metric">
+                                    <div class="project-metric-value">500</div>
+                                    <div class="project-metric-label">kWp</div>
+                                </div>
+                                <div class="project-metric">
+                                    <div class="project-metric-value">70%</div>
+                                    <div class="project-metric-label">Tiết Kiệm</div>
+                                </div>
+                            </div>
+                            <div class="project-tech">
+                                <span class="tech-tag">Mono PERC</span>
+                                <span class="tech-tag">Inverter</span>
+                                <span class="tech-tag">Monitoring</span>
+                            </div>
+                            <a href="#" class="project-link">
+                                <i class="fas fa-eye"></i>
+                                Xem Chi Tiết
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 2 - Tourism -->
+                    <div class="project-card" data-category="tourism">
+                        <div class="project-image">
+                            <img src="/assets/images/mt_4.jpg" alt="Resort">
+                            <div class="project-badge">150 kWp</div>
+                            <div class="project-overlay">
+                                <i class="fas fa-umbrella-beach"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-category">Du Lịch</div>
+                            <h3 class="project-title">Giải Pháp Điện Mặt Trời Resort Cao Cấp</h3>
+                            <p class="project-description">
+                                Cung cấp nguồn năng lượng sạch cho khu nghỉ dưỡng, giảm chi phí vận hành và tăng tính bền vững môi trường.
+                            </p>
+                            <div class="project-metrics">
+                                <div class="project-metric">
+                                    <div class="project-metric-value">150</div>
+                                    <div class="project-metric-label">kWp</div>
+                                </div>
+                                <div class="project-metric">
+                                    <div class="project-metric-value">80%</div>
+                                    <div class="project-metric-label">Tiết Kiệm</div>
+                                </div>
+                            </div>
+                            <div class="project-tech">
+                                <span class="tech-tag">Bifacial</span>
+                                <span class="tech-tag">Hybrid</span>
+                                <span class="tech-tag">Storage</span>
+                            </div>
+                            <a href="#" class="project-link">
+                                <i class="fas fa-eye"></i>
+                                Xem Chi Tiết
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 3 - Residential -->
+                    <div class="project-card" data-category="residential">
+                        <div class="project-image">
+                            <img src="/assets/images/mt_2.jpg" alt="Biệt thự">
+                            <div class="project-badge">15 kWp</div>
+                            <div class="project-overlay">
+                                <i class="fas fa-home"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-category">Dân Dụng</div>
+                            <h3 class="project-title">Hệ Thống Điện Hybrid Biệt Thự</h3>
+                            <p class="project-description">
+                                Đảm bảo an ninh năng lượng 24/7 cho gia đình, không bị gián đoạn bởi sự cố lưới điện và tiết kiệm tối đa chi phí.
+                            </p>
+                            <div class="project-metrics">
+                                <div class="project-metric">
+                                    <div class="project-metric-value">15</div>
+                                    <div class="project-metric-label">kWp</div>
+                                </div>
+                                <div class="project-metric">
+                                    <div class="project-metric-value">90%</div>
+                                    <div class="project-metric-label">Tiết Kiệm</div>
+                                </div>
+                            </div>
+                            <div class="project-tech">
+                                <span class="tech-tag">Lithium</span>
+                                <span class="tech-tag">Smart Grid</span>
+                                <span class="tech-tag">ESS</span>
+                            </div>
+                            <a href="#" class="project-link">
+                                <i class="fas fa-eye"></i>
+                                Xem Chi Tiết
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 4 - Commercial -->
+                    <div class="project-card" data-category="commercial">
+                        <div class="project-image">
+                            <img src="/assets/images/mt_3.jpg" alt="Trung tâm thương mại">
+                            <div class="project-badge">300 kWp</div>
+                            <div class="project-overlay">
+                                <i class="fas fa-building"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-category">Thương Mại</div>
+                            <h3 class="project-title">Hệ Thống Điện Mặt Trời Trung Tâm Thương Mại</h3>
+                            <p class="project-description">
+                                Giải pháp năng lượng thông minh cho trung tâm thương mại, tối ưu hóa chi phí vận hành và nâng cao hình ảnh xanh.
+                            </p>
+                            <div class="project-metrics">
+                                <div class="project-metric">
+                                    <div class="project-metric-value">300</div>
+                                    <div class="project-metric-label">kWp</div>
+                                </div>
+                                <div class="project-metric">
+                                    <div class="project-metric-value">65%</div>
+                                    <div class="project-metric-label">Tiết Kiệm</div>
+                                </div>
+                            </div>
+                            <div class="project-tech">
+                                <span class="tech-tag">String Inverter</span>
+                                <span class="tech-tag">SCADA</span>
+                                <span class="tech-tag">IoT</span>
+                            </div>
+                            <a href="#" class="project-link">
+                                <i class="fas fa-eye"></i>
+                                Xem Chi Tiết
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 5 - Industrial -->
+                    <div class="project-card" data-category="industrial">
+                        <div class="project-image">
+                            <img src="/assets/images/mt_5.jpg" alt="Nhà máy dệt">
+                            <div class="project-badge">800 kWp</div>
+                            <div class="project-overlay">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-category">Công Nghiệp</div>
+                            <h3 class="project-title">Dự Án Điện Mặt Trời Nhà Máy Dệt</h3>
+                            <p class="project-description">
+                                Hệ thống điện mặt trời quy mô lớn cho nhà máy dệt, giảm thiểu tác động môi trường và chi phí sản xuất.
+                            </p>
+                            <div class="project-metrics">
+                                <div class="project-metric">
+                                    <div class="project-metric-value">800</div>
+                                    <div class="project-metric-label">kWp</div>
+                                </div>
+                                <div class="project-metric">
+                                    <div class="project-metric-value">75%</div>
+                                    <div class="project-metric-label">Tiết Kiệm</div>
+                                </div>
+                            </div>
+                            <div class="project-tech">
+                                <span class="tech-tag">Central Inverter</span>
+                                <span class="tech-tag">Weather Station</span>
+                                <span class="tech-tag">PV Cleaning</span>
+                            </div>
+                            <a href="#" class="project-link">
+                                <i class="fas fa-eye"></i>
+                                Xem Chi Tiết
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 6 - Residential -->
+                    <div class="project-card" data-category="residential">
+                        <div class="project-image">
+                            <img src="/assets/images/mt_6.jpg" alt="Khu dân cư">
+                            <div class="project-badge">50 kWp</div>
+                            <div class="project-overlay">
+                                <i class="fas fa-home"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-category">Dân Dụng</div>
+                            <h3 class="project-title">Dự Án Điện Mặt Trời Khu Dân Cư</h3>
+                            <p class="project-description">
+                                Giải pháp năng lượng cộng đồng cho khu dân cư cao cấp, mang lại lợi ích kinh tế và môi trường bền vững.
+                            </p>
+                            <div class="project-metrics">
+                                <div class="project-metric">
+                                    <div class="project-metric-value">50</div>
+                                    <div class="project-metric-label">kWp</div>
+                                </div>
+                                <div class="project-metric">
+                                    <div class="project-metric-value">85%</div>
+                                    <div class="project-metric-label">Tiết Kiệm</div>
+                                </div>
+                            </div>
+                            <div class="project-tech">
+                                <span class="tech-tag">Micro Inverter</span>
+                                <span class="tech-tag">Smart Meter</span>
+                                <span class="tech-tag">App Control</span>
+                            </div>
+                            <a href="#" class="project-link">
+                                <i class="fas fa-eye"></i>
+                                Xem Chi Tiết
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load More Button -->
+                <div class="text-center mt-16 fade-in-up">
+                    <button class="bg-gradient-to-r from-yellow-500 to-orange-600 text-white px-12 py-4 rounded-full hover:from-yellow-600 hover:to-orange-700 transition-all duration-300 font-semibold text-lg">
+                        <i class="fas fa-plus mr-2"></i>Xem Thêm Dự Án
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-20 px-4 relative z-10">
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-white/10 backdrop-blur-20 border border-white/20 rounded-3xl p-12 text-center fade-in-up">
+                    <h2 class="text-4xl font-bold text-white mb-12">
+                        <i class="fas fa-chart-line text-yellow-400 mr-4"></i>
+                        Thành Tựu Đạt Được
+                    </h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-yellow-400 mb-2">1000+</div>
+                            <div class="text-white/80 font-semibold">Dự Án</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-yellow-400 mb-2">500+</div>
+                            <div class="text-white/80 font-semibold">MWp Lắp Đặt</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-yellow-400 mb-2">95%</div>
+                            <div class="text-white/80 font-semibold">Khách Hàng Hài Lòng</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-yellow-400 mb-2">15+</div>
+                            <div class="text-white/80 font-semibold">Năm Kinh Nghiệm</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer-container">
+        <!-- Footer will be loaded dynamically -->
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/js/components-loader.js"></script>
+    <script src="/js/header.js"></script>
+    <script src="/js/main.js"></script>
+    
+    <!-- Projects Animation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sticky Header Functionality
+            const header = document.getElementById('header-container');
+            let lastScrollY = window.scrollY;
+
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+                
+                if (currentScrollY > 100) {
+                    header.classList.add('header-scrolled');
+                } else {
+                    header.classList.remove('header-scrolled');
+                }
+                
+                // Hide header when scrolling down, show when scrolling up
+                if (currentScrollY > lastScrollY && currentScrollY > 200) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+                
+                lastScrollY = currentScrollY;
+            });
+
+            // Initialize animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0) rotateX(0deg)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe project cards
+            document.querySelectorAll('.project-card').forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+                observer.observe(card);
+            });
+
+            // Observe fade-in-up elements
+            document.querySelectorAll('.fade-in-up').forEach(element => {
+                observer.observe(element);
+            });
+
+            // Filter functionality
+            const filterButtons = document.querySelectorAll('.filter-button');
+            const projectCards = document.querySelectorAll('.project-card');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter projects
+                    projectCards.forEach(card => {
+                        const category = card.getAttribute('data-category');
+                        if (filter === 'all' || category === filter) {
+                            card.style.display = 'block';
+                            card.style.animation = 'fadeInUp 0.6s ease forwards';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Add hover effects for project cards
+            document.querySelectorAll('.project-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-30px) rotateX(0deg) scale(1.03)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) rotateX(0deg) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2" rx="8"/>
+  <circle cx="150" cy="120" r="20" fill="#adb5bd"/>
+  <path d="M100 180 L150 140 L180 180 L220 140 L250 180 L250 240 L100 240 Z" fill="#adb5bd"/>
+  <text x="200" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#6c757d">Sản Phẩm</text>
+  <text x="200" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#9ca3af">Hình ảnh không có</text>
+</svg>

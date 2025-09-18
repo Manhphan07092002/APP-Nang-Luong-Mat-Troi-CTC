@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Sử Hoạt Động - SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            font-family: 'Be Vietnam Pro', sans-serif; 
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .activity-card {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .activity-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header id="header-container" class="bg-white shadow-lg sticky top-0 z-50">
+        <!-- Header will be loaded dynamically -->
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Page Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-history text-blue-600 mr-3"></i>
+                    Lịch Sử Hoạt Động
+                </h1>
+                <p class="text-gray-600 text-lg">Theo dõi các hoạt động và thay đổi gần đây của bạn</p>
+            </div>
+
+            <!-- Activity Timeline -->
+            <div id="activity-timeline" class="space-y-6">
+                <!-- Loading State -->
+                <div id="loading-state" class="text-center py-12">
+                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                    <p class="text-gray-600 mt-4">Đang tải lịch sử hoạt động...</p>
+                </div>
+                
+                <!-- Empty State -->
+                <div id="empty-state" class="text-center py-12 hidden">
+                    <div class="text-6xl text-gray-300 mb-4">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-600 mb-2">Chưa có hoạt động nào</h3>
+                    <p class="text-gray-500">Các hoạt động của bạn sẽ được hiển thị ở đây</p>
+                </div>
+                
+                <!-- Activity Items will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer-container">
+        <!-- Footer will be loaded dynamically -->
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/auth-fix.js"></script>
+    <script src="js/header.js"></script>
+    <script src="js/components-loader.js"></script>
+    <script>
+        // Initialize activity history page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📜 Activity History page: DOM loaded, checking auth state');
+            loadActivityHistory();
+            
+            // Authentication fix for activity history page
+            setTimeout(() => {
+                if (window.forceAuthCheck) {
+                    window.forceAuthCheck();
+                } else {
+                    setTimeout(() => {
+                        if (window.forceAuthCheck) {
+                            window.forceAuthCheck();
+                        }
+                    }, 1000);
+                }
+            }, 500);
+            
+            // Listen for header loaded event
+            window.addEventListener('headerLoaded', function() {
+                console.log('📡 Activity History page: Header loaded event received');
+                setTimeout(() => {
+                    const userInfo = localStorage.getItem('userInfo');
+                    if (userInfo && window.initializeAuth) {
+                        console.log('🔄 Activity History page: Re-initializing auth after header load');
+                        window.initializeAuth();
+                    }
+                }, 200);
+            });
+        });
+        
+        async function loadActivityHistory() {
+            const loadingState = document.getElementById('loading-state');
+            const emptyState = document.getElementById('empty-state');
+            const timeline = document.getElementById('activity-timeline');
+            
+            try {
+                // Simulate loading activity data
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                loadingState.classList.add('hidden');
+                
+                // For now, show empty state - can be connected to real API later
+                emptyState.classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Error loading activity history:', error);
+                loadingState.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

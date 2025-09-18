@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Thành Tựu - Admin SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { 
+            background: #f8f9fa; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+        .main-content { 
+            padding: 20px; 
+        }
+        .card { 
+            border: none; 
+            box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075); 
+            margin-bottom: 20px; 
+        }
+        .achievement-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin-right: 15px;
+        }
+        .achievement-card {
+            transition: transform 0.2s ease;
+        }
+        .achievement-card:hover {
+            transform: translateY(-2px);
+        }
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .form-label {
+            font-weight: 600;
+        }
+        .badge-rarity {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+        .rarity-common { background-color: #6c757d; }
+        .rarity-uncommon { background-color: #28a745; }
+        .rarity-rare { background-color: #007bff; }
+        .rarity-epic { background-color: #6f42c1; }
+        .rarity-legendary { background-color: #fd7e14; }
+        .achievement-preview {
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar will be loaded by sidebar-loader.js -->
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-trophy me-2"></i>Quản lý Thành tích</h2>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAchievementModal">
+                <i class="fas fa-plus me-2"></i>Thêm thành tích
+            </button>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card stats-card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-trophy fa-2x mb-2"></i>
+                        <h5>Tổng thành tích</h5>
+                        <h3 id="totalAchievements">-</h3>
+                        <small class="opacity-75">Thành tích trong hệ thống</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-2x mb-2"></i>
+                        <h5>Thành tích hoạt động</h5>
+                        <h3 id="activeAchievements">-</h3>
+                        <small class="opacity-75">Thành tích đang hoạt động</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white;">
+                    <div class="card-body">
+                        <i class="fas fa-star fa-2x mb-2"></i>
+                        <h5>Tổng số trao</h5>
+                        <h3 id="totalAwarded">-</h3>
+                        <small class="opacity-75">Lượt thành tích đã trao</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                    <div class="card-body">
+                        <i class="fas fa-award fa-2x mb-2"></i>
+                        <h5>Người dùng</h5>
+                        <h3 id="totalUsers">-</h3>
+                        <small class="opacity-75">Có thành tích</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm thành tích...">
+                            <button class="btn btn-outline-secondary" type="button" onclick="searchAchievements()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" id="categoryFilter" onchange="filterAchievements()">
+                            <option value="">Tất cả danh mục</option>
+                            <option value="solar">Năng lượng mặt trời</option>
+                            <option value="reports">Báo cáo</option>
+                            <option value="analysis">Phân tích</option>
+                            <option value="community">Cộng đồng</option>
+                            <option value="milestone">Cột mốc</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" id="rarityFilter" onchange="filterAchievements()">
+                            <option value="">Tất cả độ hiếm</option>
+                            <option value="common">Phổ thông</option>
+                            <option value="uncommon">Không phổ biến</option>
+                            <option value="rare">Hiếm</option>
+                            <option value="epic">Sử thi</option>
+                            <option value="legendary">Huyền thoại</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" id="statusFilter" onchange="filterAchievements()">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="true">Hoạt động</option>
+                            <option value="false">Không hoạt động</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-outline-primary w-100" onclick="refreshAchievements()">
+                            <i class="fas fa-sync-alt me-2"></i>Làm mới
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Grid -->
+        <div class="row" id="achievementsGrid">
+            <div class="col-12 text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Đang tải...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Achievement pagination" class="mt-4">
+            <ul class="pagination justify-content-center" id="pagination">
+                <!-- Pagination will be generated by JavaScript -->
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Add Achievement Modal -->
+    <div class="modal fade" id="addAchievementModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-trophy me-2"></i>Thêm thành tích mới</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addAchievementForm">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="addAchievementName" class="form-label">Tên thành tích *</label>
+                                            <input type="text" class="form-control" id="addAchievementName" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="addAchievementCategory" class="form-label">Danh mục *</label>
+                                            <select class="form-select" id="addAchievementCategory" required>
+                                                <option value="">Chọn danh mục</option>
+                                                <option value="solar">Năng lượng mặt trời</option>
+                                                <option value="reports">Báo cáo</option>
+                                                <option value="analysis">Phân tích</option>
+                                                <option value="community">Cộng đồng</option>
+                                                <option value="milestone">Cột mốc</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="addAchievementRarity" class="form-label">Độ hiếm *</label>
+                                            <select class="form-select" id="addAchievementRarity" required onchange="updateAchievementPreview()">
+                                                <option value="common">Phổ thông</option>
+                                                <option value="uncommon">Không phổ biến</option>
+                                                <option value="rare">Hiếm</option>
+                                                <option value="epic">Sử thi</option>
+                                                <option value="legendary">Huyền thoại</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="addAchievementPoints" class="form-label">Điểm thưởng *</label>
+                                            <input type="number" class="form-control" id="addAchievementPoints" min="1" max="1000" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="addAchievementDescription" class="form-label">Mô tả *</label>
+                                    <textarea class="form-control" id="addAchievementDescription" rows="3" required></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="addAchievementIcon" class="form-label">Icon (FontAwesome class)</label>
+                                            <input type="text" class="form-control" id="addAchievementIcon" placeholder="fas fa-trophy" onchange="updateAchievementPreview()">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="addAchievementColor" class="form-label">Màu nền</label>
+                                            <input type="color" class="form-control form-control-color" id="addAchievementColor" value="#667eea" onchange="updateAchievementPreview()">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="addAchievementCondition" class="form-label">Điều kiện đạt thành tích</label>
+                                            <textarea class="form-control" id="addAchievementCondition" rows="2" placeholder="VD: Tạo 10 báo cáo phân tích năng lượng mặt trời"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="achievement-preview" id="achievementPreview">
+                                    <div class="achievement-icon mx-auto mb-3" id="previewIcon" style="background: #667eea;">
+                                        <i class="fas fa-trophy"></i>
+                                    </div>
+                                    <h6 id="previewName">Tên thành tích</h6>
+                                    <p class="text-muted small" id="previewDescription">Mô tả thành tích</p>
+                                    <span class="badge badge-rarity rarity-common" id="previewRarity">Phổ thông</span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="addAchievement()">
+                        <i class="fas fa-save me-2"></i>Thêm thành tích
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Achievement Modal -->
+    <div class="modal fade" id="editAchievementModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Chỉnh sửa thành tích</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAchievementForm">
+                        <input type="hidden" id="editAchievementId">
+                        <!-- Similar form fields as add modal -->
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="editAchievementName" class="form-label">Tên thành tích *</label>
+                                            <input type="text" class="form-control" id="editAchievementName" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="editAchievementCategory" class="form-label">Danh mục *</label>
+                                            <select class="form-select" id="editAchievementCategory" required>
+                                                <option value="solar">Năng lượng mặt trời</option>
+                                                <option value="reports">Báo cáo</option>
+                                                <option value="analysis">Phân tích</option>
+                                                <option value="community">Cộng đồng</option>
+                                                <option value="milestone">Cột mốc</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="editAchievementRarity" class="form-label">Độ hiếm *</label>
+                                            <select class="form-select" id="editAchievementRarity" required>
+                                                <option value="common">Phổ thông</option>
+                                                <option value="uncommon">Không phổ biến</option>
+                                                <option value="rare">Hiếm</option>
+                                                <option value="epic">Sử thi</option>
+                                                <option value="legendary">Huyền thoại</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="editAchievementPoints" class="form-label">Điểm thưởng *</label>
+                                            <input type="number" class="form-control" id="editAchievementPoints" min="1" max="1000" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editAchievementDescription" class="form-label">Mô tả *</label>
+                                    <textarea class="form-control" id="editAchievementDescription" rows="3" required></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="editAchievementIcon" class="form-label">Icon (FontAwesome class)</label>
+                                            <input type="text" class="form-control" id="editAchievementIcon" placeholder="fas fa-trophy">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="editAchievementColor" class="form-label">Màu nền</label>
+                                            <input type="color" class="form-control form-control-color" id="editAchievementColor">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="editAchievementCondition" class="form-label">Điều kiện đạt thành tích</label>
+                                            <textarea class="form-control" id="editAchievementCondition" rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="editAchievementActive">
+                                                <label class="form-check-label" for="editAchievementActive">
+                                                    Thành tích hoạt động
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="achievement-preview">
+                                    <div class="achievement-icon mx-auto mb-3" style="background: #667eea;">
+                                        <i class="fas fa-trophy"></i>
+                                    </div>
+                                    <h6>Preview</h6>
+                                    <p class="text-muted small">Xem trước thành tích</p>
+                                    <span class="badge badge-rarity rarity-common">Phổ thông</span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="updateAchievement()">
+                        <i class="fas fa-save me-2"></i>Cập nhật
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Sidebar Loader -->
+    <script src="js/sidebar-loader.js" defer></script>
+
+    <!-- Custom JavaScript -->
+    <script src="js/achievements-management.js"></script>
+</body>
+</html>

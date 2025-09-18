@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác Thực - SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        .code-input {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .code-input:focus {
+            border-color: #4F46E5;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.8s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        .success-checkmark {
+            animation: checkmark 0.6s ease-in-out;
+        }
+        
+        @keyframes checkmark {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .error-shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg flex items-center justify-center p-4">
+    <!-- Floating Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-20 h-20 bg-white/10 rounded-full floating-animation" style="animation-delay: 0s;"></div>
+        <div class="absolute top-40 right-20 w-16 h-16 bg-white/10 rounded-full floating-animation" style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-40 left-20 w-24 h-24 bg-white/10 rounded-full floating-animation" style="animation-delay: 4s;"></div>
+        <div class="absolute bottom-20 right-10 w-12 h-12 bg-white/10 rounded-full floating-animation" style="animation-delay: 1s;"></div>
+    </div>
+    
+    <div class="w-full max-w-lg slide-in">
+        <!-- Modern Logo Section -->
+        <div class="text-center mb-8">
+            <a href="/" class="inline-flex items-center gap-4 group">
+                <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-all duration-300">
+                    <i class="fas fa-solar-panel text-white text-2xl"></i>
+                </div>
+                <div class="text-left">
+                    <span class="text-4xl font-bold text-white block">SolarAnalytics</span>
+                    <span class="text-white/80 text-sm font-medium">Nền tảng phân tích năng lượng mặt trời</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Verification Form -->
+        <div class="glass-card rounded-3xl p-8 shadow-2xl">
+            <div class="text-center mb-10">
+                <div class="w-20 h-20 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <i class="fas fa-shield-check text-white text-3xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-3">Xác Thực Tài Khoản</h2>
+                <p class="text-white/80 text-lg" id="verification-message">Vui lòng nhập mã xác thực được gửi đến email của bạn</p>
+            </div>
+            
+            <!-- Error Message -->
+            <div id="error-message" class="hidden bg-red-500/20 backdrop-blur-sm border border-red-400/30 text-white px-6 py-4 rounded-2xl relative mb-6" role="alert">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center mr-4">
+                        <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                    <div>
+                        <strong class="font-semibold block">Có lỗi xảy ra!</strong>
+                        <span class="text-white/90" id="error-text">Nội dung lỗi sẽ hiện ở đây.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div id="success-message" class="hidden bg-green-500/20 backdrop-blur-sm border border-green-400/30 text-white px-6 py-4 rounded-2xl relative mb-6" role="alert">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center mr-4 success-checkmark">
+                        <i class="fas fa-check text-white"></i>
+                    </div>
+                    <div>
+                        <strong class="font-semibold block">Thành công!</strong>
+                        <span class="text-white/90" id="success-text">Nội dung thành công sẽ hiện ở đây.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verification Code Input -->
+            <div class="space-y-8">
+                <div class="text-center">
+                    <label class="block text-white font-semibold text-lg mb-4" for="verificationCode">
+                        <i class="fas fa-key mr-2 text-yellow-300"></i>
+                        Nhập mã xác thực
+                    </label>
+                    <input type="text" 
+                           id="verificationCode" 
+                           class="code-input w-full text-center text-3xl tracking-[0.5em] font-bold py-6 px-4 rounded-2xl border-0 outline-none" 
+                           placeholder="000000"
+                           maxlength="6"
+                           pattern="[0-9]{6}"
+                           required>
+                    <div class="text-white/70 text-sm mt-3">Nhập mã 6 chữ số được gửi đến email của bạn</div>
+                </div>
+
+                <!-- Verification Type Display -->
+                <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 mb-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-envelope text-white text-lg" id="verification-icon"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-white/80 text-sm">Mã xác thực đã được gửi đến:</div>
+                            <div class="text-white font-semibold text-lg" id="verification-target">Đang tải...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verify Button -->
+                <button onclick="verifyCode()" class="btn-primary w-full py-5 rounded-2xl font-semibold text-lg text-white shadow-xl" id="verify-btn">
+                    <i class="fas fa-shield-check mr-3" id="verify-icon"></i>
+                    <i class="fas fa-spinner fa-spin mr-3 hidden" id="verify-spinner"></i>
+                    <span id="verify-text">Xác Thực Tài Khoản</span>
+                </button>
+
+                <!-- Resend Code -->
+                <div class="text-center mt-6">
+                    <p class="text-white/70 mb-4">Không nhận được mã xác thực?</p>
+                    <button onclick="resendCode()" class="btn-secondary px-8 py-3 rounded-xl font-medium text-white" id="resend-btn">
+                        <i class="fas fa-redo mr-2"></i>
+                        <span id="resend-text">Gửi lại mã (60s)</span>
+                    </button>
+                </div>
+
+                <!-- Back to Registration -->
+                <div class="text-center pt-6 border-t border-white/20 mt-8">
+                    <button onclick="goBackToRegister()" class="text-white/80 hover:text-white font-medium transition-all duration-300 hover:scale-105">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Quay lại đăng ký
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Preview -->
+        <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+            <div class="glass-card p-6 rounded-2xl hover:scale-105 transition-all duration-300">
+                <div class="w-14 h-14 bg-gradient-to-r from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-lock text-white text-xl"></i>
+                </div>
+                <h4 class="font-semibold text-white mb-2">Bảo Mật Cao</h4>
+                <p class="text-white/70 text-sm">Mã hóa end-to-end tuyệt đối an toàn</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl hover:scale-105 transition-all duration-300">
+                <div class="w-14 h-14 bg-gradient-to-r from-green-400 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-bolt text-white text-xl"></i>
+                </div>
+                <h4 class="font-semibold text-white mb-2">Siêu Nhanh</h4>
+                <p class="text-white/70 text-sm">Xác thực hoàn tất trong vài giây</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl hover:scale-105 transition-all duration-300">
+                <div class="w-14 h-14 bg-gradient-to-r from-purple-400 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-shield-alt text-white text-xl"></i>
+                </div>
+                <h4 class="font-semibold text-white mb-2">Tin Cậy</h4>
+                <p class="text-white/70 text-sm">Hệ thống xác thực đáng tin cậy 100%</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get verification data from URL parameters or localStorage
+        const urlParams = new URLSearchParams(window.location.search);
+        const verificationType = urlParams.get('type') || localStorage.getItem('verificationType') || 'email';
+        const verificationTarget = urlParams.get('target') || localStorage.getItem('verificationTarget') || '';
+        const pendingUserData = JSON.parse(localStorage.getItem('pendingUserData') || '{}');
+
+        // Update UI based on verification type
+        document.addEventListener('DOMContentLoaded', function() {
+            updateVerificationUI();
+            startResendTimer();
+            
+            // Auto-focus on verification code input
+            document.getElementById('verificationCode').focus();
+            
+            // Auto-format verification code input
+            document.getElementById('verificationCode').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, ''); // Only numbers
+                if (value.length > 6) value = value.substring(0, 6);
+                e.target.value = value;
+                
+                // Auto-verify when 6 digits entered
+                if (value.length === 6) {
+                    setTimeout(() => verifyCode(), 500);
+                }
+            });
+        });
+
+        function updateVerificationUI() {
+            const messageEl = document.getElementById('verification-message');
+            const iconEl = document.getElementById('verification-icon');
+            const targetEl = document.getElementById('verification-target');
+            
+            if (verificationType === 'phone') {
+                messageEl.textContent = 'Vui lòng nhập mã xác thực được gửi đến số điện thoại của bạn';
+                iconEl.className = 'fas fa-mobile-alt text-white text-sm';
+                targetEl.textContent = verificationTarget;
+            } else {
+                messageEl.textContent = 'Vui lòng nhập mã xác thực được gửi đến email của bạn';
+                iconEl.className = 'fas fa-envelope text-white text-sm';
+                targetEl.textContent = verificationTarget;
+            }
+        }
+
+        async function verifyCode() {
+            const code = document.getElementById('verificationCode').value;
+            
+            if (!code || code.length !== 6) {
+                showMessage('error', 'Vui lòng nhập đầy đủ mã xác thực 6 chữ số');
+                return;
+            }
+
+            const verifyBtn = document.getElementById('verify-btn');
+            const verifyText = document.getElementById('verify-text');
+            const verifyIcon = document.getElementById('verify-icon');
+            const verifySpinner = document.getElementById('verify-spinner');
+            
+            // Show loading state
+            if (verifyBtn) verifyBtn.disabled = true;
+            if (verifyText) verifyText.textContent = 'Đang xác thực...';
+            if (verifyIcon) verifyIcon.classList.add('hidden');
+            if (verifySpinner) verifySpinner.classList.remove('hidden');
+            
+            try {
+                const response = await fetch('/api/auth/verify-code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: verificationType === 'email' ? verificationTarget : null,
+                        phone: verificationType === 'phone' ? verificationTarget : null,
+                        code: code
+                    })
+                });
+
+                const data = await response.json();
+                
+                // Reset loading state
+                if (verifyBtn) verifyBtn.disabled = false;
+                if (verifyText) verifyText.textContent = 'Xác Thực';
+                if (verifySpinner) verifySpinner.classList.add('hidden');
+                if (verifyIcon) verifyIcon.classList.remove('hidden');
+                
+                if (data.success) {
+                    showMessage('success', '🎉 Xác thực thành công! Đang hoàn tất đăng ký...');
+                    
+                    // Now complete the registration
+                    await completeRegistration();
+                } else {
+                    showMessage('error', data.message || 'Mã xác thực không đúng');
+                }
+            } catch (error) {
+                console.error('Verification error:', error);
+                // Reset loading state
+                if (verifyBtn) verifyBtn.disabled = false;
+                if (verifyText) verifyText.textContent = 'Xác Thực';
+                if (verifySpinner) verifySpinner.classList.add('hidden');
+                if (verifyIcon) verifyIcon.classList.remove('hidden');
+                
+                showMessage('error', 'Có lỗi xảy ra. Vui lòng thử lại.');
+            }
+        }
+
+        async function completeRegistration() {
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(pendingUserData)
+                });
+
+                const data = await response.json();
+                
+                if (data._id) {
+                    // Registration successful
+                    showMessage('success', '🎉 Đăng ký hoàn tất! Chào mừng bạn đến với Solar Analytics!');
+                    
+                    // Save user info to localStorage
+                    localStorage.setItem('userInfo', JSON.stringify(data));
+                    
+                    // Clean up verification data
+                    localStorage.removeItem('pendingUserData');
+                    localStorage.removeItem('verificationType');
+                    localStorage.removeItem('verificationTarget');
+                    
+                    // Redirect to profile after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/profile.html';
+                    }, 2000);
+                } else {
+                    showMessage('error', data.message || 'Đăng ký thất bại. Vui lòng thử lại.');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi hoàn tất đăng ký.');
+            }
+        }
+
+        async function resendCode() {
+            const resendBtn = document.getElementById('resend-btn');
+            const resendText = document.getElementById('resend-text');
+            
+            if (resendBtn) resendBtn.disabled = true;
+            if (resendText) resendText.textContent = 'Đang gửi...';
+            
+            try {
+                const response = await fetch('/api/auth/send-verification', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: verificationType === 'email' ? verificationTarget : null,
+                        phone: verificationType === 'phone' ? verificationTarget : null,
+                        type: verificationType
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('success', data.message);
+                    // Show verification code in development
+                    if (data.verificationCode) {
+                        console.log('Development verification code:', data.verificationCode);
+                        showMessage('info', `Mã xác thực (Dev): ${data.verificationCode}`);
+                    }
+                    startResendTimer();
+                } else {
+                    showMessage('error', data.message || 'Không thể gửi lại mã xác thực');
+                    if (resendBtn) resendBtn.disabled = false;
+                    if (resendText) resendText.textContent = 'Gửi lại mã';
+                }
+            } catch (error) {
+                console.error('Resend error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi gửi lại mã');
+                if (resendBtn) resendBtn.disabled = false;
+                if (resendText) resendText.textContent = 'Gửi lại mã';
+            }
+        }
+
+        function startResendTimer() {
+            const resendBtn = document.getElementById('resend-btn');
+            const resendText = document.getElementById('resend-text');
+            let countdown = 60;
+            
+            if (resendBtn) resendBtn.disabled = true;
+            
+            const timer = setInterval(() => {
+                countdown--;
+                if (resendText) resendText.textContent = `Gửi lại mã (${countdown}s)`;
+                
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    if (resendBtn) resendBtn.disabled = false;
+                    if (resendText) resendText.textContent = 'Gửi lại mã';
+                }
+            }, 1000);
+        }
+
+        function goBackToRegister() {
+            // Clean up verification data
+            localStorage.removeItem('pendingUserData');
+            localStorage.removeItem('verificationType');
+            localStorage.removeItem('verificationTarget');
+            
+            window.location.href = '/register.html';
+        }
+
+        function showMessage(type, message) {
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            const errorText = document.getElementById('error-text');
+            const successText = document.getElementById('success-text');
+
+            // Hide all messages first
+            errorDiv.classList.add('hidden');
+            successDiv.classList.add('hidden');
+
+            if (type === 'error') {
+                errorText.textContent = message;
+                errorDiv.classList.remove('hidden');
+            } else if (type === 'success') {
+                successText.textContent = message;
+                successDiv.classList.remove('hidden');
+            } else if (type === 'info') {
+                // Use success styling for info messages
+                successText.textContent = message;
+                successDiv.classList.remove('hidden');
+            }
+
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                errorDiv.classList.add('hidden');
+                successDiv.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Check if we have verification data, if not redirect to register
+        if (!verificationTarget || !pendingUserData.email) {
+            showMessage('error', 'Không tìm thấy thông tin xác thực. Vui lòng đăng ký lại.');
+            setTimeout(() => {
+                window.location.href = '/register.html';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/modern-design.css">
+    
+    <!-- Export libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <header id="header-container" class="sticky-header">
+        <!-- Header will be loaded dynamically -->
+    </header>
+    <main class="container-modern min-h-screen py-8">
+        <!-- Modern Header Section -->
+        <div class="modern-card p-8 mb-8 fade-in">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+                <div>
+                    <h1 class="text-4xl font-bold text-gradient mb-2">Dashboard Quản lý</h1>
+                    <p class="text-gray-600">Quản lý và theo dõi các báo cáo phân tích năng lượng mặt trời</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-8">
+                    <a href="/phan_tich.html" class="btn-modern btn-primary whitespace-nowrap px-8 py-3 text-l font-semibold min-w-[200px]">
+                        <i class="fas fa-plus mr-1 text-xl"></i>Tạo Báo Cáo Mới
+                    </a>
+                    <div class="export-container">
+                        <button id="export-btn" class="btn-modern btn-outline" onclick="toggleExportPanel()">
+                            <i class="fas fa-download mr-2"></i>
+                            Xuất Dữ Liệu
+                            <i id="export-chevron" class="fas fa-chevron-down ml-2 transition-transform duration-300"></i>
+                        </button>
+                        <div id="export-panel" class="export-panel hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+                                <button onclick="exportToExcel()" class="export-option">
+                                    <div class="export-icon bg-green-100">
+                                        <i class="fas fa-file-excel text-green-600 text-2xl"></i>
+                                    </div>
+                                    <div class="export-content">
+                                        <h4 class="font-semibold text-gray-800">Xuất Excel</h4>
+                                        <p class="text-sm text-gray-500">Định dạng .xlsx cho phân tích dữ liệu</p>
+                                    </div>
+                                </button>
+                                
+                                <button onclick="exportToCSV()" class="export-option">
+                                    <div class="export-icon bg-blue-100">
+                                        <i class="fas fa-file-csv text-blue-600 text-2xl"></i>
+                                    </div>
+                                    <div class="export-content">
+                                        <h4 class="font-semibold text-gray-800">Xuất CSV</h4>
+                                        <p class="text-sm text-gray-500">Định dạng .csv tương thích rộng rãi</p>
+                                    </div>
+                                </button>
+                                
+                                <button onclick="exportToPDF()" class="export-option">
+                                    <div class="export-icon bg-red-100">
+                                        <i class="fas fa-file-pdf text-red-600 text-2xl"></i>
+                                    </div>
+                                    <div class="export-content">
+                                        <h4 class="font-semibold text-gray-800">Xuất PDF</h4>
+                                        <p class="text-sm text-gray-500">Định dạng .pdf để in ấn và lưu trữ</p>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="modern-card p-6 mb-8 slide-up">
+            <div class="flex flex-col md:flex-row gap-4 items-center">
+                <div class="flex-1">
+                    <div class="form-group mb-0">
+                        <label class="form-label">
+                            <i class="fas fa-search mr-2"></i>
+                            Tìm kiếm báo cáo
+                        </label>
+                        <input type="text" id="search-input" placeholder="Tìm theo tên khách hàng, địa chỉ..." class="form-input">
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <button class="btn-modern btn-ghost" onclick="clearSearch()">
+                        <i class="fas fa-times mr-2"></i>
+                        Xóa
+                    </button>
+                    <button class="btn-modern btn-outline" onclick="refreshReports()">
+                        <i class="fas fa-sync-alt mr-2"></i>
+                        Làm mới
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Table Section -->
+        <div class="modern-card table-modern" style="opacity: 1; transform: scale(1); display: block;">
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-bold text-gray-800">
+                        <i class="fas fa-file-alt mr-2 text-blue-500"></i>
+                        Danh Sách Báo Cáo
+                    </h3>
+                    <div class="badge badge-info" id="reports-count">
+                        <i class="fas fa-list mr-1"></i>
+                        0 báo cáo
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-4 text-left font-semibold">
+                                <i class="fas fa-user mr-2"></i>
+                                Khách Hàng
+                            </th>
+                            <th class="px-6 py-4 text-left font-semibold">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                Địa chỉ
+                            </th>
+                            <th class="px-6 py-4 text-left font-semibold">
+                                <i class="fas fa-calendar mr-2"></i>
+                                Ngày tạo
+                            </th>
+                            <th class="px-6 py-4 text-center font-semibold">
+                                <i class="fas fa-cogs mr-2"></i>
+                                Hành động
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="reports-table-body">
+                        <!-- Loading state -->
+                        <tr id="loading-row">
+                            <td colspan="4" class="px-6 py-12 text-center">
+                                <div class="flex flex-col items-center justify-center space-y-4">
+                                    <div class="loading-shimmer w-16 h-16 rounded-full"></div>
+                                    <p class="text-gray-500">Đang tải dữ liệu...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Empty State (hidden by default) -->
+        <div id="empty-state" class="hidden modern-card p-12 text-center">
+            <div class="max-w-md mx-auto">
+                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-file-alt text-4xl text-gray-400"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Chưa có báo cáo nào</h3>
+                <p class="text-gray-600 mb-8">
+                    Bạn chưa tạo báo cáo phân tích nào. Hãy bắt đầu tạo báo cáo đầu tiên của bạn.
+                </p>
+                <a href="/phan_tich.html" class="btn-modern btn-primary">
+                    <i class="fas fa-plus mr-2"></i>
+                    Tạo Báo Cáo Đầu Tiên
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Additional functions for modern dashboard
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            // Trigger search event if needed
+            document.getElementById('search-input').dispatchEvent(new Event('input'));
+        }
+
+        function refreshReports() {
+            // Add refresh animation
+            const refreshBtn = event.target.closest('button');
+            const icon = refreshBtn.querySelector('i');
+            icon.style.animation = 'spin 1s linear infinite';
+            
+            // Call actual refresh function from dashboard-page.js
+            setTimeout(() => {
+                icon.style.animation = '';
+                if (typeof loadReports === 'function') {
+                    loadReports();
+                } else {
+                    // Force reload if loadReports function is not available
+                    window.location.reload();
+                }
+            }, 1000);
+        }
+
+        // Make loadReports globally accessible
+        window.loadReports = function() {
+            if (typeof loadReports === 'function') {
+                loadReports();
+            }
+        };
+
+        // Export panel toggle
+        function toggleExportPanel() {
+            const panel = document.getElementById('export-panel');
+            const chevron = document.getElementById('export-chevron');
+            
+            panel.classList.toggle('hidden');
+            chevron.classList.toggle('rotate-180');
+        }
+
+        // Export to Excel
+        async function exportToExcel() {
+            const panel = document.getElementById('export-panel');
+            panel.classList.add('hidden');
+            
+            try {
+                const reports = await fetchAllReports();
+                if (reports.length === 0) {
+                    window.showNotification('⚠️ Không có dữ liệu để xuất!', 'warning', 3000);
+                    return;
+                }
+                
+                // Show loading
+                const loading = window.showNotification('📊 Đang tạo file Excel...', 'info', 0);
+                
+                const workbook = XLSX.utils.book_new();
+                const worksheet = XLSX.utils.json_to_sheet(formatReportsForExport(reports));
+                
+                XLSX.utils.book_append_sheet(workbook, worksheet, 'Báo cáo');
+                XLSX.writeFile(workbook, `bao-cao-solar-${new Date().toISOString().split('T')[0]}.xlsx`);
+                
+                window.hideNotification(loading);
+                window.showNotification('✅ Xuất Excel thành công!', 'success', 4000);
+            } catch (error) {
+                console.error('Export Excel error:', error);
+                window.showNotification('❌ Lỗi xuất Excel: ' + error.message, 'error', 5000);
+            }
+        }
+
+        // Export to CSV
+        async function exportToCSV() {
+            const panel = document.getElementById('export-panel');
+            panel.classList.add('hidden');
+            
+            try {
+                const reports = await fetchAllReports();
+                if (reports.length === 0) {
+                    window.showNotification('⚠️ Không có dữ liệu để xuất!', 'warning', 3000);
+                    return;
+                }
+                
+                // Show loading
+                const loading = window.showNotification('📄 Đang tạo file CSV...', 'info', 0);
+                
+                const csvContent = convertToCSV(formatReportsForExport(reports));
+                downloadFile(csvContent, `bao-cao-solar-${new Date().toISOString().split('T')[0]}.csv`, 'text/csv');
+                
+                window.hideNotification(loading);
+                window.showNotification('✅ Xuất CSV thành công!', 'success', 4000);
+            } catch (error) {
+                console.error('Export CSV error:', error);
+                window.showNotification('❌ Lỗi xuất CSV: ' + error.message, 'error', 5000);
+            }
+        }
+
+        // Export to PDF
+        async function exportToPDF() {
+            const panel = document.getElementById('export-panel');
+            panel.classList.add('hidden');
+            
+            try {
+                const reports = await fetchAllReports();
+                if (reports.length === 0) {
+                    window.showNotification('⚠️ Không có dữ liệu để xuất!', 'warning', 3000);
+                    return;
+                }
+                
+                // Show loading
+                const loading = window.showNotification('📄 Đang tạo file PDF...', 'info', 0);
+                
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Add Vietnamese font support
+                doc.setFont('helvetica');
+                doc.setFontSize(16);
+                doc.text('BÁO CÁO PHÂN TÍCH NĂNG LƯỢNG MẶT TRỜI', 20, 20);
+                
+                doc.setFontSize(10);
+                doc.text(`Ngày xuất: ${new Date().toLocaleDateString('vi-VN')}`, 20, 30);
+                doc.text(`Tổng số báo cáo: ${reports.length}`, 20, 35);
+                
+                let yPosition = 50;
+                
+                reports.forEach((report, index) => {
+                    if (yPosition > 270) {
+                        doc.addPage();
+                        yPosition = 20;
+                    }
+                    
+                    doc.setFontSize(12);
+                    doc.text(`${index + 1}. ${report.survey?.name || 'Không có tên'}`, 20, yPosition);
+                    yPosition += 7;
+                    
+                    doc.setFontSize(10);
+                    doc.text(`Địa chỉ: ${report.survey?.address || 'Không có địa chỉ'}`, 25, yPosition);
+                    yPosition += 5;
+                    
+                    doc.text(`Ngày tạo: ${new Date(report.createdAt).toLocaleDateString('vi-VN')}`, 25, yPosition);
+                    yPosition += 5;
+                    
+                    doc.text(`Link báo cáo: /reports/view/${report.shareId}`, 25, yPosition);
+                    yPosition += 10;
+                });
+                
+                doc.save(`bao-cao-solar-${new Date().toISOString().split('T')[0]}.pdf`);
+                
+                window.hideNotification(loading);
+                window.showNotification('✅ Xuất PDF thành công!', 'success', 4000);
+            } catch (error) {
+                console.error('Export PDF error:', error);
+                window.showNotification('❌ Lỗi xuất PDF: ' + error.message, 'error', 5000);
+            }
+        }
+
+        // Helper functions
+        async function fetchAllReports() {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const response = await fetch('/api/reports', {
+                headers: { 'Authorization': `Bearer ${userInfo.token}` }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Không thể tải dữ liệu báo cáo');
+            }
+            
+            return await response.json();
+        }
+
+        function formatReportsForExport(reports) {
+            return reports.map((report, index) => ({
+                'STT': index + 1,
+                'Tên khách hàng': report.survey?.name || 'Không có tên',
+                'Địa chỉ': report.survey?.address || 'Không có địa chỉ',
+                'Ngày tạo': new Date(report.createdAt).toLocaleDateString('vi-VN'),
+                'Link báo cáo': `/reports/view/${report.shareId}`,
+                'Người tạo': report.user?.name || 'Không xác định'
+            }));
+        }
+
+        function convertToCSV(data) {
+            const headers = Object.keys(data[0]);
+            const csvContent = [
+                headers.join(','),
+                ...data.map(row => headers.map(header => `"${row[header]}"`).join(','))
+            ].join('\n');
+            
+            return '\uFEFF' + csvContent; // Add BOM for UTF-8
+        }
+
+        function downloadFile(content, filename, contentType) {
+            const blob = new Blob([content], { type: contentType });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Remove old showNotification function since it's now in dashboard-page.js
+
+        // Add CSS styles for export panel and animations
+        const style = document.createElement('style');
+        style.textContent = `
+            /* Loading and Animation Keyframes */
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+            
+            @keyframes fadeIn {
+                from { 
+                    opacity: 0; 
+                    transform: translateY(20px); 
+                }
+                to { 
+                    opacity: 1; 
+                    transform: translateY(0); 
+                }
+            }
+            
+            @keyframes slideUp {
+                from { 
+                    opacity: 0; 
+                    transform: translateY(30px); 
+                }
+                to { 
+                    opacity: 1; 
+                    transform: translateY(0); 
+                }
+            }
+            
+            @keyframes scaleIn {
+                from { 
+                    opacity: 0; 
+                    transform: scale(0.95); 
+                }
+                to { 
+                    opacity: 1; 
+                    transform: scale(1); 
+                }
+            }
+            
+            @keyframes slideInLeft {
+                from { 
+                    opacity: 0; 
+                    transform: translateX(-30px); 
+                }
+                to { 
+                    opacity: 1; 
+                    transform: translateX(0); 
+                }
+            }
+            
+            @keyframes slideInRight {
+                from { 
+                    opacity: 0; 
+                    transform: translateX(30px); 
+                }
+                to { 
+                    opacity: 1; 
+                    transform: translateX(0); 
+                }
+            }
+            
+            @keyframes pulse {
+                0%, 100% { 
+                    opacity: 1; 
+                    transform: scale(1); 
+                }
+                50% { 
+                    opacity: 0.8; 
+                    transform: scale(1.05); 
+                }
+            }
+            
+            @keyframes shimmer {
+                0% { background-position: -200px 0; }
+                100% { background-position: calc(200px + 100%) 0; }
+            }
+            
+            @keyframes bounce {
+                0%, 20%, 53%, 80%, 100% { transform: translate3d(0,0,0); }
+                40%, 43% { transform: translate3d(0,-30px,0); }
+                70% { transform: translate3d(0,-15px,0); }
+                90% { transform: translate3d(0,-4px,0); }
+            }
+            
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+            
+            /* Animation Classes */
+            .fade-in {
+                animation: fadeIn 0.8s ease-out forwards;
+            }
+            
+            .slide-up {
+                animation: slideUp 0.6s ease-out forwards;
+                animation-delay: 0.2s;
+                opacity: 0;
+            }
+            
+            .scale-in {
+                opacity: 1 !important;
+                transform: scale(1) !important;
+                animation: none;
+            }
+            
+            .slide-in-left {
+                animation: slideInLeft 0.6s ease-out forwards;
+            }
+            
+            .slide-in-right {
+                animation: slideInRight 0.6s ease-out forwards;
+            }
+            
+            .pulse-animation {
+                animation: pulse 2s infinite;
+            }
+            
+            .bounce-animation {
+                animation: bounce 1s;
+            }
+            
+            .float-animation {
+                animation: float 3s ease-in-out infinite;
+            }
+            
+            /* Loading Shimmer Effect */
+            .loading-shimmer {
+                background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+                background-size: 200px 100%;
+                animation: shimmer 1.5s infinite;
+            }
+            
+            /* Stagger Animation for Table Rows */
+            .table-row-animate {
+                opacity: 0;
+                transform: translateX(-20px);
+                animation: slideInLeft 0.5s ease-out forwards;
+            }
+            
+            .table-row-animate:nth-child(1) { animation-delay: 0.1s; }
+            .table-row-animate:nth-child(2) { animation-delay: 0.2s; }
+            .table-row-animate:nth-child(3) { animation-delay: 0.3s; }
+            .table-row-animate:nth-child(4) { animation-delay: 0.4s; }
+            .table-row-animate:nth-child(5) { animation-delay: 0.5s; }
+            .table-row-animate:nth-child(n+6) { animation-delay: 0.6s; }
+            
+            /* Button Hover Animations */
+            .btn-modern {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .btn-modern::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                transition: left 0.5s;
+            }
+            
+            .btn-modern:hover::before {
+                left: 100%;
+            }
+            
+            .btn-modern:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            }
+            
+            .btn-modern:active {
+                transform: translateY(0);
+                transition: transform 0.1s;
+            }
+            
+            /* Card Hover Effects */
+            .modern-card {
+                transition: all 0.3s ease;
+                position: relative;
+            }
+            
+            .modern-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            }
+            
+            /* Export Panel Animations */
+            .export-container {
+                position: relative;
+                width: 100%;
+            }
+            
+            .export-panel {
+                width: 100%;
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-radius: 0.5rem;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                margin-top: 0.5rem;
+                overflow: hidden;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                transform-origin: top;
+                animation: scaleIn 0.3s ease-out;
+            }
+            
+            .export-option {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                padding: 1rem;
+                text-align: left;
+                border: 1px solid #f3f4f6;
+                border-radius: 0.5rem;
+                background: white;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                gap: 1rem;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .export-option::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+                transition: left 0.5s;
+            }
+            
+            .export-option:hover::before {
+                left: 100%;
+            }
+            
+            .export-option:hover {
+                background: #f8fafc;
+                border-color: #3b82f6;
+                transform: translateY(-3px) scale(1.02);
+                box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+            }
+            
+            .export-option:active {
+                transform: translateY(-1px) scale(1.01);
+                transition: transform 0.1s;
+            }
+            
+            .export-icon {
+                width: 3rem;
+                height: 3rem;
+                border-radius: 0.75rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                transition: all 0.3s ease;
+            }
+            
+            .export-option:hover .export-icon {
+                transform: scale(1.1) rotate(5deg);
+            }
+            
+            .export-content {
+                flex: 1;
+            }
+            
+            .export-content h4 {
+                margin: 0 0 0.25rem 0;
+                font-size: 1rem;
+                font-weight: 600;
+                transition: color 0.3s ease;
+            }
+            
+            .export-option:hover .export-content h4 {
+                color: #3b82f6;
+            }
+            
+            .export-content p {
+                margin: 0;
+                font-size: 0.875rem;
+                color: #6b7280;
+                transition: color 0.3s ease;
+            }
+            
+            .export-option:hover .export-content p {
+                color: #4b5563;
+            }
+            
+            /* Search Input Animation */
+            .form-input {
+                transition: all 0.3s ease;
+            }
+            
+            .form-input:focus {
+                transform: scale(1.02);
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            }
+            
+            /* Badge Animation */
+            .badge {
+                transition: all 0.3s ease;
+                animation: pulse 2s infinite;
+            }
+            
+            /* Table Animation */
+            .table-modern {
+                opacity: 1 !important;
+                transform: scale(1) !important;
+                display: block !important;
+                visibility: visible !important;
+            }
+            
+            /* Empty State Animation */
+            #empty-state {
+                animation: fadeIn 1s ease-out;
+            }
+            
+            #empty-state .fa-file-alt {
+                animation: float 3s ease-in-out infinite;
+            }
+            
+            /* Responsive Animations */
+            @media (max-width: 768px) {
+                .export-panel .grid {
+                    grid-template-columns: 1fr;
+                }
+                
+                .export-option:hover {
+                    transform: translateY(-2px) scale(1.01);
+                }
+                
+                .modern-card:hover {
+                    transform: translateY(-2px);
+                }
+            }
+            
+            /* Reduce motion for accessibility */
+            @media (prefers-reduced-motion: reduce) {
+                *, *::before, *::after {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+    <div id="footer-container"></div>
+    <script src="/js/main.js"></script>
+    <script src="/js/components-loader.js"></script>
+    <script src="/js/sticky-header.js"></script>
+    <script src="/js/dashboard-page.js"></script>
+</body>
+</html>

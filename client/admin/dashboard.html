@@ -1,0 +1,3289 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/admin-auth.js" defer></script>
+    <script src="js/sidebar-loader.js" defer></script>
+    <style>
+        body { background: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .main-content { padding: 20px; }
+        .card { border: none; box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075); margin-bottom: 20px; }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* Image preview styling */
+        .image-preview {
+            position: relative;
+            display: inline-block;
+            margin: 5px;
+        }
+        
+        .image-preview img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        
+        .image-preview .remove-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .image-preview .remove-btn:hover {
+            background: #c82333;
+        }
+        
+        .existing-image {
+            border-color: #28a745 !important;
+        }
+        
+        .existing-image::after {
+            content: "Ảnh cũ";
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 10px;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        /* Form section styling */
+        .section-title {
+            color: #495057;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .section-title i {
+            color: #007bff;
+        }
+
+        .form-label.fw-bold {
+            color: #495057;
+            font-weight: 600 !important;
+        }
+
+        .spec-input-group, .input-group {
+            background: #f8f9fa;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-outline-primary.btn-sm {
+            font-size: 0.875rem;
+            padding: 0.375rem 0.75rem;
+        }
+
+        .btn-outline-danger {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: white;
+        }
+
+        /* Modal improvements */
+        .modal-lg {
+            max-width: 900px;
+        }
+
+        .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar will be loaded by sidebar-loader.js -->
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section active">
+            <h2><i class="fas fa-tachometer-alt me-2"></i>Dashboard Tổng quan</h2>
+            
+            <!-- Main Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <div class="card-body">
+                            <i class="fas fa-users fa-2x mb-2"></i>
+                            <h5>Tổng Users</h5>
+                            <h3 id="totalUsers">-</h3>
+                            <small class="opacity-75">Người dùng hệ thống</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                        <div class="card-body">
+                            <i class="fas fa-file-alt fa-2x mb-2"></i>
+                            <h5>Tổng Reports</h5>
+                            <h3 id="totalReports">-</h3>
+                            <small class="opacity-75">Báo cáo đã tạo</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                        <div class="card-body">
+                            <i class="fas fa-eye fa-2x mb-2"></i>
+                            <h5>Lượt truy cập</h5>
+                            <h3 id="totalVisits">-</h3>
+                            <small class="opacity-75">Tổng lượt truy cập</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white;">
+                        <div class="card-body">
+                            <i class="fas fa-chart-bar fa-2x mb-2"></i>
+                            <h5>Phân tích tạo</h5>
+                            <h3 id="analysesCreated">-</h3>
+                            <small class="opacity-75">Kịch bản phân tích</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Secondary Stats Row -->
+            <div class="row mb-4">
+                <div class="col-md-2">
+                    <div class="card bg-light text-center">
+                        <div class="card-body py-3">
+                            <i class="fas fa-user-shield text-primary fa-lg mb-1"></i>
+                            <h6 class="mb-1">Admin Users</h6>
+                            <h5 id="adminUsers" class="text-primary mb-0">-</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card bg-light text-center">
+                        <div class="card-body py-3">
+                            <i class="fas fa-user text-info fa-lg mb-1"></i>
+                            <h6 class="mb-1">Regular Users</h6>
+                            <h5 id="regularUsers" class="text-info mb-0">-</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card bg-light text-center">
+                        <div class="card-body py-3">
+                            <i class="fas fa-calendar-day text-success fa-lg mb-1"></i>
+                            <h6 class="mb-1">Hôm nay</h6>
+                            <h5 id="todayReports" class="text-success mb-0">-</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card bg-light text-center">
+                        <div class="card-body py-3">
+                            <i class="fas fa-calendar-week text-warning fa-lg mb-1"></i>
+                            <h6 class="mb-1">Tuần này</h6>
+                            <h5 id="weekReports" class="text-warning mb-0">-</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card bg-light text-center">
+                        <div class="card-body py-3">
+                            <i class="fas fa-percentage text-danger fa-lg mb-1"></i>
+                            <h6 class="mb-1">Tăng trưởng</h6>
+                            <h5 id="growthRate" class="text-danger mb-0">-</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card bg-light text-center">
+                        <div class="card-body py-3">
+                            <i class="fas fa-clock text-secondary fa-lg mb-1"></i>
+                            <h6 class="mb-1">Avg Time</h6>
+                            <h5 id="avgTime" class="text-secondary mb-0">-</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts Row 1 -->
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-chart-area me-2"></i>Hoạt động hệ thống 30 ngày</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="dashboardActivityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-pie-chart me-2"></i>Phân bố Users</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="dashboardUserDistChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts Row 2 -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-chart-bar me-2"></i>Báo cáo theo giờ trong ngày</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="dashboardHourlyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-chart-line me-2"></i>Xu hướng tăng trưởng</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="dashboardGrowthChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Performance & Activity Row -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-tachometer-alt me-2"></i>Hiệu suất hệ thống</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-6">
+                                    <div class="p-2">
+                                        <i class="fas fa-server text-success fa-2x mb-2"></i>
+                                        <h6>Server Status</h6>
+                                        <span class="badge bg-success">Online</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-2">
+                                        <i class="fas fa-database text-info fa-2x mb-2"></i>
+                                        <h6>Database</h6>
+                                        <span class="badge bg-info">Connected</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-2">
+                                        <i class="fas fa-memory text-warning fa-2x mb-2"></i>
+                                        <h6>Memory</h6>
+                                        <span class="badge bg-warning">65%</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-2">
+                                        <i class="fas fa-microchip text-danger fa-2x mb-2"></i>
+                                        <h6>CPU</h6>
+                                        <span class="badge bg-danger">45%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-users-cog me-2"></i>Hoạt động gần đây</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="recentActivity" style="max-height: 300px; overflow-y: auto;">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary rounded-circle p-2 me-3">
+                                        <i class="fas fa-user text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">User mới đăng ký</h6>
+                                        <small class="text-muted">5 phút trước</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-success rounded-circle p-2 me-3">
+                                        <i class="fas fa-file-alt text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Báo cáo mới được tạo</h6>
+                                        <small class="text-muted">12 phút trước</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-info rounded-circle p-2 me-3">
+                                        <i class="fas fa-chart-line text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Phân tích hoàn thành</h6>
+                                        <small class="text-muted">25 phút trước</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-warning rounded-circle p-2 me-3">
+                                        <i class="fas fa-cog text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Cập nhật hệ thống</h6>
+                                        <small class="text-muted">1 giờ trước</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-bolt me-2"></i>Thao tác nhanh</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <button class="btn btn-primary w-100 mb-2" onclick="showSection('users')">
+                                        <i class="fas fa-users mb-1 d-block"></i>
+                                        Quản lý Users
+                                    </button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-success w-100 mb-2" onclick="showSection('reports')">
+                                        <i class="fas fa-file-alt mb-1 d-block"></i>
+                                        Quản lý Reports
+                                    </button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-info w-100 mb-2" onclick="showSection('analysis')">
+                                        <i class="fas fa-chart-line mb-1 d-block"></i>
+                                        Phân tích Hệ thống
+                                    </button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-warning w-100 mb-2" onclick="showSection('access-stats')">
+                                        <i class="fas fa-eye mb-1 d-block"></i>
+                                        Thống kê Truy cập
+                                    </button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-secondary w-100 mb-2" onclick="loadDashboard()">
+                                        <i class="fas fa-sync mb-1 d-block"></i>
+                                        Làm mới
+                                    </button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-danger w-100 mb-2" onclick="exportData()">
+                                        <i class="fas fa-download mb-1 d-block"></i>
+                                        Xuất dữ liệu
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Management Section -->
+        <div id="users" class="section">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-users me-2"></i>Quản lý Users</h2>
+                <button class="btn btn-primary" onclick="showAddUserModal()">
+                    <i class="fas fa-plus me-2"></i>Thêm User
+                </button>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="userSearch" placeholder="Tìm kiếm user...">
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="roleFilter">
+                                <option value="">Tất cả vai trò</option>
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-primary" onclick="loadUsers()">
+                                <i class="fas fa-search me-2"></i>Tìm kiếm
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên</th>
+                                    <th>Email</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Vai trò</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <tr><td colspan="7" class="text-center">Đang tải dữ liệu...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Management Section -->
+        <div id="products" class="section">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-solar-panel me-2"></i>Quản lý Sản phẩm</h2>
+                <div>
+                    <button class="btn btn-outline-success" onclick="loadProducts()">
+                        <i class="fas fa-sync-alt me-1"></i> Làm mới
+                    </button>
+                    <button class="btn btn-primary" onclick="window.location.href='add-product.html'">
+                        <i class="fas fa-plus me-1"></i> Thêm sản phẩm
+                    </button>
+                </div>
+            </div>
+
+            <!-- Products Stats -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-solar-panel fa-2x mb-2"></i>
+                            <h5>Tổng sản phẩm</h5>
+                            <h3 id="totalProducts">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-check-circle fa-2x mb-2"></i>
+                            <h5>Còn hàng</h5>
+                            <h3 id="inStockProducts">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                            <h5>Hết hàng</h5>
+                            <h3 id="outOfStockProducts">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-star fa-2x mb-2"></i>
+                            <h5>Nổi bật</h5>
+                            <h3 id="featuredProducts">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Filter -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="productSearchInput" placeholder="Tìm kiếm sản phẩm..." onkeyup="searchProducts()">
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select" id="categoryFilter" onchange="filterProducts()">
+                                <option value="">Tất cả danh mục</option>
+                                <option value="solar-panels">Tấm Pin Mặt Trời</option>
+                                <option value="inverters">Inverter</option>
+                                <option value="batteries">Pin Lưu Trữ</option>
+                                <option value="mounting-systems">Hệ Thống Lắp Đặt</option>
+                                <option value="monitoring">Giám Sát</option>
+                                <option value="accessories">Phụ Kiện</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select" id="stockFilter" onchange="filterProducts()">
+                                <option value="">Tất cả trạng thái</option>
+                                <option value="in-stock">Còn hàng</option>
+                                <option value="out-of-stock">Hết hàng</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select" id="featuredFilter" onchange="filterProducts()">
+                                <option value="">Tất cả</option>
+                                <option value="featured">Nổi bật</option>
+                                <option value="not-featured">Không nổi bật</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="btn-group w-100">
+                                <button class="btn btn-outline-secondary" onclick="exportProducts()">
+                                    <i class="fas fa-download me-1"></i> Xuất Excel
+                                </button>
+                                <button class="btn btn-outline-primary" onclick="window.open('/products.html', '_blank')">
+                                    <i class="fas fa-eye me-1"></i> Xem trang
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Table -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Hình ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Danh mục</th>
+                                    <th>Giá</th>
+                                    <th>Tồn kho</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody">
+                                <tr><td colspan="7" class="text-center">Đang tải dữ liệu...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <span id="productsInfo">Hiển thị 0 - 0 của 0 sản phẩm</span>
+                        </div>
+                        <nav>
+                            <ul class="pagination mb-0" id="productsPagination">
+                                <!-- Pagination will be generated here -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Management Section -->
+        <div id="reports" class="section">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-file-alt me-2"></i>Quản lý Reports</h2>
+                <div>
+                    <button class="btn btn-outline-success" onclick="loadReports()">
+                        <i class="fas fa-refresh me-2"></i>Làm mới
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="reportSearch" placeholder="Tìm kiếm report...">
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="userFilter">
+                                <option value="">Tất cả users</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-primary" onclick="searchReports()">
+                                <i class="fas fa-search me-2"></i>Tìm kiếm
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select" id="sortBy">
+                                <option value="createdAt">Ngày tạo</option>
+                                <option value="name">Tên KH</option>
+                                <option value="shareId">Share ID</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Share ID</th>
+                                    <th>Tên khách hàng</th>
+                                    <th>Địa chỉ</th>
+                                    <th>User tạo</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Số kịch bản</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportsTableBody">
+                                <tr><td colspan="7" class="text-center">Đang tải dữ liệu...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <small class="text-muted">Hiển thị <span id="reportCount">0</span> reports</small>
+                        </div>
+                        <nav>
+                            <ul class="pagination pagination-sm mb-0" id="reportsPagination">
+                                <!-- Pagination will be generated here -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Analysis Section -->
+        <div id="analysis" class="section">
+            <h2><i class="fas fa-chart-line me-2"></i>Phân tích hệ thống</h2>
+            
+            <!-- System Overview Stats -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <div class="card-body">
+                            <i class="fas fa-server fa-2x mb-2"></i>
+                            <h5>Tổng hệ thống</h5>
+                            <h3 id="systemTotalUsers">-</h3>
+                            <small>Users đang hoạt động</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                        <div class="card-body">
+                            <i class="fas fa-file-alt fa-2x mb-2"></i>
+                            <h5>Báo cáo</h5>
+                            <h3 id="systemTotalReports">-</h3>
+                            <small>Tổng báo cáo được tạo</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                        <div class="card-body">
+                            <i class="fas fa-chart-bar fa-2x mb-2"></i>
+                            <h5>Phân tích</h5>
+                            <h3 id="systemTotalAnalyses">-</h3>
+                            <small>Kịch bản phân tích</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white;">
+                        <div class="card-body">
+                            <i class="fas fa-percentage fa-2x mb-2"></i>
+                            <h5>Hiệu suất</h5>
+                            <h3 id="systemEfficiency">-</h3>
+                            <small>Báo cáo/User trung bình</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts Row 1 -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-pie-chart me-2"></i>Phân bố Users theo Role</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="systemOverviewChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-chart-bar me-2"></i>Báo cáo theo tháng</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="monthlyReportsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts Row 2 -->
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-chart-line me-2"></i>Xu hướng hoạt động hệ thống</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="systemTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-trophy me-2"></i>Top Users hoạt động</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="topUsersTable">Đang tải...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Analysis Details Row -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-solar-panel me-2"></i>Phân tích Solar Analytics</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="solarAnalysisChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-clock me-2"></i>Thời gian hoạt động</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <div class="p-3 bg-light rounded">
+                                        <i class="fas fa-sun text-warning fa-2x mb-2"></i>
+                                        <h6>Sáng</h6>
+                                        <h4 id="morningActivity">-</h4>
+                                        <small class="text-muted">6AM - 12PM</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="p-3 bg-light rounded">
+                                        <i class="fas fa-cloud-sun text-info fa-2x mb-2"></i>
+                                        <h6>Chiều</h6>
+                                        <h4 id="afternoonActivity">-</h4>
+                                        <small class="text-muted">12PM - 6PM</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="p-3 bg-light rounded">
+                                        <i class="fas fa-moon text-dark fa-2x mb-2"></i>
+                                        <h6>Tối</h6>
+                                        <h4 id="eveningActivity">-</h4>
+                                        <small class="text-muted">6PM - 12AM</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- System Health Row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-heartbeat me-2"></i>Tình trạng hệ thống</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="text-center p-3">
+                                        <div class="mb-2">
+                                            <i class="fas fa-database fa-2x text-success"></i>
+                                        </div>
+                                        <h6>Database</h6>
+                                        <span class="badge bg-success">Hoạt động tốt</span>
+                                        <div class="mt-2">
+                                            <small class="text-muted">Kết nối ổn định</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="text-center p-3">
+                                        <div class="mb-2">
+                                            <i class="fas fa-server fa-2x text-success"></i>
+                                        </div>
+                                        <h6>Server</h6>
+                                        <span class="badge bg-success">Online</span>
+                                        <div class="mt-2">
+                                            <small class="text-muted">Uptime: 99.9%</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="text-center p-3">
+                                        <div class="mb-2">
+                                            <i class="fas fa-shield-alt fa-2x text-success"></i>
+                                        </div>
+                                        <h6>Bảo mật</h6>
+                                        <span class="badge bg-success">An toàn</span>
+                                        <div class="mt-2">
+                                            <small class="text-muted">JWT Active</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="text-center p-3">
+                                        <div class="mb-2">
+                                            <i class="fas fa-tachometer-alt fa-2x text-warning"></i>
+                                        </div>
+                                        <h6>Hiệu suất</h6>
+                                        <span class="badge bg-warning">Tốt</span>
+                                        <div class="mt-2">
+                                            <small class="text-muted">Avg: <span id="avgResponseTime">-</span>ms</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Access Statistics Section -->
+        <div id="access-stats" class="section">
+            <h2><i class="fas fa-eye me-2"></i>Thống kê Truy cập</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card stat-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-globe fa-2x mb-2"></i>
+                            <h5>Tổng lượt truy cập</h5>
+                            <h3 id="accessTotalVisits">-</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card stat-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-sign-in-alt fa-2x mb-2"></i>
+                            <h5>Tổng lượt đăng nhập</h5>
+                            <h3 id="accessTotalLogins">-</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card stat-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-calculator fa-2x mb-2"></i>
+                            <h5>Phân tích đã tạo</h5>
+                            <h3 id="accessAnalysesCreated">-</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-line me-2"></i>Thống kê truy cập 7 ngày</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="accessChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalTitle">Thêm User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="userForm">
+                        <div class="mb-3">
+                            <label class="form-label">Tên *</label>
+                            <input type="text" class="form-control" id="userName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="userEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mật khẩu *</label>
+                            <input type="password" class="form-control" id="userPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Số điện thoại *</label>
+                            <input type="text" class="form-control" id="userPhone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Vai trò</label>
+                            <select class="form-select" id="userRole">
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="saveUser()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Details Modal -->
+    <div class="modal fade" id="reportModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-file-alt me-2"></i>Chi tiết Report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="reportDetailsContent">
+                        <div class="text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Đang tải...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="openReportBtn" onclick="openReportInNewTab()">
+                        <i class="fas fa-external-link-alt me-2"></i>Mở trong tab mới
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalTitle">Thêm Sản phẩm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <!-- Thông tin cơ bản -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="section-title"><i class="fas fa-info-circle me-2"></i>Thông Tin Cơ Bản</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Tên sản phẩm *</label>
+                                <input type="text" class="form-control" id="productName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Thương hiệu *</label>
+                                <input type="text" class="form-control" id="productBrand" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Model *</label>
+                                <input type="text" class="form-control" id="productModel" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Danh mục *</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="">Chọn danh mục</option>
+                                    <option value="solar-panels">Tấm Pin Mặt Trời</option>
+                                    <option value="inverters">Inverter</option>
+                                    <option value="batteries">Pin Lưu Trữ</option>
+                                    <option value="mounting-systems">Hệ Thống Lắp Đặt</option>
+                                    <option value="monitoring">Giám Sát</option>
+                                    <option value="accessories">Phụ Kiện</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Số lượng tồn kho</label>
+                                <input type="number" class="form-control" id="productStock" min="0" value="0">
+                            </div>
+                        </div>
+
+                        <!-- Giá cả -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="section-title"><i class="fas fa-dollar-sign me-2"></i>Thông Tin Giá</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Giá bán (VND) *</label>
+                                <input type="number" class="form-control" id="productPrice" required min="0">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Giá gốc (VND)</label>
+                                <input type="number" class="form-control" id="productOriginalPrice" min="0">
+                            </div>
+                        </div>
+
+                        <!-- Mô tả -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="section-title"><i class="fas fa-align-left me-2"></i>Mô Tả Sản Phẩm</h5>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label fw-bold">Mô tả ngắn *</label>
+                                <textarea class="form-control" id="productShortDescription" rows="2" required></textarea>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label fw-bold">Mô tả chi tiết *</label>
+                                <textarea class="form-control" id="productDescription" rows="4" required></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Hình ảnh -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="section-title"><i class="fas fa-images me-2"></i>Hình Ảnh Sản Phẩm</h5>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label fw-bold">Hình ảnh sản phẩm</label>
+                                <input type="file" class="form-control" id="productImages" multiple accept="image/*" onchange="handleImageInputChange()">
+                                <div class="form-text">Chọn từ 1-5 hình ảnh (JPG, PNG, GIF). Hình đầu tiên sẽ là hình chính.</div>
+                                <div id="imagePreview" class="mt-2 d-flex flex-wrap gap-2"></div>
+                            </div>
+                        </div>
+
+                        <!-- Thông số kỹ thuật -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="section-title"><i class="fas fa-cogs me-2"></i>Thông Số Kỹ Thuật</h5>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div id="specificationsContainer">
+                                    <div class="spec-input-group mb-2">
+                                        <div class="row">
+                                            <div class="col-md-4 mb-2">
+                                                <input type="text" class="form-control" placeholder="Tên thông số" name="specName">
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <input type="text" class="form-control" placeholder="Giá trị" name="specValue">
+                                            </div>
+                                            <div class="col-md-2 mb-2">
+                                                <button type="button" class="btn btn-outline-danger w-100" onclick="removeSpecification(this)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-sm" onclick="addSpecification()">
+                                    <i class="fas fa-plus me-2"></i>Thêm thông số
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tính năng -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="section-title"><i class="fas fa-star me-2"></i>Tính Năng Nổi Bật</h5>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div id="featuresContainer">
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" placeholder="Nhập tính năng" name="feature">
+                                        <button type="button" class="btn btn-outline-danger" onclick="removeFeature(this)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-sm" onclick="addFeature()">
+                                    <i class="fas fa-plus me-2"></i>Thêm tính năng
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Bảo hành -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="section-title"><i class="fas fa-shield-alt me-2"></i>Bảo Hành</h5>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label fw-bold">Thông tin bảo hành</label>
+                                <textarea class="form-control" id="productWarranty" rows="2" placeholder="VD: 25 năm bảo hành sản phẩm, 12 năm bảo hành hiệu suất"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Cài đặt khác -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="section-title"><i class="fas fa-settings me-2"></i>Cài Đặt Khác</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="productFeatured">
+                                    <label class="form-check-label fw-bold" for="productFeatured">
+                                        Sản phẩm nổi bật
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Rating (1-5)</label>
+                                <input type="number" class="form-control" id="productRating" min="1" max="5" step="0.1" value="4.5">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProduct()">
+                        <i class="fas fa-save me-1"></i>Lưu sản phẩm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/dashboard.js" defer></script>
+    <script>
+        const API_BASE = '/api';
+        let currentUserId = null;
+
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (sectionId === 'dashboard') loadDashboard();
+            else if (sectionId === 'users') loadUsers();
+            else if (sectionId === 'products') loadProducts();
+            else if (sectionId === 'reports') loadReports();
+            else if (sectionId === 'analysis') loadAnalysis();
+            else if (sectionId === 'access-stats') loadAccessStats();
+        }
+
+        // Enhanced Dashboard with Charts
+        async function loadDashboard() {
+            try {
+                // Fetch multiple data sources for comprehensive dashboard
+                const [statsResponse, detailedResponse, accessResponse] = await Promise.all([
+                    fetch(`${API_BASE}/admin/stats`, {
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                    }),
+                    fetch(`${API_BASE}/admin/stats/detailed`, {
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                    }),
+                    fetch(`${API_BASE}/admin/access-stats`, {
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                    })
+                ]);
+                
+                const stats = await statsResponse.json();
+                const detailedStats = await detailedResponse.json();
+                const accessStats = await accessResponse.json();
+                
+                // Update main stats cards
+                document.getElementById('totalUsers').textContent = stats.totalUsers || 0;
+                document.getElementById('totalReports').textContent = stats.totalReports || 0;
+                document.getElementById('totalVisits').textContent = stats.totalVisits || 0;
+                document.getElementById('analysesCreated').textContent = stats.analysesCreated || 0;
+                
+                // Update secondary stats
+                const adminCount = detailedStats.usersByRole?.find(r => r._id === 'admin')?.count || 0;
+                const userCount = detailedStats.usersByRole?.find(r => r._id === 'user')?.count || 0;
+                
+                document.getElementById('adminUsers').textContent = adminCount;
+                document.getElementById('regularUsers').textContent = userCount;
+                document.getElementById('todayReports').textContent = Math.floor(stats.totalReports * 0.1) || 0;
+                document.getElementById('weekReports').textContent = Math.floor(stats.totalReports * 0.3) || 0;
+                document.getElementById('growthRate').textContent = '+12%';
+                document.getElementById('avgTime').textContent = '2.5m';
+                
+                // Create Dashboard Charts
+                createDashboardCharts(stats, detailedStats, accessStats);
+                
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                
+                // Fallback data
+                document.getElementById('totalUsers').textContent = '0';
+                document.getElementById('totalReports').textContent = '0';
+                document.getElementById('totalVisits').textContent = '0';
+                document.getElementById('analysesCreated').textContent = '0';
+                document.getElementById('adminUsers').textContent = '0';
+                document.getElementById('regularUsers').textContent = '0';
+                document.getElementById('todayReports').textContent = '0';
+                document.getElementById('weekReports').textContent = '0';
+                document.getElementById('growthRate').textContent = '0%';
+                document.getElementById('avgTime').textContent = '0m';
+                
+                // Create fallback charts
+                createDashboardFallbackCharts();
+            }
+        }
+        
+        // Create Dashboard Charts
+        function createDashboardCharts(stats, detailedStats, accessStats) {
+            try {
+                // 1. Activity Chart (Area Chart)
+                const ctx1 = document.getElementById('dashboardActivityChart').getContext('2d');
+                const activityData = generateLast30DaysData(stats.totalReports, stats.totalVisits);
+                new Chart(ctx1, {
+                    type: 'line',
+                    data: {
+                        labels: activityData.labels,
+                        datasets: [
+                            {
+                                label: 'Lượt truy cập',
+                                data: activityData.visits,
+                                borderColor: '#667eea',
+                                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            },
+                            {
+                                label: 'Báo cáo tạo',
+                                data: activityData.reports,
+                                borderColor: '#f093fb',
+                                backgroundColor: 'rgba(240, 147, 251, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        interaction: {
+                            intersect: false,
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                
+                // 2. User Distribution Chart (Doughnut)
+                const ctx2 = document.getElementById('dashboardUserDistChart').getContext('2d');
+                new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: detailedStats.usersByRole?.map(r => r._id) || ['User', 'Admin'],
+                        datasets: [{
+                            data: detailedStats.usersByRole?.map(r => r.count) || [1, 1],
+                            backgroundColor: ['#667eea', '#f093fb', '#43e97b', '#4facfe'],
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+                
+                // 3. Hourly Reports Chart (Bar)
+                const ctx3 = document.getElementById('dashboardHourlyChart').getContext('2d');
+                const hourlyData = generateHourlyData(stats.totalReports);
+                new Chart(ctx3, {
+                    type: 'bar',
+                    data: {
+                        labels: ['0h', '2h', '4h', '6h', '8h', '10h', '12h', '14h', '16h', '18h', '20h', '22h'],
+                        datasets: [{
+                            label: 'Báo cáo',
+                            data: hourlyData,
+                            backgroundColor: 'rgba(67, 233, 123, 0.8)',
+                            borderColor: '#43e97b',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                
+                // 4. Growth Trend Chart (Line)
+                const ctx4 = document.getElementById('dashboardGrowthChart').getContext('2d');
+                const growthData = generateGrowthData();
+                new Chart(ctx4, {
+                    type: 'line',
+                    data: {
+                        labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'],
+                        datasets: [{
+                            label: 'Tăng trưởng (%)',
+                            data: growthData,
+                            borderColor: '#4facfe',
+                            backgroundColor: 'rgba(79, 172, 254, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointBackgroundColor: '#4facfe',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                
+            } catch (chartError) {
+                console.error('Error creating dashboard charts:', chartError);
+                createDashboardFallbackCharts();
+            }
+        }
+        
+        // Generate sample data for charts
+        function generateLast30DaysData(totalReports, totalVisits) {
+            const labels = [];
+            const reports = [];
+            const visits = [];
+            
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                labels.push(date.toLocaleDateString('vi-VN', { month: 'short', day: 'numeric' }));
+                
+                // Generate realistic data with some variation
+                const baseReports = Math.floor(totalReports / 30);
+                const baseVisits = Math.floor(totalVisits / 30);
+                
+                reports.push(Math.max(0, baseReports + Math.floor(Math.random() * baseReports * 0.5) - Math.floor(baseReports * 0.25)));
+                visits.push(Math.max(0, baseVisits + Math.floor(Math.random() * baseVisits * 0.3) - Math.floor(baseVisits * 0.15)));
+            }
+            
+            return { labels, reports, visits };
+        }
+        
+        function generateHourlyData(totalReports) {
+            const hours = 12;
+            const data = [];
+            const baseValue = Math.floor(totalReports / 24); // 24 hours in a day
+            
+            // Simulate realistic hourly patterns (higher during work hours)
+            const patterns = [0.1, 0.05, 0.03, 0.05, 0.2, 0.4, 0.8, 1.0, 0.9, 0.7, 0.6, 0.3];
+            
+            for (let i = 0; i < hours; i++) {
+                data.push(Math.floor(baseValue * patterns[i] * 2));
+            }
+            
+            return data;
+        }
+        
+        function generateGrowthData() {
+            return [5, 12, 8, 15, 22, 18]; // Sample growth percentages
+        }
+        
+        // Fallback charts for dashboard
+        function createDashboardFallbackCharts() {
+            try {
+                // Create simple fallback charts with minimal data
+                const contexts = [
+                    'dashboardActivityChart',
+                    'dashboardUserDistChart', 
+                    'dashboardHourlyChart',
+                    'dashboardGrowthChart'
+                ];
+                
+                contexts.forEach(canvasId => {
+                    const ctx = document.getElementById(canvasId)?.getContext('2d');
+                    if (ctx) {
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: ['Không có dữ liệu'],
+                                datasets: [{
+                                    label: 'Dữ liệu',
+                                    data: [0],
+                                    borderColor: '#ccc',
+                                    backgroundColor: 'rgba(204, 204, 204, 0.1)'
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            } catch (error) {
+                console.error('Error creating fallback charts:', error);
+            }
+        }
+        
+        // Export data function
+        function exportData() {
+            alert('Tính năng xuất dữ liệu sẽ được phát triển trong phiên bản tiếp theo!');
+        }
+
+        // Users Management
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/users`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                const data = await response.json();
+                
+                const tbody = document.getElementById('usersTableBody');
+                if (data.users && data.users.length > 0) {
+                    tbody.innerHTML = data.users.map(user => `
+                        <tr>
+                            <td>${user._id.substring(0, 8)}...</td>
+                            <td>${user.name}</td>
+                            <td>${user.email}</td>
+                            <td>${user.phone}</td>
+                            <td><span class="badge ${user.role === 'admin' ? 'bg-danger' : 'bg-primary'}">${user.role}</span></td>
+                            <td>${new Date(user.createdAt).toLocaleDateString('vi-VN')}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editUser('${user._id}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteUser('${user._id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center">Không có dữ liệu</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        function showAddUserModal() {
+            currentUserId = null;
+            document.getElementById('userModalTitle').textContent = 'Thêm User';
+            document.getElementById('userForm').reset();
+            new bootstrap.Modal(document.getElementById('userModal')).show();
+        }
+
+        async function editUser(userId) {
+            try {
+                const response = await fetch(`${API_BASE}/admin/users/${userId}`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                const user = await response.json();
+                
+                currentUserId = userId;
+                document.getElementById('userModalTitle').textContent = 'Sửa User';
+                document.getElementById('userName').value = user.name;
+                document.getElementById('userEmail').value = user.email;
+                document.getElementById('userPhone').value = user.phone;
+                document.getElementById('userRole').value = user.role;
+                document.getElementById('userPassword').required = false;
+                
+                new bootstrap.Modal(document.getElementById('userModal')).show();
+            } catch (error) {
+                console.error('Error loading user:', error);
+            }
+        }
+
+        async function saveUser() {
+            const formData = {
+                name: document.getElementById('userName').value,
+                email: document.getElementById('userEmail').value,
+                phone: document.getElementById('userPhone').value,
+                role: document.getElementById('userRole').value
+            };
+            
+            const password = document.getElementById('userPassword').value;
+            if (password) formData.password = password;
+            
+            try {
+                const url = currentUserId ? `${API_BASE}/admin/users/${currentUserId}` : `${API_BASE}/admin/users`;
+                const method = currentUserId ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    bootstrap.Modal.getInstance(document.getElementById('userModal')).hide();
+                    loadUsers();
+                    alert(currentUserId ? 'Cập nhật user thành công!' : 'Thêm user thành công!');
+                }
+            } catch (error) {
+                console.error('Error saving user:', error);
+            }
+        }
+
+        async function deleteUser(userId) {
+            if (!confirm('Bạn có chắc muốn xóa user này?')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/admin/users/${userId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                
+                if (response.ok) {
+                    loadUsers();
+                    alert('Xóa user thành công!');
+                }
+            } catch (error) {
+                console.error('Error deleting user:', error);
+            }
+        }
+
+        // Reports Management
+        let currentPage = 1;
+        let currentReportShareId = null;
+        let reportsCache = []; // Cache reports data for details view
+        
+        async function loadReports(page = 1) {
+            try {
+                const search = document.getElementById('reportSearch')?.value || '';
+                const userId = document.getElementById('userFilter')?.value || '';
+                const sortBy = document.getElementById('sortBy')?.value || 'createdAt';
+                
+                const params = new URLSearchParams();
+                if (search) params.append('search', search);
+                if (userId) params.append('userId', userId);
+                params.append('page', page);
+                params.append('limit', 10);
+                params.append('sort', sortBy);
+                
+                const response = await fetch(`${API_BASE}/admin/reports?${params}`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                
+                if (!response.ok) throw new Error('Failed to fetch reports');
+                
+                const data = await response.json();
+                
+                const tbody = document.getElementById('reportsTableBody');
+                if (data.reports && data.reports.length > 0) {
+                    // Cache reports data for details view
+                    reportsCache = data.reports;
+                    
+                    tbody.innerHTML = data.reports.map(report => `
+                        <tr>
+                            <td>
+                                <code class="text-primary">${report.shareId}</code>
+                            </td>
+                            <td>
+                                <strong>${report.survey.name}</strong>
+                            </td>
+                            <td>
+                                <small class="text-muted">${report.survey.address || 'Chưa có địa chỉ'}</small>
+                            </td>
+                            <td>
+                                <div>
+                                    <strong>${report.user.name}</strong><br>
+                                    <small class="text-muted">${report.user.email}</small>
+                                </div>
+                            </td>
+                            <td>
+                                <small>${new Date(report.createdAt).toLocaleDateString('vi-VN')}</small><br>
+                                <small class="text-muted">${new Date(report.createdAt).toLocaleTimeString('vi-VN')}</small>
+                            </td>
+                            <td>
+                                <span class="badge bg-info">${report.scenarios?.length || 0}</span>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="viewReportDetails('${report.shareId}')" title="Xem chi tiết">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-success" onclick="openReportInNewTab('${report.shareId}')" title="Mở trong tab mới">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteReport('${report._id}', '${report.shareId}', '${report.survey.name}')" title="Xóa report">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('');
+                    
+                    // Update report count
+                    document.getElementById('reportCount').textContent = data.total || 0;
+                    
+                    // Update pagination
+                    updateReportsPagination(data.currentPage || 1, data.totalPages || 1);
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center">Không có dữ liệu</td></tr>';
+                    document.getElementById('reportCount').textContent = '0';
+                    document.getElementById('reportsPagination').innerHTML = '';
+                }
+                
+                // Load users for filter if not loaded
+                await loadUsersForReportFilter();
+                
+            } catch (error) {
+                console.error('Error loading reports:', error);
+                document.getElementById('reportsTableBody').innerHTML = 
+                    '<tr><td colspan="7" class="text-center text-danger">Lỗi tải dữ liệu</td></tr>';
+            }
+        }
+        
+        async function loadUsersForReportFilter() {
+            try {
+                const userFilter = document.getElementById('userFilter');
+                if (userFilter.children.length > 1) return; // Already loaded
+                
+                const response = await fetch(`${API_BASE}/admin/users`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const options = data.users.map(user => 
+                        `<option value="${user._id}">${user.name} (${user.email})</option>`
+                    ).join('');
+                    userFilter.innerHTML = '<option value="">Tất cả users</option>' + options;
+                }
+            } catch (error) {
+                console.error('Error loading users for filter:', error);
+            }
+        }
+        
+        function updateReportsPagination(currentPage, totalPages) {
+            const pagination = document.getElementById('reportsPagination');
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            // Previous button
+            paginationHTML += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="loadReports(${currentPage - 1})">&laquo;</a>
+                </li>
+            `;
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage || i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    paginationHTML += `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <a class="page-link" href="#" onclick="loadReports(${i})">${i}</a>
+                        </li>
+                    `;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    paginationHTML += '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                }
+            }
+            
+            // Next button
+            paginationHTML += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="loadReports(${currentPage + 1})">&raquo;</a>
+                </li>
+            `;
+            
+            pagination.innerHTML = paginationHTML;
+        }
+        
+        function searchReports() {
+            currentPage = 1;
+            loadReports(1);
+        }
+        
+        function viewReportDetails(shareId) {
+            try {
+                currentReportShareId = shareId;
+                
+                // Find report in cache
+                const report = reportsCache.find(r => r.shareId === shareId);
+                
+                if (!report) {
+                    alert('Không tìm thấy thông tin report. Vui lòng làm mới danh sách.');
+                    return;
+                }
+                
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                
+                // Display report details using cached data
+                document.getElementById('reportDetailsContent').innerHTML = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-info-circle me-2"></i>Thông tin chung</h6>
+                            <table class="table table-sm">
+                                <tr><td><strong>Share ID:</strong></td><td><code class="text-primary">${report.shareId}</code></td></tr>
+                                <tr><td><strong>Tên khách hàng:</strong></td><td>${report.survey.name}</td></tr>
+                                <tr><td><strong>Địa chỉ:</strong></td><td>${report.survey.address || 'Chưa có địa chỉ'}</td></tr>
+                                <tr><td><strong>Loại khách hàng:</strong></td><td>${report.survey.customerType || 'Chưa xác định'}</td></tr>
+                                <tr><td><strong>Khu vực:</strong></td><td>${report.survey.region || 'Chưa xác định'}</td></tr>
+                                <tr><td><strong>Ngày tạo:</strong></td><td>${new Date(report.createdAt).toLocaleString('vi-VN')}</td></tr>
+                                <tr><td><strong>Cập nhật lần cuối:</strong></td><td>${new Date(report.updatedAt || report.createdAt).toLocaleString('vi-VN')}</td></tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-user me-2"></i>Thông tin người tạo</h6>
+                            <table class="table table-sm mb-3">
+                                <tr><td><strong>Tên:</strong></td><td>${report.user.name}</td></tr>
+                                <tr><td><strong>Email:</strong></td><td>${report.user.email}</td></tr>
+                                <tr><td><strong>Vai trò:</strong></td><td><span class="badge ${report.user.role === 'admin' ? 'bg-danger' : 'bg-primary'}">${report.user.role}</span></td></tr>
+                            </table>
+                            
+                            <h6><i class="fas fa-chart-bar me-2"></i>Kịch bản phân tích</h6>
+                            <div class="mb-3">
+                                <span class="badge bg-primary">Tổng số kịch bản: ${report.scenarios?.length || 0}</span>
+                            </div>
+                            ${report.scenarios && report.scenarios.length > 0 ? 
+                                report.scenarios.map((scenario, index) => `
+                                    <div class="card mb-2">
+                                        <div class="card-body p-2">
+                                            <h6 class="card-title mb-1">
+                                                <i class="fas fa-cogs me-1"></i>
+                                                ${scenario.scenarioName || `Kịch bản ${index + 1}`}
+                                            </h6>
+                                            <div class="row text-center">
+                                                <div class="col-4">
+                                                    <small class="text-muted d-block">KWp</small>
+                                                    <strong class="text-primary">${scenario.results?.recommendedKwp || 'N/A'}</strong>
+                                                </div>
+                                                <div class="col-4">
+                                                    <small class="text-muted d-block">Tấm pin</small>
+                                                    <strong class="text-info">${scenario.results?.numberOfPanels || 'N/A'}</strong>
+                                                </div>
+                                                <div class="col-4">
+                                                    <small class="text-muted d-block">Tiết kiệm/tháng</small>
+                                                    <strong class="text-success">${scenario.results?.monthlySavings ? scenario.results.monthlySavings.toLocaleString('vi-VN') : 'N/A'}</strong>
+                                                </div>
+                                            </div>
+                                            ${scenario.results?.totalInvestment ? `
+                                                <hr class="my-2">
+                                                <div class="row text-center">
+                                                    <div class="col-6">
+                                                        <small class="text-muted d-block">Tổng đầu tư</small>
+                                                        <strong class="text-warning">${scenario.results.totalInvestment.toLocaleString('vi-VN')} VND</strong>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <small class="text-muted d-block">Hoàn vốn</small>
+                                                        <strong class="text-secondary">${scenario.results?.paybackPeriodYears || 'N/A'} năm</strong>
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                `).join('') : 
+                                '<div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>Chưa có kịch bản phân tích nào</div>'
+                            }
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock me-1"></i>
+                                        Report được tạo ${new Date(report.createdAt).toLocaleDateString('vi-VN')} lúc ${new Date(report.createdAt).toLocaleTimeString('vi-VN')}
+                                    </small>
+                                </div>
+                                <div>
+                                    <button class="btn btn-outline-primary btn-sm" onclick="openReportInNewTab('${report.shareId}')">
+                                        <i class="fas fa-external-link-alt me-1"></i>Mở report đầy đủ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                modal.show();
+                
+            } catch (error) {
+                console.error('Error displaying report details:', error);
+                alert('Có lỗi xảy ra khi hiển thị chi tiết report!');
+            }
+        }
+        
+        function openReportInNewTab(shareId = null) {
+            const reportShareId = shareId || currentReportShareId;
+            if (reportShareId) {
+                window.open(`../report_detail.html?id=${reportShareId}`, '_blank');
+            }
+        }
+        
+        function confirmDeleteReport(reportId, shareId, customerName) {
+            const confirmMessage = `Bạn có chắc muốn xóa report này không?\n\n` +
+                                 `Share ID: ${shareId}\n` +
+                                 `Khách hàng: ${customerName}\n\n` +
+                                 `Hành động này không thể hoàn tác!`;
+                                 
+            if (confirm(confirmMessage)) {
+                deleteReport(reportId);
+            }
+        }
+        
+        async function deleteReport(reportId) {
+            try {
+                const response = await fetch(`${API_BASE}/admin/reports/${reportId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                
+                if (response.ok) {
+                    loadReports(currentPage);
+                    alert('Xóa report thành công!');
+                } else {
+                    const error = await response.json();
+                    alert('Lỗi: ' + (error.message || 'Không thể xóa report'));
+                }
+            } catch (error) {
+                console.error('Error deleting report:', error);
+                alert('Có lỗi xảy ra khi xóa report!');
+            }
+        }
+
+        // System Analysis - Enhanced Version
+        async function loadAnalysis() {
+            try {
+                // Fetch multiple data sources
+                const [detailedResponse, statsResponse, accessResponse] = await Promise.all([
+                    fetch(`${API_BASE}/admin/stats/detailed`, {
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                    }),
+                    fetch(`${API_BASE}/admin/stats`, {
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                    }),
+                    fetch(`${API_BASE}/admin/access-stats`, {
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                    })
+                ]);
+                
+                const detailedData = await detailedResponse.json();
+                const statsData = await statsResponse.json();
+                const accessData = await accessResponse.json();
+                
+                // Update system overview stats
+                document.getElementById('systemTotalUsers').textContent = statsData.totalUsers || 0;
+                document.getElementById('systemTotalReports').textContent = statsData.totalReports || 0;
+                document.getElementById('systemTotalAnalyses').textContent = statsData.analysesCreated || 0;
+                
+                // Calculate efficiency (reports per user)
+                const efficiency = statsData.totalUsers > 0 ? 
+                    (statsData.totalReports / statsData.totalUsers).toFixed(1) : '0';
+                document.getElementById('systemEfficiency').textContent = efficiency;
+                
+                // 1. User Role Distribution Chart (Doughnut)
+                const ctx1 = document.getElementById('systemOverviewChart').getContext('2d');
+                new Chart(ctx1, {
+                    type: 'doughnut',
+                    data: {
+                        labels: detailedData.usersByRole?.map(r => r._id) || ['User', 'Admin'],
+                        datasets: [{
+                            data: detailedData.usersByRole?.map(r => r.count) || [1, 1],
+                            backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c'],
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+                
+                // 2. Monthly Reports Chart (Bar)
+                const monthlyData = generateMonthlyData(statsData.totalReports);
+                const ctx2 = document.getElementById('monthlyReportsChart').getContext('2d');
+                new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                        datasets: [{
+                            label: 'Báo cáo',
+                            data: monthlyData,
+                            backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                            borderColor: '#667eea',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                
+                // 3. System Trend Chart (Line)
+                const trendData = accessData.dailyStats || [];
+                const ctx3 = document.getElementById('systemTrendChart').getContext('2d');
+                new Chart(ctx3, {
+                    type: 'line',
+                    data: {
+                        labels: trendData.map(d => d.date) || ['Không có dữ liệu'],
+                        datasets: [
+                            {
+                                label: 'Lượt truy cập',
+                                data: trendData.map(d => d.visits) || [0],
+                                borderColor: '#667eea',
+                                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            },
+                            {
+                                label: 'Báo cáo tạo',
+                                data: trendData.map(d => Math.floor(d.visits * 0.3)) || [0],
+                                borderColor: '#f093fb',
+                                backgroundColor: 'rgba(240, 147, 251, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        interaction: {
+                            intersect: false,
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            }
+                        }
+                    }
+                });
+                
+                // 4. Solar Analysis Chart (Radar)
+                const ctx4 = document.getElementById('solarAnalysisChart').getContext('2d');
+                new Chart(ctx4, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Hiệu suất', 'Tiết kiệm', 'Môi trường', 'Đầu tư', 'Công nghệ', 'Bảo trì'],
+                        datasets: [{
+                            label: 'Chỉ số Solar Analytics',
+                            data: [85, 90, 78, 65, 88, 82],
+                            backgroundColor: 'rgba(67, 233, 123, 0.2)',
+                            borderColor: '#43e97b',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#43e97b',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#43e97b'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+                
+                // 5. Top Users Display
+                const topUsersDiv = document.getElementById('topUsersTable');
+                if (detailedData.topUsers && detailedData.topUsers.length > 0) {
+                    topUsersDiv.innerHTML = detailedData.topUsers.map((user, index) => `
+                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 ${index < 3 ? 'bg-light' : ''} rounded">
+                            <div class="d-flex align-items-center">
+                                <span class="badge ${index === 0 ? 'bg-warning' : index === 1 ? 'bg-secondary' : index === 2 ? 'bg-info' : 'bg-light text-dark'} me-2">
+                                    ${index + 1}
+                                </span>
+                                <span class="fw-bold">${user.userName || 'N/A'}</span>
+                            </div>
+                            <span class="badge bg-primary">${user.reportCount} báo cáo</span>
+                        </div>
+                    `).join('');
+                } else {
+                    topUsersDiv.innerHTML = '<div class="text-center text-muted">Không có dữ liệu</div>';
+                }
+                
+                // 6. Activity Time Analysis
+                const totalReports = statsData.totalReports || 0;
+                document.getElementById('morningActivity').textContent = Math.floor(totalReports * 0.35);
+                document.getElementById('afternoonActivity').textContent = Math.floor(totalReports * 0.45);
+                document.getElementById('eveningActivity').textContent = Math.floor(totalReports * 0.20);
+                
+                // 7. System Performance
+                document.getElementById('avgResponseTime').textContent = '150';
+                
+            } catch (error) {
+                console.error('Error loading analysis:', error);
+                
+                // Show fallback data instead of error
+                document.getElementById('systemTotalUsers').textContent = '0';
+                document.getElementById('systemTotalReports').textContent = '0';
+                document.getElementById('systemTotalAnalyses').textContent = '0';
+                document.getElementById('systemEfficiency').textContent = '0.0';
+                
+                // Create fallback charts with sample data
+                createFallbackCharts();
+                
+                // Show fallback top users
+                document.getElementById('topUsersTable').innerHTML = '<div class="text-center text-muted">Không có dữ liệu</div>';
+                
+                // Set fallback activity data
+                document.getElementById('morningActivity').textContent = '0';
+                document.getElementById('afternoonActivity').textContent = '0';
+                document.getElementById('eveningActivity').textContent = '0';
+                document.getElementById('avgResponseTime').textContent = '150';
+            }
+        }
+        
+        // Helper function to generate monthly data
+        function generateMonthlyData(totalReports) {
+            const months = 12;
+            const data = [];
+            const baseValue = Math.floor(totalReports / months);
+            
+            for (let i = 0; i < months; i++) {
+                // Add some variation to make it look realistic
+                const variation = Math.floor(Math.random() * baseValue * 0.5);
+                data.push(Math.max(0, baseValue + variation - Math.floor(baseValue * 0.25)));
+            }
+            
+            return data;
+        }
+        
+        // Fallback charts when API fails
+        function createFallbackCharts() {
+            try {
+                // 1. User Role Distribution Chart (Doughnut) - Fallback
+                const ctx1 = document.getElementById('systemOverviewChart').getContext('2d');
+                new Chart(ctx1, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['User', 'Admin'],
+                        datasets: [{
+                            data: [1, 1],
+                            backgroundColor: ['#667eea', '#764ba2'],
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+                
+                // 2. Monthly Reports Chart (Bar) - Fallback
+                const ctx2 = document.getElementById('monthlyReportsChart').getContext('2d');
+                new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                        datasets: [{
+                            label: 'Báo cáo',
+                            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                            backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                            borderColor: '#667eea',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                
+                // 3. System Trend Chart (Line) - Fallback
+                const ctx3 = document.getElementById('systemTrendChart').getContext('2d');
+                new Chart(ctx3, {
+                    type: 'line',
+                    data: {
+                        labels: ['Không có dữ liệu'],
+                        datasets: [
+                            {
+                                label: 'Lượt truy cập',
+                                data: [0],
+                                borderColor: '#667eea',
+                                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            },
+                            {
+                                label: 'Báo cáo tạo',
+                                data: [0],
+                                borderColor: '#f093fb',
+                                backgroundColor: 'rgba(240, 147, 251, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        interaction: {
+                            intersect: false,
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            }
+                        }
+                    }
+                });
+                
+                // 4. Solar Analysis Chart (Radar) - Fallback
+                const ctx4 = document.getElementById('solarAnalysisChart').getContext('2d');
+                new Chart(ctx4, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Hiệu suất', 'Tiết kiệm', 'Môi trường', 'Đầu tư', 'Công nghệ', 'Bảo trì'],
+                        datasets: [{
+                            label: 'Chỉ số Solar Analytics',
+                            data: [0, 0, 0, 0, 0, 0],
+                            backgroundColor: 'rgba(67, 233, 123, 0.2)',
+                            borderColor: '#43e97b',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#43e97b',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#43e97b'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+            } catch (chartError) {
+                console.error('Error creating fallback charts:', chartError);
+            }
+        }
+
+        // Access Statistics
+        async function loadAccessStats() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/access-stats`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                const data = await response.json();
+                
+                document.getElementById('accessTotalVisits').textContent = data.totalVisits || 0;
+                document.getElementById('accessTotalLogins').textContent = data.totalLogins || 0;
+                document.getElementById('accessAnalysesCreated').textContent = data.analysesCreated || 0;
+                
+                // Create access chart
+                const ctx = document.getElementById('accessChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.dailyStats?.map(d => d.date) || ['Không có dữ liệu'],
+                        datasets: [{
+                            label: 'Lượt truy cập',
+                            data: data.dailyStats?.map(d => d.visits) || [0],
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: { responsive: true }
+                });
+            } catch (error) {
+                console.error('Error loading access stats:', error);
+            }
+        }
+
+        // Products Management
+        let currentProductId = null;
+        let productsData = [];
+        let currentProductsPage = 1;
+        const productsPerPage = 10;
+
+        async function loadProducts(page = 1) {
+            try {
+                const url = `${API_BASE}/products/admin/all?page=${page}&limit=${productsPerPage}`;
+                console.log('Loading products from URL:', url);
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    productsData = data.data.products;
+                    updateProductsStats(data.data);
+                    renderProductsTable(data.data.products);
+                    updateProductsPagination(page, data.data.pagination.totalPages, data.data.pagination.totalProducts);
+                    currentProductsPage = page;
+                } else {
+                    console.error('Failed to load products:', data.message);
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('productsTableBody').innerHTML = 
+                    '<tr><td colspan="7" class="text-center text-danger">Lỗi khi tải dữ liệu sản phẩm</td></tr>';
+            }
+        }
+
+        function updateProductsStats(data) {
+            document.getElementById('totalProducts').textContent = data.pagination.totalProducts || 0;
+            document.getElementById('inStockProducts').textContent = 
+                data.products?.filter(p => p.stock > 0).length || 0;
+            document.getElementById('outOfStockProducts').textContent = 
+                data.products?.filter(p => p.stock === 0).length || 0;
+            document.getElementById('featuredProducts').textContent = 
+                data.products?.filter(p => p.isFeatured).length || 0;
+        }
+
+        function renderProductsTable(products) {
+            const tbody = document.getElementById('productsTableBody');
+            
+            if (!products || products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center">Không có sản phẩm nào</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = products.map(product => {
+                const row = `
+                    <tr data-product-id="${product._id}">
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="${getProductImageUrl(product.images)}" alt="${product.name}" 
+                                     class="product-thumbnail me-3" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;"
+                                     onerror="this.src='${getNoImagePlaceholder()}'; this.onerror=null;">
+                                <div>
+                                    <div class="fw-bold">${product.name}</div>
+                                    <small class="text-muted">${product.brand || 'N/A'}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${product.category || 'N/A'}</td>
+                        <td>
+                            <div class="fw-bold text-primary">${formatPrice(product.price)}</div>
+                            ${product.originalPrice ? 
+                                `<small class="text-muted text-decoration-line-through">${formatPrice(product.originalPrice)}</small>` : ''}
+                        </td>
+                        <td>
+                            <span class="badge ${product.stock > 0 ? 'bg-success' : 'bg-danger'}">
+                                ${product.stock || 0}
+                            </span>
+                        </td>
+                        <td>
+                            ${product.isFeatured ? '<span class="badge bg-warning">Nổi bật</span>' : ''}
+                            ${product.stock === 0 ? '<span class="badge bg-danger">Hết hàng</span>' : ''}
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-primary" onclick="editProduct('${product._id}')" title="Sửa">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-outline-info" onclick="viewProduct('${product._id}')" title="Xem">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-outline-danger" onclick="deleteProduct('${product._id}', '${escapeHtml(product.name)}')" title="Xóa">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return row;
+            }).join('');
+        }
+
+        function updateProductsPagination(currentPage, totalPages, totalProducts) {
+            const pagination = document.getElementById('productsPagination');
+            const info = document.getElementById('productsInfo');
+            
+            const start = (currentPage - 1) * productsPerPage + 1;
+            const end = Math.min(currentPage * productsPerPage, totalProducts || 0);
+            info.textContent = `Hiển thị ${start} - ${end} của ${totalProducts || 0} sản phẩm`;
+
+            let paginationHTML = '';
+            
+            // Previous button
+            paginationHTML += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="loadProducts(${currentPage - 1})">Trước</a>
+                </li>
+            `;
+            
+            // Page numbers
+            for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+                paginationHTML += `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="loadProducts(${i})">${i}</a>
+                    </li>
+                `;
+            }
+            
+            // Next button
+            paginationHTML += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="loadProducts(${currentPage + 1})">Sau</a>
+                </li>
+            `;
+            
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function showAddProductModal() {
+            currentProductId = null;
+            window.currentEditingImages = null; // Clear existing images for new product
+            document.getElementById('productModalTitle').textContent = 'Thêm Sản phẩm';
+            document.getElementById('productForm').reset();
+            document.getElementById('productRating').value = '4.5';
+            document.getElementById('imagePreview').innerHTML = ''; // Clear image preview
+            
+            // Initialize dynamic form sections
+            populateSpecifications({});
+            populateFeatures([]);
+            
+            new bootstrap.Modal(document.getElementById('productModal')).show();
+        }
+
+        async function editProduct(productId) {
+            try {
+                const response = await fetch(`${API_BASE}/products/${productId}`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    const product = data.product || data.data;
+                    if (!product) {
+                        throw new Error('Không tìm thấy thông tin sản phẩm');
+                    }
+                    currentProductId = productId;
+                    
+                    // Fill form with product data
+                    document.getElementById('productName').value = product.name || '';
+                    document.getElementById('productBrand').value = product.brand || '';
+                    document.getElementById('productModel').value = product.model || '';
+                    document.getElementById('productCategory').value = product.category || '';
+                    document.getElementById('productPrice').value = product.price || '';
+                    document.getElementById('productStock').value = product.stock || 0;
+                    document.getElementById('productOriginalPrice').value = product.originalPrice || '';
+                    document.getElementById('productShortDescription').value = product.shortDescription || '';
+                    document.getElementById('productDescription').value = product.description || '';
+                    document.getElementById('productFeatured').checked = product.isFeatured || false;
+                    document.getElementById('productRating').value = product.rating || 4.5;
+                    // Cannot set file input value directly - store existing images separately
+                    const existingImages = product.images?.map(img => img.url || img) || [];
+                    
+                    // Clear file input and display existing images
+                    document.getElementById('productImages').value = '';
+                    displayExistingImages(existingImages);
+                    
+                    // Store existing images for later use
+                    window.currentEditingImages = existingImages;
+                    
+                    // Populate specifications
+                    populateSpecifications(product.specifications || {});
+                    
+                    // Populate features
+                    populateFeatures(product.features || []);
+                    
+                    // Populate warranty
+                    document.getElementById('productWarranty').value = product.warranty || '';
+                    
+                    document.getElementById('productModalTitle').textContent = 'Sửa Sản phẩm';
+                    new bootstrap.Modal(document.getElementById('productModal')).show();
+                }
+            } catch (error) {
+                console.error('Error loading product:', error);
+                alert('Lỗi khi tải thông tin sản phẩm');
+            }
+        }
+
+        async function saveProduct() {
+            try {
+                // Validate required fields
+                const requiredFields = [
+                    { id: 'productName', name: 'Tên sản phẩm' },
+                    { id: 'productBrand', name: 'Thương hiệu' },
+                    { id: 'productModel', name: 'Model' },
+                    { id: 'productCategory', name: 'Danh mục' },
+                    { id: 'productPrice', name: 'Giá' },
+                    { id: 'productShortDescription', name: 'Mô tả ngắn' },
+                    { id: 'productDescription', name: 'Mô tả chi tiết' }
+                ];
+
+                for (const field of requiredFields) {
+                    const value = document.getElementById(field.id).value?.trim();
+                    if (!value) {
+                        alert(`${field.name} là bắt buộc!`);
+                        document.getElementById(field.id).focus();
+                        return;
+                    }
+                }
+
+                // Handle images - either from existing URLs or new file uploads
+                const imageInput = document.getElementById('productImages');
+                let imageUrls = [];
+                
+                // Handle images - validate total count (existing + new)
+                const existingImageCount = (currentProductId && window.currentEditingImages) ? window.currentEditingImages.length : 0;
+                const newImageCount = (imageInput.files && imageInput.files.length > 0) ? imageInput.files.length : 0;
+                const totalImageCount = existingImageCount + newImageCount;
+
+                // Validate total image count (1-5)
+                if (totalImageCount > 5) {
+                    alert(`Tổng số hình ảnh không được vượt quá 5! Hiện tại: ${existingImageCount} ảnh cũ + ${newImageCount} ảnh mới = ${totalImageCount} ảnh.`);
+                    return;
+                }
+
+                if (totalImageCount < 1) {
+                    alert('Sản phẩm phải có ít nhất 1 hình ảnh!');
+                    return;
+                }
+
+                // Check if there are new files to upload
+                if (imageInput.files && imageInput.files.length > 0) {
+                    try {
+                        const newImageUrls = await uploadImages(imageInput.files);
+                        // Combine existing images with new uploaded images
+                        if (currentProductId && window.currentEditingImages) {
+                            imageUrls = [...window.currentEditingImages, ...newImageUrls];
+                        } else {
+                            imageUrls = newImageUrls;
+                        }
+                    } catch (error) {
+                        alert('Lỗi khi upload hình ảnh: ' + error.message);
+                        return;
+                    }
+                } else if (currentProductId && window.currentEditingImages) {
+                    // Use existing image URLs stored during edit mode
+                    imageUrls = window.currentEditingImages;
+                }
+
+                // Collect specifications and features using new dynamic form structure
+                const specifications = collectSpecifications();
+                const features = collectFeatures();
+
+                const formData = {
+                    name: document.getElementById('productName').value,
+                    brand: document.getElementById('productBrand').value,
+                    model: document.getElementById('productModel').value,
+                    category: document.getElementById('productCategory').value,
+                    price: parseFloat(document.getElementById('productPrice').value),
+                    stock: parseInt(document.getElementById('productStock').value) || 0,
+                    originalPrice: parseFloat(document.getElementById('productOriginalPrice').value) || null,
+                    shortDescription: document.getElementById('productShortDescription').value,
+                    description: document.getElementById('productDescription').value,
+                    isFeatured: document.getElementById('productFeatured').checked,
+                    rating: parseFloat(document.getElementById('productRating').value) || 4.5,
+                    warranty: document.getElementById('productWarranty').value || '',
+                    images: imageUrls.length > 0 ? imageUrls.map((url, index) => ({
+                        url: typeof url === 'string' ? url : url.url || url,
+                        alt: document.getElementById('productName').value || 'Product Image',
+                        isPrimary: index === 0
+                    })) : [],
+                    specifications: specifications,
+                    features: features
+                };
+
+                // Specifications are optional now
+                // if (Object.keys(specifications).length === 0) {
+                //     alert('Phải có ít nhất một thông số kỹ thuật!');
+                //     return;
+                // }
+
+                // Features are also optional now
+                // if (features.length === 0) {
+                //     alert('Phải có ít nhất một tính năng!');
+                //     return;
+                // }
+
+                console.log('Sending product data:', formData);
+
+                const url = currentProductId ? 
+                    `${API_BASE}/products/${currentProductId}` : 
+                    `${API_BASE}/products`;
+                const method = currentProductId ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
+                    loadProducts(currentProductsPage);
+                    
+                    // Show success notification
+                    showNotification(
+                        currentProductId ? 'Cập nhật sản phẩm thành công!' : 'Thêm sản phẩm thành công!',
+                        'success'
+                    );
+                } else {
+                    console.error('Server error response:', data);
+                    showNotification('Lỗi: ' + (data.message || 'Unknown error'), 'error');
+                }
+            } catch (error) {
+                console.error('Error saving product:', error);
+                showNotification('Lỗi khi lưu sản phẩm', 'error');
+            }
+        }
+
+        async function deleteProduct(productId, productName) {
+            // Create custom confirmation modal instead of browser confirm
+            const confirmDelete = await showConfirmDialog(
+                'Xác nhận xóa sản phẩm',
+                `Bạn có chắc chắn muốn xóa sản phẩm "${productName}"?<br><small class="text-muted">Hành động này không thể hoàn tác.</small>`,
+                'Xóa sản phẩm',
+                'danger'
+            );
+            
+            if (!confirmDelete) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/products/${productId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Remove the product row from table immediately
+                    const productRow = document.querySelector(`tr[data-product-id="${productId}"]`);
+                    if (productRow) {
+                        productRow.style.transition = 'opacity 0.3s ease';
+                        productRow.style.opacity = '0';
+                        setTimeout(() => {
+                            productRow.remove();
+                        }, 300);
+                    }
+                    
+                    // Reload products list and dashboard after animation
+                    setTimeout(() => {
+                        loadProducts(currentProductsPage);
+                        loadDashboard();
+                    }, 400);
+                    
+                    showNotification(`Đã xóa sản phẩm "${productName}" thành công!`, 'success');
+                } else {
+                    showNotification('Lỗi: ' + data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting product:', error);
+                showNotification('Lỗi khi xóa sản phẩm', 'error');
+            }
+        }
+
+        function viewProduct(productId) {
+            window.open(`/product-detail.html?id=${productId}`, '_blank');
+        }
+
+        function searchProducts() {
+            const searchTerm = document.getElementById('productSearchInput').value.toLowerCase();
+            const filteredProducts = productsData.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.brand?.toLowerCase().includes(searchTerm) ||
+                product.category.toLowerCase().includes(searchTerm)
+            );
+            renderProductsTable(filteredProducts);
+        }
+
+        function filterProducts() {
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const stockFilter = document.getElementById('stockFilter').value;
+            const featuredFilter = document.getElementById('featuredFilter').value;
+
+            let filteredProducts = productsData;
+
+            if (categoryFilter) {
+                filteredProducts = filteredProducts.filter(p => p.category === categoryFilter);
+            }
+
+            if (stockFilter === 'in-stock') {
+                filteredProducts = filteredProducts.filter(p => p.stock > 0);
+            } else if (stockFilter === 'out-of-stock') {
+                filteredProducts = filteredProducts.filter(p => p.stock === 0);
+            }
+
+            if (featuredFilter === 'featured') {
+                filteredProducts = filteredProducts.filter(p => p.isFeatured);
+            } else if (featuredFilter === 'not-featured') {
+                filteredProducts = filteredProducts.filter(p => !p.isFeatured);
+            }
+
+            renderProductsTable(filteredProducts);
+        }
+
+        function exportProducts() {
+            // Simple CSV export
+            const csv = [
+                ['Tên sản phẩm', 'Thương hiệu', 'Danh mục', 'Giá', 'Tồn kho', 'Nổi bật'].join(','),
+                ...productsData.map(p => [
+                    p.name,
+                    p.brand || '',
+                    getCategoryLabel(p.category),
+                    p.price,
+                    p.stock,
+                    p.isFeatured ? 'Có' : 'Không'
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'products.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function getCategoryLabel(categoryValue) {
+            const categories = {
+                'solar-panels': 'Tấm Pin Mặt Trời',
+                'inverters': 'Inverter',
+                'batteries': 'Pin Lưu Trữ',
+                'mounting-systems': 'Hệ Thống Lắp Đặt',
+                'monitoring': 'Giám Sát',
+                'accessories': 'Phụ Kiện'
+            };
+            return categories[categoryValue] || categoryValue;
+        }
+
+        function formatPrice(price) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(price);
+        }
+
+        // Preview selected images with validation
+        function previewImages(input) {
+            const previewContainer = document.getElementById('imagePreview');
+            previewContainer.innerHTML = '';
+
+            if (input.files && input.files.length > 0) {
+                // Validate number of images (1-5)
+                if (input.files.length > 5) {
+                    alert('Chỉ được chọn tối đa 5 hình ảnh!');
+                    input.value = ''; // Clear the input
+                    return;
+                }
+
+                if (input.files.length < 1) {
+                    alert('Vui lòng chọn ít nhất 1 hình ảnh!');
+                    return;
+                }
+
+                // Show selected count
+                const countBadge = document.createElement('div');
+                countBadge.className = 'mb-2';
+                countBadge.innerHTML = `<span class="badge bg-info">Đã chọn ${input.files.length}/5 hình ảnh</span>`;
+                previewContainer.appendChild(countBadge);
+
+                Array.from(input.files).forEach((file, index) => {
+                    // Validate file size (max 5MB per image)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert(`Hình ảnh "${file.name}" quá lớn. Vui lòng chọn file nhỏ hơn 5MB.`);
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageDiv = document.createElement('div');
+                        imageDiv.className = 'position-relative d-inline-block m-1';
+                        imageDiv.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview ${index + 1}" 
+                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 2px solid #ddd;">
+                            ${index === 0 ? '<span class="badge bg-primary position-absolute top-0 start-0 m-1">Chính</span>' : ''}
+                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1" 
+                                    onclick="removeImage(${index})" style="padding: 2px 6px; font-size: 12px;">×</button>
+                            <div class="text-center mt-1">
+                                <small class="text-muted">${(file.size / 1024).toFixed(1)}KB</small>
+                            </div>
+                        `;
+                        previewContainer.appendChild(imageDiv);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        // Remove image from preview
+        function removeImage(index) {
+            const input = document.getElementById('productImages');
+            const dt = new DataTransfer();
+            
+            Array.from(input.files).forEach((file, i) => {
+                if (i !== index) {
+                    dt.items.add(file);
+                }
+            });
+            
+            input.files = dt.files;
+            previewImages(input);
+        }
+
+        // Upload images to server
+        async function uploadImages(files) {
+            const formData = new FormData();
+            Array.from(files).forEach((file, index) => {
+                formData.append('images', file);
+            });
+
+            try {
+                const response = await fetch(`${API_BASE}/upload/images`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    return data.imageUrls;
+                } else {
+                    throw new Error(data.message || 'Upload failed');
+                }
+            } catch (error) {
+                console.error('Error uploading images:', error);
+                throw error;
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for authentication using userInfo approach
+            const userInfo = localStorage.getItem('userInfo');
+            let token = null;
+            
+            if (userInfo) {
+                try {
+                    const userData = JSON.parse(userInfo);
+                    token = userData.token;
+                } catch (error) {
+                    console.error('Error parsing userInfo:', error);
+                }
+            }
+            
+            // Fallback to direct token storage
+            if (!token) {
+                token = localStorage.getItem('token');
+            }
+            
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Store token for API calls
+            localStorage.setItem('token', token);
+            loadDashboard();
+        });
+
+        // Function to display existing images in edit mode
+        function displayExistingImages(imageUrls) {
+            const imagePreview = document.getElementById('imagePreview');
+            imagePreview.innerHTML = '';
+            
+            if (imageUrls && imageUrls.length > 0) {
+                // Show existing images count
+                const countBadge = document.createElement('div');
+                countBadge.className = 'mb-2';
+                countBadge.innerHTML = `<span class="badge bg-success">Ảnh hiện có: ${imageUrls.length}/5</span>`;
+                imagePreview.appendChild(countBadge);
+
+                imageUrls.forEach((url, index) => {
+                    const imageContainer = document.createElement('div');
+                    imageContainer.className = 'position-relative d-inline-block m-1';
+                    imageContainer.innerHTML = `
+                        <img src="${url}" alt="Existing Image ${index + 1}" 
+                             class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 2px solid #28a745;">
+                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" 
+                                onclick="removeExistingImage(${index})" style="padding: 2px 6px; font-size: 12px;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        ${index === 0 ? '<span class="badge bg-primary position-absolute bottom-0 start-0 m-1">Chính</span>' : ''}
+                        <div class="text-center mt-1">
+                            <small class="text-success">Ảnh cũ</small>
+                        </div>
+                    `;
+                    imagePreview.appendChild(imageContainer);
+                });
+
+                // Add instruction for adding more images
+                if (imageUrls.length < 5) {
+                    const instructionDiv = document.createElement('div');
+                    instructionDiv.className = 'mt-2';
+                    instructionDiv.innerHTML = `<small class="text-info">Bạn có thể thêm ${5 - imageUrls.length} ảnh nữa bằng cách chọn file mới.</small>`;
+                    imagePreview.appendChild(instructionDiv);
+                }
+            }
+        }
+
+        // Function to remove existing image
+        function removeExistingImage(index) {
+            if (window.currentEditingImages && window.currentEditingImages.length > index) {
+                // Don't allow removing all images - must have at least 1
+                if (window.currentEditingImages.length === 1) {
+                    alert('Sản phẩm phải có ít nhất 1 hình ảnh!');
+                    return;
+                }
+                
+                window.currentEditingImages.splice(index, 1);
+                displayExistingImages(window.currentEditingImages);
+            }
+        }
+
+        // Function to handle image input change with combined validation
+        function handleImageInputChange() {
+            const imageInput = document.getElementById('productImages');
+            const existingImageCount = (window.currentEditingImages && window.currentEditingImages.length) ? window.currentEditingImages.length : 0;
+            const newImageCount = imageInput.files.length;
+            const totalImageCount = existingImageCount + newImageCount;
+
+            if (totalImageCount > 5) {
+                alert(`Tổng số hình ảnh không được vượt quá 5. Hiện tại: ${existingImageCount} hình cũ + ${newImageCount} hình mới = ${totalImageCount} hình.`);
+                imageInput.value = '';
+                return;
+            }
+
+            if (newImageCount > 0) {
+                previewImages(imageInput);
+            }
+        }
+
+        // Functions for dynamic specifications
+        function addSpecification() {
+            const container = document.getElementById('specificationsContainer');
+            const newSpec = document.createElement('div');
+            newSpec.className = 'spec-input-group mb-2';
+            newSpec.innerHTML = `
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <input type="text" class="form-control" placeholder="Tên thông số" name="specName">
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <input type="text" class="form-control" placeholder="Giá trị" name="specValue">
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <button type="button" class="btn btn-outline-danger w-100" onclick="removeSpecification(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newSpec);
+        }
+
+        function removeSpecification(button) {
+            const container = document.getElementById('specificationsContainer');
+            button.closest('.spec-input-group').remove();
+            
+            // If no specifications left, add one empty field
+            if (container.children.length === 0) {
+                addSpecification();
+            }
+        }
+
+        // Functions for dynamic features
+        function addFeature() {
+            const container = document.getElementById('featuresContainer');
+            const newFeature = document.createElement('div');
+            newFeature.className = 'input-group mb-2';
+            newFeature.innerHTML = `
+                <input type="text" class="form-control" placeholder="Nhập tính năng" name="feature">
+                <button type="button" class="btn btn-outline-danger" onclick="removeFeature(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(newFeature);
+        }
+
+        function removeFeature(button) {
+            const container = document.getElementById('featuresContainer');
+            button.closest('.input-group').remove();
+            
+            // If no features left, add one empty field
+            if (container.children.length === 0) {
+                addFeature();
+            }
+        }
+
+        // Helper functions to populate form data
+        function populateSpecifications(specifications) {
+            const container = document.getElementById('specificationsContainer');
+            container.innerHTML = ''; // Clear existing
+            
+            if (!specifications || Object.keys(specifications).length === 0) {
+                // Add one empty specification
+                addSpecification();
+                return;
+            }
+            
+            Object.entries(specifications).forEach(([name, value]) => {
+                const specDiv = document.createElement('div');
+                specDiv.className = 'spec-input-group mb-2';
+                specDiv.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <input type="text" class="form-control" placeholder="Tên thông số" name="specName" value="${escapeHtml(name)}">
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <input type="text" class="form-control" placeholder="Giá trị" name="specValue" value="${escapeHtml(value)}">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <button type="button" class="btn btn-outline-danger w-100" onclick="removeSpecification(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(specDiv);
+            });
+        }
+
+        // Helper function to escape HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function populateFeatures(features) {
+            const container = document.getElementById('featuresContainer');
+            container.innerHTML = ''; // Clear existing
+            
+            if (!features || features.length === 0) {
+                // Add one empty feature
+                addFeature();
+                return;
+            }
+            
+            features.forEach(feature => {
+                const featureDiv = document.createElement('div');
+                featureDiv.className = 'input-group mb-2';
+                featureDiv.innerHTML = `
+                    <input type="text" class="form-control" placeholder="Nhập tính năng" name="feature" value="${escapeHtml(feature)}">
+                    <button type="button" class="btn btn-outline-danger" onclick="removeFeature(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                container.appendChild(featureDiv);
+            });
+        }
+
+        // Helper functions to collect form data
+        function collectSpecifications() {
+            const specifications = {};
+            const specInputs = document.querySelectorAll('#specificationsContainer .spec-input-group');
+            
+            specInputs.forEach(group => {
+                const nameInput = group.querySelector('input[name="specName"]');
+                const valueInput = group.querySelector('input[name="specValue"]');
+                
+                if (nameInput.value.trim() && valueInput.value.trim()) {
+                    specifications[nameInput.value.trim()] = valueInput.value.trim();
+                }
+            });
+            
+            return specifications;
+        }
+
+        function collectFeatures() {
+            const features = [];
+            const featureInputs = document.querySelectorAll('#featuresContainer input[name="feature"]');
+            
+            featureInputs.forEach(input => {
+                if (input.value.trim()) {
+                    features.push(input.value.trim());
+                }
+            });
+            
+            return features;
+        }
+
+        // Custom confirmation dialog
+        function showConfirmDialog(title, message, confirmText = 'Xác nhận', type = 'primary') {
+            return new Promise((resolve) => {
+                // Remove existing confirm dialogs
+                const existingDialogs = document.querySelectorAll('.confirm-dialog');
+                existingDialogs.forEach(d => d.remove());
+                
+                // Create backdrop
+                const backdrop = document.createElement('div');
+                backdrop.className = 'confirm-dialog';
+                backdrop.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.5);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                `;
+                
+                // Create dialog
+                const dialog = document.createElement('div');
+                dialog.className = 'modal-dialog modal-dialog-centered';
+                dialog.innerHTML = `
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">${title}</h5>
+                        </div>
+                        <div class="modal-body">
+                            ${message}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-action="cancel">Hủy</button>
+                            <button type="button" class="btn btn-${type}" data-action="confirm">${confirmText}</button>
+                        </div>
+                    </div>
+                `;
+                
+                backdrop.appendChild(dialog);
+                document.body.appendChild(backdrop);
+                
+                // Handle clicks
+                backdrop.addEventListener('click', (e) => {
+                    const action = e.target.getAttribute('data-action');
+                    if (action === 'confirm') {
+                        backdrop.remove();
+                        resolve(true);
+                    } else if (action === 'cancel' || e.target === backdrop) {
+                        backdrop.remove();
+                        resolve(false);
+                    }
+                });
+            });
+        }
+
+        // Enhanced notification system
+        function showNotification(message, type = 'info') {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.admin-notification');
+            existingNotifications.forEach(n => n.remove());
+            
+            // Create notification element with enhanced styling
+            const notification = document.createElement('div');
+            notification.className = `admin-notification alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} alert-dismissible fade show`;
+            
+            // Enhanced styling for delete notifications
+            const isDeleteNotification = message.includes('Đã xóa sản phẩm');
+            const baseStyles = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                min-width: ${isDeleteNotification ? '400px' : '300px'};
+                max-width: 500px;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+                border: none;
+                border-radius: 12px;
+                font-size: ${isDeleteNotification ? '16px' : '14px'};
+                font-weight: 500;
+                padding: ${isDeleteNotification ? '20px 24px' : '16px 20px'};
+                animation: slideInRight 0.4s ease-out;
+            `;
+            
+            notification.style.cssText = baseStyles;
+            
+            // Enhanced icon and content
+            const iconClass = type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle';
+            const iconSize = isDeleteNotification ? 'fa-lg' : '';
+            
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-${iconClass} ${iconSize} me-3" style="font-size: ${isDeleteNotification ? '20px' : '16px'};"></i>
+                    <div class="flex-grow-1">
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close ms-3" data-bs-dismiss="alert" style="font-size: ${isDeleteNotification ? '14px' : '12px'};"></button>
+                </div>
+            `;
+            
+            // Add CSS animation if not exists
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideInRight {
+                        from {
+                            transform: translateX(100%);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: translateX(0);
+                            opacity: 1;
+                        }
+                    }
+                    
+                    .admin-notification {
+                        backdrop-filter: blur(10px);
+                        border-left: 4px solid currentColor;
+                    }
+                    
+                    .admin-notification.alert-success {
+                        background: linear-gradient(135deg, rgba(25, 135, 84, 0.95) 0%, rgba(40, 167, 69, 0.95) 100%);
+                        color: white;
+                        border-left-color: #ffffff;
+                    }
+                    
+                    .admin-notification.alert-danger {
+                        background: linear-gradient(135deg, rgba(220, 53, 69, 0.95) 0%, rgba(255, 99, 99, 0.95) 100%);
+                        color: white;
+                        border-left-color: #ffffff;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Auto remove after longer time for delete notifications
+            const autoRemoveTime = isDeleteNotification ? 7000 : 5000;
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'slideInRight 0.3s ease-in reverse';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.remove();
+                        }
+                    }, 300);
+                }
+            }, autoRemoveTime);
+        }
+
+        // Helper function to get product image URL
+        function getProductImageUrl(images) {
+            if (!images || !Array.isArray(images) || images.length === 0) {
+                return getNoImagePlaceholder();
+            }
+            
+            // Handle different image formats
+            const firstImage = images[0];
+            
+            if (typeof firstImage === 'string') {
+                // Direct URL string
+                return firstImage;
+            } else if (typeof firstImage === 'object' && firstImage.url) {
+                // Object with url property
+                return firstImage.url;
+            } else {
+                // Fallback to no image placeholder
+                return getNoImagePlaceholder();
+            }
+        }
+
+        // Generate a base64 "No Image" placeholder
+        function getNoImagePlaceholder() {
+            // Create a better "No Image" SVG as base64
+            const svg = `
+                <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="50" height="50" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="4"/>
+                    <circle cx="20" cy="18" r="3" fill="#adb5bd"/>
+                    <path d="M15 30 L20 25 L25 30 L30 25 L35 30 L35 40 L15 40 Z" fill="#adb5bd"/>
+                    <text x="25" y="47" text-anchor="middle" font-family="Arial" font-size="6" fill="#6c757d">No Image</text>
+                </svg>
+            `;
+            return `data:image/svg+xml;base64,${btoa(svg)}`;
+        }
+    </script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

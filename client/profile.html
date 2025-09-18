@@ -1,0 +1,2644 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Cá Nhân - SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/modern-design.css">
+    <style>
+        .profile-container {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-avatar {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            padding: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .profile-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: white;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .stat-card:hover::before {
+            left: 100%;
+        }
+        
+        .modern-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .modern-input:focus {
+            outline: none;
+            border-color: #4F46E5;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .modern-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .modern-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            padding: 12px 24px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .modern-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Enhanced responsive design */
+        @media (max-width: 640px) {
+            .profile-container {
+                padding: 0;
+                min-height: 100vh;
+            }
+            
+            .glass-card {
+                border-radius: 16px;
+                margin: 0 4px;
+                backdrop-filter: blur(15px);
+            }
+            
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .stat-card {
+                padding: 12px !important;
+                min-height: 80px;
+            }
+            
+            .modern-input, .modern-btn {
+                font-size: 16px; /* Prevent zoom on iOS */
+            }
+            
+            .activity-timeline {
+                padding: 0 8px;
+            }
+        }
+        
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .profile-avatar {
+                width: 110px;
+                height: 110px;
+            }
+            
+            .stat-card {
+                min-height: 100px;
+            }
+        }
+        
+        @media (min-width: 1025px) {
+            .profile-avatar {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .stat-card {
+                min-height: 120px;
+            }
+        }
+        
+        /* Extra small devices (phones in portrait) */
+        @media (max-width: 480px) {
+            .container {
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+            
+            .glass-card {
+                margin: 0 2px;
+                padding: 16px !important;
+            }
+            
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .stat-card {
+                padding: 8px !important;
+                min-height: 70px;
+            }
+        }
+        
+        /* Large screens optimization */
+        @media (min-width: 1536px) {
+            .container {
+                max-width: 1400px;
+            }
+            
+            .profile-avatar {
+                width: 140px;
+                height: 140px;
+            }
+        }
+        
+        /* Activity timeline improvements */
+        .activity-item {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .activity-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateX(4px);
+        }
+        
+        /* Achievement cards */
+        .achievement-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .achievement-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .achievement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #4F46E5, #06B6D4, #10B981);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .achievement-card:hover::before {
+            opacity: 1;
+        }
+        
+        /* Floating elements */
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Pulse animation for loading states */
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .stat-card:hover,
+            .achievement-card:hover,
+            .activity-item:hover {
+                transform: none;
+            }
+            
+            .modern-btn:hover {
+                transform: none;
+            }
+            
+            /* Larger touch targets */
+            .modern-btn {
+                min-height: 44px;
+                padding: 12px 20px;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            .profile-container {
+                background: white !important;
+                color: black !important;
+            }
+            
+            .glass-card {
+                background: white !important;
+                border: 1px solid #ccc !important;
+                box-shadow: none !important;
+            }
+            
+            .modern-btn {
+                display: none;
+            }
+        }
+        
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            .glass-card {
+                border: 2px solid rgba(255, 255, 255, 0.8);
+            }
+            
+            .modern-input {
+                border: 2px solid rgba(255, 255, 255, 0.8);
+            }
+        }
+        
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .floating-element {
+                animation: none;
+            }
+        }
+        
+        /* Custom scrollbar */
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Gradient border animation */
+        @keyframes gradient-border {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .gradient-border {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient-border 15s ease infinite;
+        }
+        
+        .activity-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #4ecdc4;
+            border-radius: 0 12px 12px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .activity-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(4px);
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .floating-action {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .floating-action:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.4);
+        }
+        
+        .ai-suggestion {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            border-radius: 16px;
+            padding: 16px;
+            margin: 16px 0;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-suggestion::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .ai-suggestion:hover::before {
+            left: 100%;
+        }
+        
+        .editable-field {
+            border: 2px solid #4F46E5 !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .editable-field:focus {
+            border-color: #6366F1 !important;
+            background: rgba(255, 255, 255, 0.2) !important;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+        }
+        
+        .readonly-field {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+            cursor: not-allowed !important;
+            opacity: 0.7;
+        }
+        
+        .avatar-upload-area {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .avatar-upload-area:hover {
+            transform: scale(1.02);
+        }
+        
+        .avatar-upload-area.drag-over {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(79, 70, 229, 0.5);
+        }
+        
+        .avatar-upload-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(79, 70, 229, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .avatar-upload-area:hover .avatar-upload-overlay {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="profile-container">
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-palette"></i>
+    </div>
+    
+    <!-- Floating Action Button -->
+    <div class="floating-action" id="floatingAction">
+        <i class="fas fa-magic"></i>
+    </div>
+    
+    <!-- Header -->
+    <div id="header-container"></div>
+    
+    <!-- Main Profile Content -->
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-7xl">
+        
+        <!-- Profile Header Card -->
+        <div class="glass-card p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8">
+            <div class="flex flex-col xl:flex-row items-center xl:items-start gap-6 sm:gap-8">
+                
+                <!-- Avatar Section -->
+                <div class="flex flex-col items-center flex-shrink-0">
+                    <div class="relative group">
+                        <div class="profile-avatar" id="profileAvatar">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%234F46E5'/%3E%3Ctext x='75' y='85' text-anchor='middle' fill='white' font-size='48' font-family='Arial'%3EU%3C/text%3E%3C/svg%3E" 
+                                 alt="Profile Avatar" 
+                                 class="w-full h-full rounded-full object-cover" 
+                                 id="avatarImage">
+                            <div class="avatar-upload-overlay">
+                                <i class="fas fa-camera text-white text-xl sm:text-2xl"></i>
+                            </div>
+                            <div class="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 w-6 h-6 sm:w-8 sm:h-8 bg-green-500 rounded-full border-2 sm:border-4 border-white flex items-center justify-center">
+                                <i class="fas fa-check text-white text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="file" id="avatarFileInput" accept="image/*" style="display: none;">
+                </div>
+                
+                <!-- Profile Info -->
+                <div class="flex-1 text-center xl:text-left w-full">
+                    <div class="mb-6">
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3" id="userName">
+                            <i class="fas fa-user mr-2 sm:mr-3"></i>Người dùng
+                        </h1>
+                        <p class="text-lg sm:text-xl lg:text-2xl text-white text-opacity-80 mb-4" id="userTitle">Solar Analytics Engineer</p>
+                        
+                        <!-- Badges -->
+                        <div class="flex flex-wrap justify-center xl:justify-start gap-2 sm:gap-3 mb-6">
+                            <div id="userBadges">
+                                <span class="inline-flex items-center px-3 py-1.5 bg-white bg-opacity-20 rounded-full text-white text-sm font-medium backdrop-blur-sm border border-white border-opacity-20 hover:bg-opacity-30 transition-all duration-300">
+                                    <i class="fas fa-star mr-2 text-yellow-400"></i>Thành viên
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Stats Grid -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+                        <div class="stat-card p-4 sm:p-6 text-center group hover:scale-105 transition-all duration-300">
+                            <div class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors" id="projectCount">0</div>
+                            <div class="text-white text-opacity-70 text-xs sm:text-sm font-medium">Dự án</div>
+                            <div class="w-full h-1 bg-blue-500 bg-opacity-30 rounded-full mt-2">
+                                <div class="h-full bg-blue-500 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="stat-card p-4 sm:p-6 text-center group hover:scale-105 transition-all duration-300">
+                            <div class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 group-hover:text-green-300 transition-colors" id="reportCount">0</div>
+                            <div class="text-white text-opacity-70 text-xs sm:text-sm font-medium">Báo cáo</div>
+                            <div class="w-full h-1 bg-green-500 bg-opacity-30 rounded-full mt-2">
+                                <div class="h-full bg-green-500 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="stat-card p-4 sm:p-6 text-center group hover:scale-105 transition-all duration-300">
+                            <div class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors" id="experienceYears">1</div>
+                            <div class="text-white text-opacity-70 text-xs sm:text-sm font-medium">Năm KN</div>
+                            <div class="w-full h-1 bg-purple-500 bg-opacity-30 rounded-full mt-2">
+                                <div class="h-full bg-purple-500 rounded-full" style="width: 20%"></div>
+                            </div>
+                        </div>
+                        <div class="stat-card p-4 sm:p-6 text-center group hover:scale-105 transition-all duration-300">
+                            <div class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 group-hover:text-yellow-300 transition-colors" id="achievementCount">0</div>
+                            <div class="text-white text-opacity-70 text-xs sm:text-sm font-medium">Thành tựu</div>
+                            <div class="w-full h-1 bg-yellow-500 bg-opacity-30 rounded-full mt-2">
+                                <div class="h-full bg-yellow-500 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Welcome Greeting -->
+        <div class="glass-card p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 overflow-hidden relative" id="welcomeGreeting">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full opacity-10 transform translate-x-16 -translate-y-16"></div>
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 relative z-10">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-all duration-300">
+                    <i class="fas fa-sun text-white text-xl sm:text-2xl"></i>
+                </div>
+                <div class="text-center sm:text-left flex-1">
+                    <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2" id="greetingTitle">Chào mừng trở lại!</h2>
+                    <p class="text-white text-opacity-80 text-sm sm:text-base lg:text-lg leading-relaxed" id="greetingMessage">Chúc bạn một ngày làm việc hiệu quả với Solar Analytics</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8">
+            <!-- Personal Info Form - 2 columns out of 4 -->
+            <div class="lg:col-span-2">
+                <div class="grid grid-cols-1 gap-6 sm:gap-8">
+                    <!-- Personal Info Form -->
+                    <div class="lg:col-span-1">
+                        <div class="glass-card p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8 gap-4">
+                                <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+                                    <i class="fas fa-user mr-2 sm:mr-3"></i>Thông tin cá nhân
+                                </h2>
+                                <div class="flex gap-2 sm:gap-3">
+                                    <button class="modern-btn px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all duration-300 transform hover:scale-105" id="editBtn">
+                                        <i class="fas fa-edit mr-2"></i>Chỉnh sửa
+                                    </button>
+                                    <button class="modern-btn px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-all duration-300 transform hover:scale-105 hidden" id="saveBtn">
+                                        <i class="fas fa-save mr-2"></i>Lưu
+                                    </button>
+                                    <button class="modern-btn px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-all duration-300 transform hover:scale-105 hidden" id="cancelBtn">
+                                        <i class="fas fa-times mr-2"></i>Hủy
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Avatar Section -->
+                            <div class="flex flex-col items-center my-6">
+                                <label for="avatarFileInput" class="block text-white text-opacity-80 text-sm font-medium mb-4 cursor-pointer">Ảnh đại diện</label>
+                                <div class="relative group w-32 h-32" id="changeAvatarBtn_new">
+                                    <img id="form-avatar-preview" alt="Avatar Preview" class="w-32 h-32 rounded-full object-cover cursor-pointer border-4 border-white/20 group-hover:border-blue-400 transition-all shadow-lg">
+                                    <div class="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                                        <div class="text-center text-white">
+                                            <i class="fas fa-camera text-2xl"></i>
+                                            <p class="text-sm mt-1">Thay đổi</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                        <div class="space-y-2">
+                            <label class="block text-white text-opacity-80 text-sm font-medium">Họ và tên *</label>
+                            <input type="text" class="modern-input w-full px-4 py-3 bg-white bg-opacity-10 border border-white border-opacity-20 rounded-lg text-white placeholder-white placeholder-opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Người dùng" readonly id="fullName">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-white text-opacity-80 text-sm font-medium">Email *</label>
+                            <input type="email" class="modern-input w-full px-4 py-3 bg-white bg-opacity-10 border border-white border-opacity-20 rounded-lg text-white placeholder-white placeholder-opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="user@example.com" readonly id="email">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-white text-opacity-80 text-sm font-medium">Số điện thoại</label>
+                            <input type="tel" class="modern-input w-full px-4 py-3 bg-white bg-opacity-10 border border-white border-opacity-20 rounded-lg text-white placeholder-white placeholder-opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Chưa cập nhật" readonly id="phone">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-white text-opacity-80 text-sm font-medium">Chức vụ</label>
+                            <input type="text" class="modern-input w-full" placeholder="Đang tải..." readonly id="position">
+                        </div>
+                        <div>
+                            <label class="block text-white text-opacity-80 text-sm font-medium mb-2">Công ty</label>
+                            <input type="text" class="modern-input w-full" placeholder="Chưa cập nhật" readonly id="company">
+                        </div>
+                        <div>
+                            <label class="block text-white text-opacity-80 text-sm font-medium mb-2">Ngày sinh</label>
+                            <input type="date" class="modern-input w-full" placeholder="Chưa cập nhật" readonly id="dateOfBirth">
+                        </div>
+                        <div>
+                            <label class="block text-white text-opacity-80 text-sm font-medium mb-2">Giới tính</label>
+                            <select class="modern-input w-full" readonly id="gender">
+                                <option value="male">Nam</option>
+                                <option value="female">Nữ</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+                        <div class="lg:col-span-2">
+                            <label class="block text-white text-opacity-80 text-sm font-medium mb-2">Địa chỉ</label>
+                            <input type="text" class="modern-input w-full" placeholder="Chưa cập nhật" readonly id="address">
+                        </div>
+                        <div class="lg:col-span-2">
+                            <label class="block text-white text-opacity-80 text-sm font-medium mb-2">Giới thiệu bản thân</label>
+                            <textarea class="modern-input w-full h-24 resize-none" readonly id="bio" placeholder="Đang tải thông tin giới thiệu..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex gap-4">
+                        <button class="modern-btn" id="saveBtn" style="display: none;">
+                            <i class="fas fa-save mr-2"></i>Lưu thay đổi
+                        </button>
+                        <button class="px-6 py-3 bg-white bg-opacity-20 rounded-lg text-white hover:bg-opacity-30 transition-all" id="cancelBtn" style="display: none;">
+                            <i class="fas fa-times mr-2"></i>Hủy
+                        </button>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <!-- Right Sidebar -->
+            <div class="lg:col-span-2 space-y-6 sm:space-y-8">
+                <!-- Membership Info -->
+                <div class="glass-card p-6 sm:p-8 relative overflow-hidden">
+                    <!-- Background decoration -->
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400 to-purple-500 opacity-10 rounded-full transform translate-x-16 -translate-y-16"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl sm:text-2xl font-bold text-white flex items-center">
+                                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                                    <i class="fas fa-id-card text-white text-lg"></i>
+                                </div>
+                                Thông tin thành viên
+                            </h3>
+                            <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                        </div>
+                        
+                        <!-- Member Stats Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                            <div class="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 p-4 rounded-xl border border-blue-400/20 hover:border-blue-400/40 transition-all duration-300 group">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 bg-blue-500/30 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <i class="fas fa-calendar-alt text-blue-300 text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-blue-200 text-xs font-medium uppercase tracking-wide mb-1">Thành viên từ</div>
+                                        <div class="text-white font-bold text-sm" data-member-since>01/01/2024</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-green-500/20 to-emerald-500/20 p-4 rounded-xl border border-green-400/20 hover:border-green-400/40 transition-all duration-300 group">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 bg-green-500/30 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <i class="fas fa-clock text-green-300 text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-green-200 text-xs font-medium uppercase tracking-wide mb-1">Hoạt động</div>
+                                        <div class="text-white font-bold text-sm" data-last-login>Hôm nay</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Membership Level -->
+                        <div class="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 p-4 rounded-xl border border-yellow-400/20 mb-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 bg-yellow-500/30 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-crown text-yellow-300 text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-yellow-200 text-xs font-medium uppercase tracking-wide mb-1">Cấp độ</div>
+                                        <div class="text-white font-bold">Thành viên Vàng</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-yellow-200 text-xs mb-1">Điểm</div>
+                                    <div class="text-white font-bold text-lg">1,250</div>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="flex justify-between text-xs text-yellow-200 mb-1">
+                                    <span>Tiến độ lên cấp</span>
+                                    <span>75%</span>
+                                </div>
+                                <div class="w-full bg-yellow-900/30 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-yellow-400 to-orange-400 h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Social Connections -->
+                        <div class="border-t border-white/10 pt-6">
+                            <h4 class="text-white font-semibold mb-4 flex items-center">
+                                <i class="fas fa-link mr-2 text-blue-400"></i>
+                                Liên kết tài khoản
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-all duration-300 group" id="googleStatus">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                            <i class="fab fa-google text-red-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-white font-medium text-sm">Google</div>
+                                            <div class="text-white/60 text-xs">Đăng nhập nhanh</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs text-red-300 bg-red-500/20 px-3 py-1 rounded-full border border-red-400/20">Chưa kết nối</span>
+                                        <button class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-all duration-300">
+                                            <i class="fas fa-plus text-white text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-all duration-300 group" id="facebookStatus">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                            <i class="fab fa-facebook text-blue-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-white font-medium text-sm">Facebook</div>
+                                            <div class="text-white/60 text-xs">Chia sẻ dễ dàng</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs text-red-300 bg-red-500/20 px-3 py-1 rounded-full border border-red-400/20">Chưa kết nối</span>
+                                        <button class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-all duration-300">
+                                            <i class="fas fa-plus text-white text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Completion -->
+                <div class="glass-card p-4 sm:p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-green-400 to-blue-500 opacity-10 rounded-full transform translate-x-10 -translate-y-10"></div>
+                    
+                    <div class="relative z-10">
+                        <h4 class="text-lg font-bold text-white mb-4 flex items-center">
+                            <div class="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-600 rounded-lg flex items-center justify-center mr-2">
+                                <i class="fas fa-chart-pie text-white text-sm"></i>
+                            </div>
+                            Hoàn thiện hồ sơ
+                        </h4>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm text-white/80 mb-2">
+                                <span>Tiến độ</span>
+                                <span id="profileCompletion">75%</span>
+                            </div>
+                            <div class="w-full bg-white/20 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-green-400 to-blue-500 h-3 rounded-full transition-all duration-500" style="width: 75%" id="profileProgress"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center gap-2 text-green-300">
+                                <i class="fas fa-check-circle text-xs"></i>
+                                <span>Thông tin cơ bản</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-green-300">
+                                <i class="fas fa-check-circle text-xs"></i>
+                                <span>Ảnh đại diện</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-yellow-300">
+                                <i class="fas fa-exclamation-circle text-xs"></i>
+                                <span>Số điện thoại</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-red-300">
+                                <i class="fas fa-times-circle text-xs"></i>
+                                <span>Liên kết mạng xã hội</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="glass-card p-4 sm:p-6 relative overflow-hidden">
+                    <div class="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 opacity-10 rounded-full transform -translate-x-8 translate-y-8"></div>
+                    
+                    <div class="relative z-10">
+                        <h4 class="text-lg font-bold text-white mb-4 flex items-center">
+                            <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg flex items-center justify-center mr-2">
+                                <i class="fas fa-bolt text-white text-sm"></i>
+                            </div>
+                            Thao tác nhanh
+                        </h4>
+                        
+                        <div class="space-y-3">
+                            <button onclick="openChangePasswordModal()" class="w-full text-left p-3 bg-white/5 hover:bg-white/10 rounded-lg transition-all duration-300 group">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <i class="fas fa-key text-blue-400 text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-white text-sm font-medium">Đổi mật khẩu</div>
+                                        <div class="text-white/60 text-xs">Bảo mật tài khoản</div>
+                                    </div>
+                                </div>
+                            </button>
+                            
+                            <button onclick="exportUserData()" class="w-full text-left p-3 bg-white/5 hover:bg-white/10 rounded-lg transition-all duration-300 group">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <i class="fas fa-download text-green-400 text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-white text-sm font-medium">Xuất dữ liệu</div>
+                                        <div class="text-white/60 text-xs">Tải về thông tin</div>
+                                    </div>
+                                </div>
+                            </button>
+                            
+                            <button onclick="openSettings()" class="w-full text-left p-3 bg-white/5 hover:bg-white/10 rounded-lg transition-all duration-300 group">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <i class="fas fa-cog text-yellow-400 text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-white text-sm font-medium">Cài đặt</div>
+                                        <div class="text-white/60 text-xs">Tùy chỉnh tài khoản</div>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="glass-card p-6 sm:p-8 relative overflow-hidden">
+                    <!-- Background decoration -->
+                    <div class="absolute top-0 left-0 w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-500 opacity-10 rounded-full transform -translate-x-12 -translate-y-12"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl sm:text-2xl font-bold text-white flex items-center">
+                                <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg flex items-center justify-center mr-3">
+                                    <i class="fas fa-clock text-white text-lg"></i>
+                                </div>
+                                Hoạt động gần đây
+                            </h3>
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                <span class="text-green-300 text-xs font-medium">Trực tuyến</span>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-timeline space-y-4" id="activityTimeline">
+                            <!-- Activity items will be populated by JavaScript -->
+                            <!-- Sample activity items for design -->
+                            <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-all duration-300 group">
+                                <div class="w-10 h-10 bg-blue-500/30 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                    <i class="fas fa-chart-line text-blue-300 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-white font-medium text-sm mb-1">Xem báo cáo năng lượng mặt trời</div>
+                                    <div class="text-white/60 text-xs">2 giờ trước</div>
+                                </div>
+                                <div class="w-2 h-2 bg-blue-400 rounded-full mt-2"></div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-all duration-300 group">
+                                <div class="w-10 h-10 bg-green-500/30 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                    <i class="fas fa-user-edit text-green-300 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-white font-medium text-sm mb-1">Cập nhật thông tin cá nhân</div>
+                                    <div class="text-white/60 text-xs">1 ngày trước</div>
+                                </div>
+                                <div class="w-2 h-2 bg-green-400 rounded-full mt-2"></div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-all duration-300 group">
+                                <div class="w-10 h-10 bg-yellow-500/30 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                    <i class="fas fa-trophy text-yellow-300 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-white font-medium text-sm mb-1">Đạt thành tựu "Chuyên gia năng lượng"</div>
+                                    <div class="text-white/60 text-xs">3 ngày trước</div>
+                                </div>
+                                <div class="w-2 h-2 bg-yellow-400 rounded-full mt-2"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 pt-4 border-t border-white/10">
+                            <button class="w-full text-center text-white/80 hover:text-white text-sm font-medium transition-all duration-300 hover:bg-white/10 px-4 py-3 rounded-xl group">
+                                <i class="fas fa-history mr-2 group-hover:rotate-12 transition-transform duration-300"></i>
+                                Xem tất cả hoạt động
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Achievements -->
+                <div class="glass-card p-6 sm:p-8 relative overflow-hidden">
+                    <!-- Background decoration -->
+                    <div class="absolute bottom-0 right-0 w-28 h-28 bg-gradient-to-br from-yellow-400 to-orange-500 opacity-10 rounded-full transform translate-x-14 translate-y-14"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl sm:text-2xl font-bold text-white flex items-center">
+                                <div class="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-lg flex items-center justify-center mr-3">
+                                    <i class="fas fa-trophy text-white text-lg"></i>
+                                </div>
+                                Thành tựu
+                            </h3>
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-medal text-yellow-400 text-sm"></i>
+                                </div>
+                                <span class="text-yellow-300 text-sm font-bold bg-yellow-500/20 px-3 py-1 rounded-full border border-yellow-400/20" id="achievementCount">0 thành tích</span>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4 max-h-96 overflow-y-auto custom-scrollbar" id="achievementsList">
+                            <!-- Achievements will be loaded here -->
+                        </div>
+                        
+                        <div class="mt-6 pt-4 border-t border-white/10">
+                            <button class="w-full text-center text-white/80 hover:text-white text-sm font-medium transition-all duration-300 hover:bg-white/10 px-4 py-3 rounded-xl group" onclick="viewAllAchievements()">
+                                <i class="fas fa-external-link-alt mr-2 group-hover:rotate-12 transition-transform duration-300"></i>
+                                Xem tất cả thành tích
+                                <div class="w-full h-0.5 bg-gradient-to-r from-transparent via-white/20 to-transparent mt-2 group-hover:via-white/40 transition-all duration-300"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="/js/header.js"></script>
+    <script>
+        let currentUser = null;
+        let isEditMode = false;
+        const API_BASE = window.location.origin;
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const userInfo = localStorage.getItem('userInfo');
+            if (!userInfo) {
+                window.location.href = '/login.html';
+                return;
+            }
+            
+            try {
+                currentUser = JSON.parse(userInfo);
+                displayUserProfile(currentUser);
+                loadUserAchievements();
+                loadRandomGreeting();
+                loadActivityTimeline();
+                updateProfileCompletion();
+                updateSecurityStatus();
+                showNotification('Đã tải thông tin profile từ dữ liệu đăng nhập', 'success');
+            } catch (error) {
+                console.error('Error parsing user info:', error);
+                localStorage.removeItem('userInfo');
+                window.location.href = '/login.html';
+                return;
+            }
+            
+            setupEventListeners();
+            setupSidebarEventListeners();
+        });
+
+        // Profile completion calculation
+        function calculateProfileCompletion() {
+            const fields = {
+                fullName: document.getElementById('fullName')?.value?.trim(),
+                email: document.getElementById('email')?.value?.trim(),
+                phone: document.getElementById('phone')?.value?.trim(),
+                position: document.getElementById('position')?.value?.trim(),
+                company: document.getElementById('company')?.value?.trim(),
+                dateOfBirth: document.getElementById('dateOfBirth')?.value,
+                gender: document.getElementById('gender')?.value,
+                address: document.getElementById('address')?.value?.trim(),
+                bio: document.getElementById('bio')?.value?.trim(),
+                avatarUrl: document.getElementById('avatarUrl')?.value?.trim()
+            };
+            
+            const requiredFields = ['fullName', 'email'];
+            const optionalFields = ['phone', 'position', 'company', 'dateOfBirth', 'gender', 'address', 'bio', 'avatarUrl'];
+            
+            let completedRequired = 0;
+            let completedOptional = 0;
+            
+            // Check required fields
+            requiredFields.forEach(field => {
+                if (fields[field]) completedRequired++;
+            });
+            
+            // Check optional fields
+            optionalFields.forEach(field => {
+                if (fields[field]) completedOptional++;
+            });
+            
+            // Calculate percentage (required fields worth 40%, optional fields worth 60%)
+            const requiredPercentage = (completedRequired / requiredFields.length) * 40;
+            const optionalPercentage = (completedOptional / optionalFields.length) * 60;
+            const totalPercentage = Math.round(requiredPercentage + optionalPercentage);
+            
+            return {
+                percentage: totalPercentage,
+                completed: completedRequired + completedOptional,
+                total: requiredFields.length + optionalFields.length,
+                requiredComplete: completedRequired === requiredFields.length
+            };
+        }
+        
+        // Update profile completion UI
+        function updateProfileCompletion() {
+            const completion = calculateProfileCompletion();
+            const completionElement = document.getElementById('profileCompletion');
+            const progressElement = document.getElementById('profileProgress');
+            
+            if (completionElement) {
+                completionElement.textContent = `${completion.percentage}%`;
+            }
+            
+            if (progressElement) {
+                progressElement.style.width = `${completion.percentage}%`;
+                
+                // Change color based on completion
+                if (completion.percentage >= 80) {
+                    progressElement.className = 'bg-gradient-to-r from-green-400 to-blue-500 h-3 rounded-full transition-all duration-500';
+                } else if (completion.percentage >= 50) {
+                    progressElement.className = 'bg-gradient-to-r from-yellow-400 to-orange-500 h-3 rounded-full transition-all duration-500';
+                } else {
+                    progressElement.className = 'bg-gradient-to-r from-red-400 to-pink-500 h-3 rounded-full transition-all duration-500';
+                }
+            }
+        }
+        
+        // Quick actions handlers
+        function handleChangePassword() {
+            showNotification('Chức năng đổi mật khẩu sẽ được triển khai trong phiên bản tiếp theo', 'info');
+            // TODO: Implement password change modal
+        }
+        
+        function handleExportData() {
+            try {
+                const userData = {
+                    profile: currentUser,
+                    exportDate: new Date().toISOString(),
+                    achievements: [], // Will be populated from achievements list
+                    activities: [] // Will be populated from activity timeline
+                };
+                
+                const dataStr = JSON.stringify(userData, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `solar-analytics-profile-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                showNotification('Dữ liệu đã được xuất thành công', 'success');
+            } catch (error) {
+                console.error('Export error:', error);
+                showNotification('Có lỗi xảy ra khi xuất dữ liệu', 'error');
+            }
+        }
+        
+        function handleSettings() {
+            showNotification('Trang cài đặt sẽ được triển khai trong phiên bản tiếp theo', 'info');
+            // TODO: Redirect to settings page
+        }
+        
+        // Security status update
+        function updateSecurityStatus() {
+            // Mock security status - in real app, this would come from API
+            const securityStatus = {
+                twoFactor: true,
+                emailVerified: true,
+                phoneVerified: false
+            };
+            
+            // Update 2FA status
+            const twoFactorElement = document.querySelector('#googleStatus').parentElement.querySelector('.security-2fa');
+            if (twoFactorElement) {
+                const statusBadge = twoFactorElement.querySelector('.status-badge');
+                if (securityStatus.twoFactor) {
+                    statusBadge.className = 'text-xs text-green-300 bg-green-500/20 px-2 py-1 rounded-full status-badge';
+                    statusBadge.textContent = 'Bật';
+                } else {
+                    statusBadge.className = 'text-xs text-red-300 bg-red-500/20 px-2 py-1 rounded-full status-badge';
+                    statusBadge.textContent = 'Tắt';
+                }
+            }
+        }
+        
+        // Setup sidebar event listeners
+        function setupSidebarEventListeners() {
+            // Quick actions
+            const changePasswordBtn = document.querySelector('button[onclick*="changePassword"]');
+            const exportDataBtn = document.querySelector('button[onclick*="exportData"]');
+            const settingsBtn = document.querySelector('button[onclick*="settings"]');
+            
+            // Add click handlers to quick action buttons
+            const quickActionButtons = document.querySelectorAll('.glass-card button');
+            quickActionButtons.forEach((button, index) => {
+                const buttonText = button.textContent.toLowerCase();
+                if (buttonText.includes('mật khẩu')) {
+                    button.addEventListener('click', handleChangePassword);
+                } else if (buttonText.includes('xuất')) {
+                    button.addEventListener('click', handleExportData);
+                } else if (buttonText.includes('cài đặt')) {
+                    button.addEventListener('click', handleSettings);
+                }
+            });
+        }
+        
+        // Activity timeline mock data and functions
+        function loadActivityTimeline() {
+            const activities = [
+                {
+                    icon: 'fas fa-chart-line',
+                    iconColor: 'text-blue-300',
+                    bgColor: 'bg-blue-500/30',
+                    title: 'Xem báo cáo năng lượng mặt trời',
+                    time: '2 giờ trước',
+                    dotColor: 'bg-blue-400'
+                },
+                {
+                    icon: 'fas fa-user-edit',
+                    iconColor: 'text-green-300',
+                    bgColor: 'bg-green-500/30',
+                    title: 'Cập nhật thông tin cá nhân',
+                    time: '1 ngày trước',
+                    dotColor: 'bg-green-400'
+                },
+                {
+                    icon: 'fas fa-trophy',
+                    iconColor: 'text-yellow-300',
+                    bgColor: 'bg-yellow-500/30',
+                    title: 'Đạt thành tựu "Chuyên gia năng lượng"',
+                    time: '3 ngày trước',
+                    dotColor: 'bg-yellow-400'
+                },
+                {
+                    icon: 'fas fa-file-alt',
+                    iconColor: 'text-purple-300',
+                    bgColor: 'bg-purple-500/30',
+                    title: 'Tạo báo cáo phân tích mới',
+                    time: '1 tuần trước',
+                    dotColor: 'bg-purple-400'
+                }
+            ];
+            
+            const timelineContainer = document.getElementById('activityTimeline');
+            if (timelineContainer) {
+                timelineContainer.innerHTML = activities.map(activity => `
+                    <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-all duration-300 group">
+                        <div class="w-10 h-10 ${activity.bgColor} rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                            <i class="${activity.icon} ${activity.iconColor} text-sm"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-white font-medium text-sm mb-1">${activity.title}</div>
+                            <div class="text-white/60 text-xs">${activity.time}</div>
+                        </div>
+                        <div class="w-2 h-2 ${activity.dotColor} rounded-full mt-2"></div>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        // Refresh user profile from localStorage
+        function refreshUserProfile() {
+            const userInfo = localStorage.getItem('userInfo');
+            if (!userInfo) {
+                window.location.href = '/login.html';
+                return;
+            }
+            
+            try {
+                currentUser = JSON.parse(userInfo);
+                displayUserProfile(currentUser);
+            } catch (error) {
+                console.error('Error parsing user info:', error);
+                localStorage.removeItem('userInfo');
+                window.location.href = '/login.html';
+            }
+        }
+
+        // Display user profile data
+        function displayUserProfile(userData) {
+            // Update basic info
+            document.getElementById('userName').innerHTML = `
+                <i class="fas fa-user mr-2"></i>${userData.user?.name || userData.name || 'Người dùng'}
+            `;
+            
+            const userTitle = document.getElementById('userTitle');
+            if (userTitle) {
+                userTitle.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-briefcase text-blue-400"></i>
+                        <span>${userData.user?.position || userData.position || 'Solar Analytics Engineer'}</span>
+                    </div>
+                    <div class="flex items-center gap-2 mt-1">
+                        <i class="fas fa-building text-green-400"></i>
+                        <span>${userData.user?.company || userData.company || 'SolarAnalytics'}</span>
+                    </div>
+                `;
+            }
+
+            // Update avatar
+            const avatarImage = document.getElementById('avatarImage');
+            if (avatarImage) {
+                const userName = userData.user?.name || userData.name || 'U';
+                const userInitial = userName.charAt(0).toUpperCase();
+                const fallbackSvg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%234F46E5'/%3E%3Ctext x='75' y='85' text-anchor='middle' fill='white' font-size='48' font-family='Arial'%3E${userInitial}%3C/text%3E%3C/svg%3E`;
+                avatarImage.src = userData.user?.profileImage || userData.profileImage || fallbackSvg;
+                avatarImage.onerror = function() {
+                    this.src = fallbackSvg;
+                };
+            }
+
+            // Update statistics with animation
+            updateStatistics(userData.user?.stats || userData.stats || {});
+
+            // Update form fields
+            updateFormFields(userData.user || userData);
+
+            // Update membership info
+            updateMembershipInfo(userData.user || userData);
+
+            // Update social provider status
+            updateSocialStatus(userData.user?.socialProviders || userData.socialProviders || {});
+
+            // Update activity timeline
+            updateActivityTimeline(userData.user || userData);
+            
+            // Update profile completion after form fields are populated
+            setTimeout(() => {
+                updateProfileCompletion();
+            }, 100);
+        }
+
+        // Update statistics with animation
+        function updateStatistics(stats) {
+            const statElements = {
+                'projectCount': stats.projectsCompleted || 0,
+                'reportCount': stats.reportsGenerated || 0,
+                'experienceYears': stats.experienceYears || 0,
+                'achievementCount': stats.achievementsEarned || 0
+            };
+
+            Object.entries(statElements).forEach(([elementId, value]) => {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    animateNumber(element, 0, value, 1500);
+                }
+            });
+        }
+
+        // Update form fields
+        function updateFormFields(userData) {
+            const user = userData.user || userData;
+            const fields = {
+                'fullName': user.name,
+                'email': user.email,
+                'phone': user.phone,
+                'position': user.position,
+                'company': user.company,
+                'address': user.address,
+                'bio': user.bio,
+                'dateOfBirth': user.dateOfBirth ? user.dateOfBirth.split('T')[0] : '',
+                'gender': user.gender,
+                'avatarUrl': user.profileImage || user.avatar
+            };
+
+            Object.entries(fields).forEach(([fieldId, value]) => {
+                const element = document.getElementById(fieldId);
+                if (element) {
+                    element.value = value || '';
+                    if (!value && fieldId !== 'email') {
+                        element.placeholder = 'Chưa cập nhật';
+                    }
+                }
+            });
+
+            // Set email field as readonly and with special styling
+            const emailField = document.getElementById('email');
+            if (emailField) {
+                emailField.readOnly = true;
+                emailField.disabled = true;
+                emailField.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                emailField.style.cursor = 'not-allowed';
+                emailField.title = 'Email không thể thay đổi';
+            }
+        }
+
+        // Update membership information
+        function updateMembershipInfo(userData) {
+            const memberSince = userData.memberSince || userData.createdAt;
+            const lastLogin = userData.lastLogin;
+
+            if (memberSince) {
+                const memberElement = document.querySelector('[data-member-since]');
+                if (memberElement) {
+                    memberElement.textContent = new Date(memberSince).toLocaleDateString('vi-VN');
+                }
+            }
+
+            if (lastLogin) {
+                const loginElement = document.querySelector('[data-last-login]');
+                if (loginElement) {
+                    loginElement.textContent = new Date(lastLogin).toLocaleString('vi-VN');
+                }
+            }
+        }
+
+        // Update social provider status
+        function updateSocialStatus(socialProviders) {
+            const googleStatus = document.getElementById('googleStatus');
+            const facebookStatus = document.getElementById('facebookStatus');
+
+            if (googleStatus) {
+                const isLinked = socialProviders.google;
+                googleStatus.innerHTML = `
+                    <i class="fab fa-google text-red-500"></i>
+                    <span class="text-sm text-white text-opacity-80">Google: ${isLinked ? 'Đã liên kết' : 'Chưa liên kết'}</span>
+                `;
+            }
+
+            if (facebookStatus) {
+                const isLinked = socialProviders.facebook;
+                facebookStatus.innerHTML = `
+                    <i class="fab fa-facebook text-blue-500"></i>
+                    <span class="text-sm text-white text-opacity-80">Facebook: ${isLinked ? 'Đã liên kết' : 'Chưa liên kết'}</span>
+                `;
+            }
+        }
+
+        // Update activity timeline
+        function updateActivityTimeline(userData) {
+            const timeline = document.getElementById('activityTimeline');
+            if (!timeline) return;
+
+            // Show loading first
+            timeline.innerHTML = `
+                <div class="activity-item p-3">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-spinner fa-spin text-blue-400"></i>
+                        <div>
+                            <div class="text-white text-sm font-medium">Đang tải hoạt động...</div>
+                            <div class="text-white text-opacity-60 text-xs">Vui lòng chờ</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Simulate loading and then show activities
+            setTimeout(() => {
+                const activities = [
+                    {
+                        icon: 'fas fa-user-edit',
+                        title: 'Cập nhật thông tin cá nhân',
+                        time: formatRelativeTime(new Date()),
+                        color: 'text-blue-400'
+                    },
+                    {
+                        icon: 'fas fa-sign-in-alt',
+                        title: 'Đăng nhập hệ thống',
+                        time: userData?.user?.lastLogin ? formatRelativeTime(userData.user.lastLogin) : '3 ngày trước',
+                        color: 'text-green-400'
+                    },
+                    {
+                        icon: 'fas fa-chart-line',
+                        title: 'Xem báo cáo phân tích',
+                        time: '2 ngày trước',
+                        color: 'text-yellow-400'
+                    }
+                ];
+
+                // Add achievement activity if user has achievements
+                if (userData?.user?.achievementsEarned > 0) {
+                    activities.unshift({
+                        icon: 'fas fa-trophy',
+                        title: `Đạt được ${userData.user.achievementsEarned} thành tích`,
+                        time: '1 tuần trước',
+                        color: 'text-purple-400'
+                    });
+                }
+
+                const activityHTML = activities.map(activity => `
+                    <div class="activity-item p-3 hover:bg-white hover:bg-opacity-5 rounded-lg transition-all duration-300">
+                        <div class="flex items-center gap-3">
+                            <i class="${activity.icon} ${activity.color}"></i>
+                            <div>
+                                <div class="text-white text-sm font-medium">${activity.title}</div>
+                                <div class="text-white text-opacity-60 text-xs">${activity.time}</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                timeline.innerHTML = activityHTML;
+            }, 1000); // Show loading for 1 second then display activities
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('userInfo');
+            window.location.href = '/login.html';
+        }
+
+        // Load demo data as fallback
+        function loadDemoData() {
+            const demoUser = {
+                user: {
+                    name: 'Nguyễn Văn Demo',
+                    email: 'demo@solaranalytics.com',
+                    phone: '0123456789',
+                    position: 'Solar Analytics Engineer',
+                    company: 'SolarAnalytics Demo',
+                    address: 'Hà Nội, Việt Nam',
+                    bio: 'Chuyên gia phân tích năng lượng mặt trời với nhiều năm kinh nghiệm.',
+                    profileImage: null,
+                    stats: {
+                        projectsCompleted: 25,
+                        reportsGenerated: 150,
+                        experienceYears: 3,
+                        achievementsEarned: 8
+                    },
+                    socialProviders: {
+                        google: false,
+                        facebook: true
+                    },
+                    memberSince: '2022-01-15T00:00:00.000Z',
+                    lastLogin: new Date().toISOString()
+                },
+                token: 'demo-token'
+            };
+            displayUserProfile(demoUser);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Edit mode toggle
+            const editBtn = document.getElementById('editBtn');
+            if (editBtn) {
+                editBtn.addEventListener('click', toggleEditMode);
+            }
+
+            // Save profile
+            const saveBtn = document.getElementById('saveBtn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', saveProfile);
+            }
+
+            // Cancel edit
+            const cancelBtn = document.getElementById('cancelBtn');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', cancelEdit);
+            }
+
+            // Change avatar
+            const changeAvatarBtn = document.getElementById('changeAvatarBtn');
+            if (changeAvatarBtn) {
+                changeAvatarBtn.addEventListener('click', changeAvatar);
+            }
+
+            // Theme toggle
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
+            }
+
+            // Floating action
+            const floatingAction = document.getElementById('floatingAction');
+            if (floatingAction) {
+                floatingAction.addEventListener('click', showAISuggestion);
+            }
+
+            // Avatar file input
+            const avatarFileInput = document.getElementById('avatarFileInput');
+            if (avatarFileInput) {
+                avatarFileInput.addEventListener('change', handleAvatarFileChange);
+            }
+
+            // Avatar drag and drop
+            const avatarUploadArea = document.getElementById('profileAvatar');
+            if (avatarUploadArea) {
+                avatarUploadArea.addEventListener('dragover', handleDragOver);
+                avatarUploadArea.addEventListener('dragleave', handleDragLeave);
+                avatarUploadArea.addEventListener('drop', handleDrop);
+            }
+        }
+
+        // Toggle edit mode
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            const editableFields = [
+                'fullName', 'phone', 'position', 'company', 
+                'dateOfBirth', 'gender', 'avatarUrl', 'address', 'bio'
+            ];
+            const editBtn = document.getElementById('editBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const emailField = document.getElementById('email');
+
+            if (isEditMode) {
+                // Enable all editable fields
+                editableFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.disabled = false;
+                        field.readOnly = false;
+                        field.classList.add('editable-field');
+                        field.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                        field.style.borderColor = '#4F46E5';
+                    }
+                });
+
+                // Keep email field disabled
+                if (emailField) {
+                    emailField.disabled = true;
+                    emailField.readOnly = true;
+                    emailField.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                    emailField.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                    emailField.style.cursor = 'not-allowed';
+                }
+
+                if (editBtn) editBtn.style.display = 'none';
+                if (saveBtn) saveBtn.style.display = 'inline-block';
+                if (cancelBtn) cancelBtn.style.display = 'inline-block';
+                showNotification('Chế độ chỉnh sửa đã được bật. Email không thể thay đổi.', 'info');
+            } else {
+                // Disable all fields
+                editableFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.disabled = true;
+                        field.readOnly = true;
+                        field.classList.remove('editable-field');
+                        field.style.backgroundColor = '';
+                        field.style.borderColor = '';
+                    }
+                });
+
+                if (emailField) {
+                    emailField.style.backgroundColor = '';
+                    emailField.style.borderColor = '';
+                    emailField.style.cursor = '';
+                }
+
+                if (editBtn) editBtn.style.display = 'inline-block';
+                if (saveBtn) saveBtn.style.display = 'none';
+                if (cancelBtn) cancelBtn.style.display = 'none';
+            }
+        }
+
+        // Save profile
+        async function saveProfile() {
+            if (!currentUser) {
+                showNotification('Không có dữ liệu người dùng để lưu', 'error');
+                return;
+            }
+
+            // Validate required fields
+            const fullName = document.getElementById('fullName')?.value?.trim();
+            if (!fullName) {
+                showNotification('Họ và tên là bắt buộc', 'error');
+                return;
+            }
+
+            // Collect all editable form data
+            const avatarUrl = document.getElementById('avatarUrl')?.value?.trim();
+            const formData = {
+                name: fullName,
+                phone: document.getElementById('phone')?.value?.trim() || '',
+                position: document.getElementById('position')?.value?.trim() || '',
+                company: document.getElementById('company')?.value?.trim() || '',
+                address: document.getElementById('address')?.value?.trim() || '',
+                bio: document.getElementById('bio')?.value?.trim() || '',
+                dateOfBirth: document.getElementById('dateOfBirth')?.value || '',
+                gender: document.getElementById('gender')?.value || ''
+            };
+
+            // Add profileImage only if it exists (to avoid overwriting with empty string)
+            if (avatarUrl) {
+                formData.profileImage = avatarUrl;
+            }
+
+            console.log('Saving profile data:', formData);
+
+            // Show loading state
+            const saveBtn = document.getElementById('saveBtn');
+            const originalSaveBtnText = saveBtn ? saveBtn.innerHTML : '';
+            if (saveBtn) {
+                saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang lưu...';
+                saveBtn.disabled = true;
+            }
+
+            try {
+                const response = await fetch('/api/users/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${currentUser.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Profile updated successfully:', result);
+                    
+                    // Update localStorage with new user data
+                    const updatedUserData = result.user || result;
+                    const updatedUserInfo = { 
+                        ...currentUser, 
+                        user: { ...currentUser.user, ...updatedUserData }
+                    };
+                    localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
+                    currentUser = updatedUserInfo;
+                    
+                    // Update avatar in UI if it was changed
+                    if (formData.profileImage) {
+                        const avatarImage = document.getElementById('avatarImage');
+                        if (avatarImage) {
+                            avatarImage.src = formData.profileImage;
+                        }
+                        
+                        // Also update header avatar if it exists
+                        const headerAvatar = document.querySelector('#profile-dropdown img');
+                        if (headerAvatar) {
+                            headerAvatar.src = formData.profileImage;
+                        }
+
+                        // Update all avatar instances in the page
+                        const allAvatars = document.querySelectorAll('img[alt*="avatar"], img[alt*="Avatar"]');
+                        allAvatars.forEach(avatar => {
+                            if (avatar.src !== formData.profileImage) {
+                                avatar.src = formData.profileImage;
+                            }
+                        });
+                    }
+                    
+                    // Log activity if function exists
+                    if (typeof logActivity === 'function') {
+                        logActivity('profile_update', {
+                            fields_updated: Object.keys(formData),
+                            avatar_updated: !!formData.profileImage
+                        });
+                    }
+                    
+                    displayUserProfile(updatedUserInfo);
+                    toggleEditMode();
+                    showNotification('Đã lưu thông tin profile và avatar thành công!', 'success');
+                    
+                } else if (response.status === 401) {
+                    // Unauthorized - token expired or invalid
+                    showNotification('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.', 'error');
+                    localStorage.removeItem('userInfo');
+                    localStorage.removeItem('token');
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                    
+                } else if (response.status === 400) {
+                    // Bad request - validation error
+                    const errorData = await response.json().catch(() => ({}));
+                    const errorMessage = errorData.message || 'Dữ liệu không hợp lệ. Vui lòng kiểm tra lại thông tin.';
+                    showNotification(errorMessage, 'error');
+                    
+                } else if (response.status === 413) {
+                    // Payload too large - avatar file too big
+                    showNotification('Ảnh đại diện quá lớn. Vui lòng chọn ảnh nhỏ hơn 5MB.', 'error');
+                    
+                } else if (response.status === 500) {
+                    // Server error
+                    showNotification('Lỗi server. Vui lòng thử lại sau ít phút.', 'error');
+                    
+                } else {
+                    // Other HTTP errors
+                    const errorData = await response.json().catch(() => ({}));
+                    const errorMessage = errorData.message || `Lỗi không xác định (${response.status})`;
+                    showNotification(errorMessage, 'error');
+                }
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                
+                // Handle different types of errors
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    showNotification('Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng.', 'error');
+                } else if (error.name === 'AbortError') {
+                    showNotification('Yêu cầu bị hủy. Vui lòng thử lại.', 'error');
+                } else {
+                    showNotification('Lỗi khi lưu thông tin: ' + error.message, 'error');
+                }
+            } finally {
+                // Reset save button state
+                if (saveBtn) {
+                    saveBtn.innerHTML = originalSaveBtnText || '<i class="fas fa-save mr-2"></i>Lưu thay đổi';
+                    saveBtn.disabled = false;
+                }
+            }
+        }
+
+        // Cancel edit
+        function cancelEdit() {
+            if (currentUser) {
+                updateFormFields(currentUser);
+            }
+            toggleEditMode();
+            showNotification('Đã hủy chỉnh sửa', 'info');
+        }
+
+        // Change avatar - trigger file selection
+        function changeAvatar() {
+            const fileInput = document.getElementById('avatarFileInput');
+            if (fileInput) {
+                fileInput.click();
+            }
+        }
+
+        // Handle avatar file change
+        function handleAvatarFileChange(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            processAvatarFile(file);
+        }
+
+        // Process avatar file (shared function for file input and drag & drop)
+        function processAvatarFile(file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                showNotification('Vui lòng chọn file ảnh hợp lệ (JPG, PNG, GIF)', 'error');
+                return;
+            }
+
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('Kích thước file không được vượt quá 5MB', 'error');
+                return;
+            }
+
+            // Show loading state
+            const avatarUploadArea = document.getElementById('profileAvatar');
+            const changeAvatarBtn = document.getElementById('changeAvatarBtn');
+            
+            if (changeAvatarBtn) {
+                changeAvatarBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang xử lý...';
+                changeAvatarBtn.disabled = true;
+            }
+
+            // Compress and convert image to reduce size
+            compressAndProcessImage(file, (compressedBase64) => {
+                // Update avatar preview in profile page
+                const avatarImage = document.getElementById('avatarImage');
+                if (avatarImage) {
+                    avatarImage.src = compressedBase64;
+                }
+
+                // Update all avatar instances throughout the UI
+                updateAllAvatarInstances(compressedBase64);
+
+                // Store in hidden input for saving
+                const avatarUrlInput = document.getElementById('avatarUrl');
+                if (avatarUrlInput) {
+                    avatarUrlInput.value = compressedBase64;
+                }
+
+                // Update current user data in memory (but don't store large base64 in localStorage)
+                if (currentUser) {
+                    if (currentUser.user) {
+                        currentUser.user.profileImage = compressedBase64;
+                    } else {
+                        currentUser.profileImage = compressedBase64;
+                    }
+                    
+                    // Don't store large base64 images in localStorage to avoid QuotaExceededError
+                    // Instead, we'll save to backend when user clicks "Save Changes"
+                    // For now, just update the UI without persisting to localStorage
+                    console.log('Avatar updated in memory, will be saved to backend when user saves profile');
+                }
+
+                // Reset button state
+                if (changeAvatarBtn) {
+                    changeAvatarBtn.innerHTML = '<i class="fas fa-camera mr-2"></i>Chọn ảnh từ máy';
+                    changeAvatarBtn.disabled = false;
+                }
+
+                showNotification('Avatar đã được cập nhật trong giao diện. Nhấn "Lưu thay đổi" để lưu vào cơ sở dữ liệu.', 'success');
+            }, (error) => {
+                // Reset button state on error
+                if (changeAvatarBtn) {
+                    changeAvatarBtn.innerHTML = '<i class="fas fa-camera mr-2"></i>Chọn ảnh từ máy';
+                    changeAvatarBtn.disabled = false;
+                }
+                showNotification('Có lỗi khi xử lý file ảnh: ' + error, 'error');
+            });
+        }
+
+        // Compress image to reduce file size and prevent localStorage quota issues
+        function compressAndProcessImage(file, onSuccess, onError) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            img.onload = function() {
+                // Set maximum dimensions for avatar (200x200 should be sufficient)
+                const maxWidth = 200;
+                const maxHeight = 200;
+                
+                let { width, height } = img;
+                
+                // Calculate new dimensions while maintaining aspect ratio
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height = (height * maxWidth) / width;
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width = (width * maxHeight) / height;
+                        height = maxHeight;
+                    }
+                }
+
+                // Set canvas dimensions
+                canvas.width = width;
+                canvas.height = height;
+
+                // Draw and compress the image
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Convert to base64 with compression (0.8 quality for JPEG)
+                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                
+                // Check if the compressed image is still too large for localStorage
+                const sizeInBytes = compressedBase64.length * 0.75; // Approximate base64 to bytes conversion
+                const sizeInKB = sizeInBytes / 1024;
+                
+                console.log(`Compressed avatar size: ${sizeInKB.toFixed(2)} KB`);
+                
+                if (sizeInBytes > 1024 * 1024) { // If still larger than 1MB
+                    // Try with lower quality
+                    const veryCompressedBase64 = canvas.toDataURL('image/jpeg', 0.5);
+                    onSuccess(veryCompressedBase64);
+                } else {
+                    onSuccess(compressedBase64);
+                }
+            };
+
+            img.onerror = function() {
+                onError('Không thể tải ảnh');
+            };
+
+            // Create object URL to load the image
+            img.src = URL.createObjectURL(file);
+        }
+
+        // Update all avatar instances throughout the UI
+        function updateAllAvatarInstances(newAvatarUrl) {
+            // Update all elements with avatar-related classes or IDs
+            const avatarSelectors = [
+                '#avatarImage',
+                '.user-avatar',
+                '.profile-avatar',
+                '[data-user-avatar]',
+                '.nav-avatar'
+            ];
+
+            avatarSelectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(element => {
+                    if (element.tagName === 'IMG') {
+                        element.src = newAvatarUrl;
+                    } else if (element.style.backgroundImage !== undefined) {
+                        element.style.backgroundImage = `url(${newAvatarUrl})`;
+                    }
+                });
+            });
+
+            // Update specific header avatar elements
+            const headerAvatarElements = [
+                '#header-user-avatar',
+                '#dropdown-user-avatar'
+            ];
+
+            headerAvatarElements.forEach(selector => {
+                const element = document.querySelector(selector);
+                if (element && element.tagName === 'IMG') {
+                    element.src = newAvatarUrl;
+                }
+            });
+
+            // Update navigation bar avatar if it exists
+            const navAvatar = document.querySelector('.navbar .user-avatar, .header .user-avatar');
+            if (navAvatar) {
+                if (navAvatar.tagName === 'IMG') {
+                    navAvatar.src = newAvatarUrl;
+                } else {
+                    navAvatar.style.backgroundImage = `url(${newAvatarUrl})`;
+                }
+            }
+
+            // Update any other avatar instances in other pages/components
+            const allAvatarImages = document.querySelectorAll('img[alt*="avatar" i], img[alt*="Avatar" i], img[src*="avatar" i]');
+            allAvatarImages.forEach(img => {
+                // Only update if it's likely a user avatar (not logo or other images)
+                if (img.id !== 'avatarImage' && !img.src.includes('logo') && !img.src.includes('icon')) {
+                    img.src = newAvatarUrl;
+                }
+            });
+
+            // Trigger custom event for other components that might need to update
+            window.dispatchEvent(new CustomEvent('avatarUpdated', { 
+                detail: { newAvatarUrl: newAvatarUrl } 
+            }));
+
+            console.log('Avatar updated across all UI instances:', newAvatarUrl);
+        }
+
+        // Handle drag over
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const avatarUploadArea = document.getElementById('profileAvatar');
+            if (avatarUploadArea) {
+                avatarUploadArea.classList.add('drag-over');
+            }
+        }
+
+        // Handle drag leave
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const avatarUploadArea = document.getElementById('profileAvatar');
+            if (avatarUploadArea) {
+                avatarUploadArea.classList.remove('drag-over');
+            }
+        }
+
+        // Handle drop
+        function handleDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const avatarUploadArea = document.getElementById('profileAvatar');
+            if (avatarUploadArea) {
+                avatarUploadArea.classList.remove('drag-over');
+            }
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processAvatarFile(files[0]);
+            }
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            const themes = [
+                'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
+            ];
+            
+            const currentTheme = localStorage.getItem('profileTheme') || themes[0];
+            const currentIndex = themes.indexOf(currentTheme);
+            const nextTheme = themes[(currentIndex + 1) % themes.length];
+            
+            document.body.style.background = nextTheme;
+            localStorage.setItem('profileTheme', nextTheme);
+            showNotification('Đã thay đổi giao diện', 'success');
+        }
+
+        // Show AI suggestion
+        function showAISuggestion() {
+            const suggestions = [
+                'Cập nhật thông tin liên hệ để nhận thông báo mới nhất',
+                'Hoàn thiện hồ sơ để tăng độ tin cậy',
+                'Tham gia các khóa học nâng cao kỹ năng',
+                'Kết nối với các chuyên gia trong ngành'
+            ];
+            
+            const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+            showNotification(`💡 ${randomSuggestion}`, 'info');
+        }
+
+        // Random greeting messages
+        function loadRandomGreeting() {
+            const greetings = [
+                {
+                    title: "Chào mừng trở lại!",
+                    message: "Chúc bạn một ngày làm việc hiệu quả với Solar Analytics",
+                    icon: "fas fa-sun"
+                },
+                {
+                    title: "Xin chào!",
+                    message: "Hôm nay là một ngày tuyệt vời để khám phá năng lượng mặt trời",
+                    icon: "fas fa-solar-panel"
+                },
+                {
+                    title: "Chúc mừng ngày mới!",
+                    message: "Hy vọng bạn sẽ có những phân tích thú vị trong ngày hôm nay",
+                    icon: "fas fa-chart-line"
+                },
+                {
+                    title: "Bắt đầu ngày mới!",
+                    message: "Cùng nhau xây dựng tương lai xanh với năng lượng tái tạo",
+                    icon: "fas fa-leaf"
+                },
+                {
+                    title: "Chào buổi sáng!",
+                    message: "Mặt trời đã lên, đã đến lúc tạo ra những báo cáo tuyệt vời",
+                    icon: "fas fa-sun"
+                },
+                {
+                    title: "Hôm nay thật đẹp!",
+                    message: "Thời tiết thuận lợi cho việc thu thập dữ liệu năng lượng mặt trời",
+                    icon: "fas fa-cloud-sun"
+                },
+                {
+                    title: "Chúc ngày tốt lành!",
+                    message: "Hy vọng bạn sẽ đạt được nhiều thành tích mới trong hệ thống",
+                    icon: "fas fa-trophy"
+                },
+                {
+                    title: "Năng lượng tích cực!",
+                    message: "Hãy bắt đầu ngày với tinh thần làm việc nhiệt huyết",
+                    icon: "fas fa-bolt"
+                },
+                {
+                    title: "Chào người bạn!",
+                    message: "Cảm ơn bạn đã đồng hành cùng Solar Analytics",
+                    icon: "fas fa-heart"
+                },
+                {
+                    title: "Sẵn sàng chinh phục!",
+                    message: "Hôm nay chúng ta sẽ cùng nhau tối ưu hóa năng lượng xanh",
+                    icon: "fas fa-rocket"
+                },
+                {
+                    title: "Khởi đầu tuyệt vời!",
+                    message: "Mỗi ngày mới là một cơ hội để cải thiện hiệu suất năng lượng",
+                    icon: "fas fa-star"
+                },
+                {
+                    title: "Chúc may mắn!",
+                    message: "Hy vọng dữ liệu hôm nay sẽ mang lại những insight thú vị",
+                    icon: "fas fa-clover"
+                }
+            ];
+
+            // Get current hour to show time-appropriate greetings
+            const currentHour = new Date().getHours();
+            let timeBasedGreetings = [];
+
+            if (currentHour >= 5 && currentHour < 12) {
+                // Morning greetings
+                timeBasedGreetings = [
+                    {
+                        title: "Chào buổi sáng!",
+                        message: "Mặt trời đã lên, đã đến lúc tạo ra những báo cáo tuyệt vời",
+                        icon: "fas fa-sun"
+                    },
+                    {
+                        title: "Sáng tốt lành!",
+                        message: "Bắt đầu ngày mới với năng lượng tích cực",
+                        icon: "fas fa-coffee"
+                    },
+                    {
+                        title: "Chúc buổi sáng vui vẻ!",
+                        message: "Hôm nay sẽ là một ngày làm việc hiệu quả",
+                        icon: "fas fa-sun"
+                    }
+                ];
+            } else if (currentHour >= 12 && currentHour < 18) {
+                // Afternoon greetings
+                timeBasedGreetings = [
+                    {
+                        title: "Chào buổi chiều!",
+                        message: "Hy vọng buổi sáng của bạn đã diễn ra tốt đẹp",
+                        icon: "fas fa-sun"
+                    },
+                    {
+                        title: "Chiều tốt lành!",
+                        message: "Tiếp tục phân tích dữ liệu năng lượng mặt trời nào",
+                        icon: "fas fa-chart-bar"
+                    },
+                    {
+                        title: "Buổi chiều năng động!",
+                        message: "Thời gian vàng để tối ưu hóa hiệu suất hệ thống",
+                        icon: "fas fa-cogs"
+                    }
+                ];
+            } else {
+                // Evening/Night greetings
+                timeBasedGreetings = [
+                    {
+                        title: "Chào buổi tối!",
+                        message: "Cảm ơn bạn đã làm việc chăm chỉ trong ngày hôm nay",
+                        icon: "fas fa-moon"
+                    },
+                    {
+                        title: "Tối tốt lành!",
+                        message: "Hy vọng bạn đã có một ngày làm việc thành công",
+                        icon: "fas fa-star"
+                    },
+                    {
+                        title: "Buổi tối thư giãn!",
+                        message: "Đã đến lúc nghỉ ngơi sau một ngày làm việc hiệu quả",
+                        icon: "fas fa-moon"
+                    }
+                ];
+            }
+
+            // Combine all greetings
+            const allGreetings = [...greetings, ...timeBasedGreetings];
+            
+            // Select random greeting
+            const randomGreeting = allGreetings[Math.floor(Math.random() * allGreetings.length)];
+            
+            // Update DOM
+            const greetingTitle = document.getElementById('greetingTitle');
+            const greetingMessage = document.getElementById('greetingMessage');
+            const greetingIcon = document.querySelector('#welcomeGreeting .fas');
+            
+            if (greetingTitle) greetingTitle.textContent = randomGreeting.title;
+            if (greetingMessage) greetingMessage.textContent = randomGreeting.message;
+            if (greetingIcon) {
+                greetingIcon.className = `${randomGreeting.icon} text-white text-xl`;
+            }
+
+            // Add a subtle animation
+            const welcomeCard = document.getElementById('welcomeGreeting');
+            if (welcomeCard) {
+                welcomeCard.style.transform = 'scale(0.98)';
+                welcomeCard.style.opacity = '0.8';
+                setTimeout(() => {
+                    welcomeCard.style.transform = 'scale(1)';
+                    welcomeCard.style.opacity = '1';
+                    welcomeCard.style.transition = 'all 0.3s ease';
+                }, 100);
+            }
+        }
+
+
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                warning: 'bg-yellow-500',
+                info: 'bg-blue-500'
+            };
+            
+            notification.className = `fixed top-4 right-4 ${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 transform translate-x-full`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(full)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Animate number counting
+        function animateNumber(element, start, end, duration) {
+            const startTime = performance.now();
+            const difference = end - start;
+            
+            function updateNumber(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                const current = Math.floor(start + (difference * progress));
+                element.textContent = current;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateNumber);
+                }
+            }
+            
+            requestAnimationFrame(updateNumber);
+        }
+
+        // Format relative time
+        function formatRelativeTime(date) {
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - new Date(date)) / 1000);
+            
+            if (diffInSeconds < 60) return 'Vừa xong';
+            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} phút trước`;
+            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} giờ trước`;
+            if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)} ngày trước`;
+            if (diffInSeconds < 31536000) return `${Math.floor(diffInSeconds / 2592000)} tháng trước`;
+            return `${Math.floor(diffInSeconds / 31536000)} năm trước`;
+        }
+
+        // Get auth headers
+        function getAuthHeaders() {
+            const token = currentUser?.token || localStorage.getItem('token');
+            return {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            };
+        }
+
+        // Load user achievements from database
+        async function loadUserAchievements() {
+            // Show loading state
+            showAchievementsLoading();
+            
+            try {
+                const userId = currentUser?.user?._id || currentUser?._id;
+                if (!userId) {
+                    console.log('No user ID found, showing no achievements');
+                    displayNoAchievements();
+                    return;
+                }
+
+                console.log('Loading achievements for user:', userId);
+                const response = await fetch(`${API_BASE}/api/achievements/user/${userId}`, {
+                    headers: getAuthHeaders()
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        localStorage.removeItem('userInfo');
+                        localStorage.removeItem('token');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    console.error('API response not ok:', response.status);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log('Achievements API result:', result);
+                
+                if (result.success && result.data && result.data.length > 0) {
+                    displayUserAchievements(result.data);
+                } else {
+                    displayNoAchievements();
+                }
+            } catch (error) {
+                console.error('Error loading user achievements:', error);
+                displayNoAchievements();
+            }
+        }
+
+        // Show loading state for achievements
+        function showAchievementsLoading() {
+            const achievementsList = document.getElementById('achievementsList');
+            const achievementCount = document.getElementById('achievementCount');
+            
+            achievementCount.textContent = 'Đang tải...';
+            
+            achievementsList.innerHTML = `
+                <div class="flex items-center justify-center py-6">
+                    <div class="text-center">
+                        <i class="fas fa-spinner fa-spin text-white text-xl mb-2"></i>
+                        <div class="text-white text-opacity-60 text-sm">Đang tải thành tích...</div>
+                    </div>
+                </div>
+            `;
+            
+            // Set a timeout to ensure we don't stay in loading state forever
+            setTimeout(() => {
+                const currentContent = achievementsList.innerHTML;
+                if (currentContent.includes('fa-spinner')) {
+                    console.warn('Achievements still loading after 10 seconds, showing fallback');
+                    displayNoAchievements();
+                }
+            }, 10000); // 10 second timeout
+        }
+
+        // Display user achievements
+        function displayUserAchievements(achievements) {
+            const achievementsList = document.getElementById('achievementsList');
+            const achievementCount = document.getElementById('achievementCount');
+            
+            if (!achievements || achievements.length === 0) {
+                displayNoAchievements();
+                return;
+            }
+
+            // Update count
+            achievementCount.textContent = `${achievements.length} thành tích`;
+
+            // Display achievements (show first 5)
+            const displayAchievements = achievements.slice(0, 5);
+            const achievementsHTML = displayAchievements.map(userAchievement => {
+                const achievement = userAchievement.achievement;
+                return `
+                    <div class="flex items-center gap-3 p-3 bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-all duration-300">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: ${achievement.color || '#667eea'};">
+                            <i class="${achievement.icon || 'fas fa-trophy'} text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-white text-sm font-medium">${achievement.name}</div>
+                            <div class="text-white text-opacity-60 text-xs">${achievement.description}</div>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-xs px-2 py-1 rounded-full bg-white bg-opacity-20 text-white">
+                                    ${getRarityText(achievement.rarity)}
+                                </span>
+                                <span class="text-xs text-white text-opacity-60">
+                                    ${achievement.points} điểm
+                                </span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-white text-opacity-60 text-xs">
+                                ${formatRelativeTime(userAchievement.earnedAt)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            achievementsList.innerHTML = achievementsHTML;
+        }
+
+        // Display no achievements message
+        function displayNoAchievements() {
+            const achievementsList = document.getElementById('achievementsList');
+            const achievementCount = document.getElementById('achievementCount');
+            
+            achievementCount.textContent = '0 thành tích';
+            
+            achievementsList.innerHTML = `
+                <div class="flex items-center justify-center py-8">
+                    <div class="text-center">
+                        <i class="fas fa-trophy text-white text-opacity-40 text-3xl mb-3"></i>
+                        <div class="text-white text-opacity-60 text-sm mb-2">Chưa có thành tích nào</div>
+                        <div class="text-white text-opacity-40 text-xs">Hoàn thành các nhiệm vụ để nhận thành tích</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Get rarity text
+        function getRarityText(rarity) {
+            const rarityMap = {
+                'common': 'Phổ biến',
+                'uncommon': 'Không phổ biến',
+                'rare': 'Hiếm',
+                'epic': 'Sử thi',
+                'legendary': 'Huyền thoại'
+            };
+            return rarityMap[rarity] || 'Phổ biến';
+        }
+
+        // View all achievements (redirect to achievements page)
+        function viewAllAchievements() {
+            // For now, show a notification. Later can redirect to a dedicated achievements page
+            showNotification('Tính năng xem tất cả thành tích sẽ được phát triển trong phiên bản tiếp theo', 'info');
+        }
+
+        // Enhanced profile data loading with achievements integration
+        async function loadProfileDataFromAPI() {
+            try {
+                const response = await fetch(`${API_BASE}/api/users/profile`, {
+                    headers: getAuthHeaders()
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        localStorage.removeItem('userInfo');
+                        localStorage.removeItem('token');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    // Update localStorage with fresh data
+                    const updatedUserInfo = {
+                        user: result.data,
+                        token: currentUser?.token || localStorage.getItem('token')
+                    };
+                    localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
+                    currentUser = updatedUserInfo;
+                    
+                    // Update display
+                    displayUserProfile(currentUser);
+                    loadUserAchievements();
+                    
+                    showNotification('Đã cập nhật thông tin profile từ cơ sở dữ liệu', 'success');
+                } else {
+                    throw new Error(result.message || 'Failed to load profile data');
+                }
+            } catch (error) {
+                console.error('Error loading profile data from API:', error);
+                showNotification('Không thể tải dữ liệu từ server, sử dụng dữ liệu cục bộ', 'warning');
+            }
+        }
+
+        // Quick Actions Functions
+        function openChangePasswordModal() {
+            document.getElementById('changePasswordModal').classList.remove('hidden');
+        }
+
+        function closeChangePasswordModal() {
+            document.getElementById('changePasswordModal').classList.add('hidden');
+            // Clear form
+            document.getElementById('currentPasswordModal').value = '';
+            document.getElementById('newPasswordModal').value = '';
+            document.getElementById('confirmPasswordModal').value = '';
+        }
+
+        async function changePasswordFromModal() {
+            const currentPassword = document.getElementById('currentPasswordModal').value;
+            const newPassword = document.getElementById('newPasswordModal').value;
+            const confirmPassword = document.getElementById('confirmPasswordModal').value;
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showNotification('Vui lòng điền đầy đủ thông tin', 'error');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showNotification('Mật khẩu mới không khớp', 'error');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                showNotification('Mật khẩu mới phải có ít nhất 6 ký tự', 'error');
+                return;
+            }
+
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const token = userInfo.token;
+
+                if (!token) {
+                    showNotification('Vui lòng đăng nhập lại', 'error');
+                    setTimeout(() => window.location.href = 'login.html', 2000);
+                    return;
+                }
+
+                const response = await fetch('/api/users/change-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        currentPassword,
+                        newPassword
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showNotification('🎉 Mật khẩu đã được cập nhật thành công! Tài khoản của bạn giờ đã an toàn hơn.', 'success');
+                    closeChangePasswordModal();
+                } else {
+                    showNotification(data.message || 'Có lỗi xảy ra', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Có lỗi xảy ra khi đổi mật khẩu', 'error');
+            }
+        }
+
+        function exportUserData() {
+            showNotification('Chức năng xuất dữ liệu đang được phát triển', 'info');
+        }
+
+        function openSettings() {
+            window.location.href = 'settings.html';
+        }
+    </script>
+    
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="glass-card p-6 max-w-md w-full">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold text-white">Đổi mật khẩu</h3>
+                    <button onclick="closeChangePasswordModal()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-all">
+                        <i class="fas fa-times text-white text-sm"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Mật khẩu hiện tại</label>
+                        <input type="password" id="currentPasswordModal" class="modern-input w-full" placeholder="Nhập mật khẩu hiện tại">
+                    </div>
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Mật khẩu mới</label>
+                        <input type="password" id="newPasswordModal" class="modern-input w-full" placeholder="Nhập mật khẩu mới">
+                    </div>
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Xác nhận mật khẩu mới</label>
+                        <input type="password" id="confirmPasswordModal" class="modern-input w-full" placeholder="Nhập lại mật khẩu mới">
+                    </div>
+                    <div class="flex gap-3 mt-6">
+                        <button onclick="closeChangePasswordModal()" class="flex-1 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all">
+                            Hủy
+                        </button>
+                        <button onclick="changePasswordFromModal()" class="flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all">
+                            Đổi mật khẩu
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <!-- Include components-loader.js for header and footer -->
+    <script src="/js/components-loader.js"></script>
+    
+    <!-- Include main.js for header component loading -->
+    <script src="/js/main.js"></script>
+    
+    <script src="/js/profile.js"></script>
+
+    <!-- Avatar Viewer Modal -->
+    <div id="avatar-viewer-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
+        <span class="absolute top-5 right-8 text-white text-4xl font-bold cursor-pointer" id="close-avatar-viewer">&times;</span>
+        <img class="max-w-[90vw] max-h-[90vh]" id="avatar-viewer-image" src="" alt="Full-size Avatar">
+    </div>
+</body>
+</html>

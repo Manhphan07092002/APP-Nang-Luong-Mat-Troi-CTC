@@ -1,0 +1,23 @@
+/* File: client/assets/css/auth.css */
+
+/* Hiệu ứng mờ dần khi tải trang cho form */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-container {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Style cho nút bấm khi bị vô hiệu hóa (đang tải) */
+#submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

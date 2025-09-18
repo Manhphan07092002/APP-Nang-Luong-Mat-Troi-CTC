@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tổng Quan Hệ Thống - SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header id="header-container" class="bg-white shadow-lg sticky top-0 z-50">
+        <!-- Header will be loaded dynamically -->
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- Hero Section -->
+        <div class="gradient-bg rounded-3xl p-12 text-white text-center mb-12">
+            <h1 class="text-5xl font-bold mb-4">🌞 SolarAnalytics System</h1>
+            <p class="text-xl opacity-90 max-w-3xl mx-auto">
+                Hệ thống quản lý sản phẩm năng lượng mặt trời hoàn chỉnh với giao diện hiện đại và tính năng toàn diện
+            </p>
+        </div>
+
+        <!-- System Status -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                        <i class="fas fa-server text-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold">Backend Server</h3>
+                        <p class="text-green-600 font-medium">✅ Hoạt động bình thường</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 text-sm">Node.js + Express + MongoDB</p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                        <i class="fas fa-database text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold">Database</h3>
+                        <p class="text-blue-600 font-medium">✅ Kết nối thành công</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 text-sm">MongoDB với dữ liệu mẫu</p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                        <i class="fas fa-palette text-purple-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold">Frontend UI</h3>
+                        <p class="text-purple-600 font-medium">✅ Responsive & Modern</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 text-sm">Tailwind CSS + Components</p>
+            </div>
+        </div>
+
+        <!-- Features Overview -->
+        <div class="bg-white rounded-3xl p-8 shadow-lg mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8">🚀 Tính Năng Đã Triển Khai</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Product Management -->
+                <div class="p-6 border border-gray-200 rounded-xl">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-solar-panel text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Quản Lý Sản Phẩm</h3>
+                    <ul class="text-gray-600 space-y-1 text-sm">
+                        <li>✅ Danh sách sản phẩm với filter</li>
+                        <li>✅ Chi tiết sản phẩm với gallery</li>
+                        <li>✅ Admin CRUD operations</li>
+                        <li>✅ Search & pagination</li>
+                    </ul>
+                </div>
+
+                <!-- User Authentication -->
+                <div class="p-6 border border-gray-200 rounded-xl">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-user-shield text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Xác Thực Người Dùng</h3>
+                    <ul class="text-gray-600 space-y-1 text-sm">
+                        <li>✅ Đăng ký & đăng nhập</li>
+                        <li>✅ Quên mật khẩu</li>
+                        <li>✅ JWT authentication</li>
+                        <li>✅ Role-based access</li>
+                    </ul>
+                </div>
+
+                <!-- UI/UX Design -->
+                <div class="p-6 border border-gray-200 rounded-xl">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-paint-brush text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Thiết Kế UI/UX</h3>
+                    <ul class="text-gray-600 space-y-1 text-sm">
+                        <li>✅ Modern white/blue theme</li>
+                        <li>✅ Responsive design</li>
+                        <li>✅ Garamond typography</li>
+                        <li>✅ Glass morphism effects</li>
+                    </ul>
+                </div>
+
+                <!-- Contact System -->
+                <div class="p-6 border border-gray-200 rounded-xl">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-phone text-yellow-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Hệ Thống Liên Hệ</h3>
+                    <ul class="text-gray-600 space-y-1 text-sm">
+                        <li>✅ Modal liên hệ tư vấn</li>
+                        <li>✅ Hotline: 0979900874</li>
+                        <li>✅ Email: pxmanhctc@gmail.com</li>
+                        <li>✅ Zalo integration</li>
+                    </ul>
+                </div>
+
+                <!-- Components System -->
+                <div class="p-6 border border-gray-200 rounded-xl">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-puzzle-piece text-indigo-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Component System</h3>
+                    <ul class="text-gray-600 space-y-1 text-sm">
+                        <li>✅ Shared header/footer</li>
+                        <li>✅ Dynamic loading</li>
+                        <li>✅ Reusable components</li>
+                        <li>✅ Consistent styling</li>
+                    </ul>
+                </div>
+
+                <!-- Security Features -->
+                <div class="p-6 border border-gray-200 rounded-xl">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-red-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Bảo Mật</h3>
+                    <ul class="text-gray-600 space-y-1 text-sm">
+                        <li>✅ Input sanitization</li>
+                        <li>✅ XSS protection</li>
+                        <li>✅ JWT token security</li>
+                        <li>✅ Admin role protection</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Access Links -->
+        <div class="bg-white rounded-3xl p-8 shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-8">🔗 Truy Cập Nhanh</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <a href="/products.html" class="bg-blue-50 hover:bg-blue-100 p-4 rounded-xl text-center transition-colors">
+                    <i class="fas fa-solar-panel text-blue-600 text-2xl mb-2"></i>
+                    <p class="font-semibold text-blue-800">Sản Phẩm</p>
+                </a>
+                
+                <a href="/admin/products.html" class="bg-purple-50 hover:bg-purple-100 p-4 rounded-xl text-center transition-colors">
+                    <i class="fas fa-cogs text-purple-600 text-2xl mb-2"></i>
+                    <p class="font-semibold text-purple-800">Admin Panel</p>
+                </a>
+                
+                <a href="/login.html" class="bg-green-50 hover:bg-green-100 p-4 rounded-xl text-center transition-colors">
+                    <i class="fas fa-sign-in-alt text-green-600 text-2xl mb-2"></i>
+                    <p class="font-semibold text-green-800">Đăng Nhập</p>
+                </a>
+                
+                <a href="/register.html" class="bg-yellow-50 hover:bg-yellow-100 p-4 rounded-xl text-center transition-colors">
+                    <i class="fas fa-user-plus text-yellow-600 text-2xl mb-2"></i>
+                    <p class="font-semibold text-yellow-800">Đăng Ký</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="mt-12 text-center">
+            <div class="bg-gradient-to-r from-blue-600 to-green-600 rounded-2xl p-8 text-white">
+                <h3 class="text-2xl font-bold mb-4">📞 Liên Hệ Hỗ Trợ</h3>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-phone mr-2"></i>
+                        <span>Hotline: 0979900874</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-envelope mr-2"></i>
+                        <span>Email: pxmanhctc@gmail.com</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer-container">
+        <!-- Footer will be loaded dynamically -->
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/auth-fix.js"></script>
+    <script src="js/header.js"></script>
+    <script src="js/components-loader.js"></script>
+    
+    <!-- System overview page specific authentication fix -->
+    <script>
+        // Ensure authentication state is properly displayed on system overview page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📊 System Overview page: DOM loaded, checking auth state');
+            
+            // Wait for components to load, then force auth check
+            setTimeout(() => {
+                if (window.forceAuthCheck) {
+                    window.forceAuthCheck();
+                } else {
+                    setTimeout(() => {
+                        if (window.forceAuthCheck) {
+                            window.forceAuthCheck();
+                        }
+                    }, 1000);
+                }
+            }, 500);
+            
+            // Listen for header loaded event
+            window.addEventListener('headerLoaded', function() {
+                console.log('📡 System Overview page: Header loaded event received');
+                setTimeout(() => {
+                    const userInfo = localStorage.getItem('userInfo');
+                    if (userInfo && window.initializeAuth) {
+                        console.log('🔄 System Overview page: Re-initializing auth after header load');
+                        window.initializeAuth();
+                    }
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>

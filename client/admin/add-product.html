@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Sản Phẩm - Admin SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { 
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        .header-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .form-section {
+            padding: 40px;
+        }
+        .section-title {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .image-upload-container {
+            border: 2px dashed #667eea;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            background: rgba(102, 126, 234, 0.05);
+            transition: all 0.3s ease;
+        }
+        .image-upload-container:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #764ba2;
+        }
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .image-item {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .image-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .primary-badge {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 10px;
+        }
+        .spec-input-group {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+        }
+        .btn-secondary {
+            border-radius: 10px;
+            padding: 12px 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar will be loaded by sidebar-loader.js -->
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="card p-4">
+                <div class="header-section text-center mb-4">
+                    <h1><i class="fas fa-plus-circle me-3"></i>Thêm Sản Phẩm Mới</h1>
+                    <p class="mb-0 text-muted">Tạo sản phẩm năng lượng mặt trời cho hệ thống</p>
+                </div>
+
+                <!-- Form -->
+                <div class="form-section">
+                <form id="productForm">
+                    <!-- Thông tin cơ bản -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="section-title"><i class="fas fa-info-circle me-2"></i>Thông Tin Cơ Bản</h4>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Tên sản phẩm *</label>
+                            <input type="text" class="form-control" id="productName" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Thương hiệu *</label>
+                            <input type="text" class="form-control" id="productBrand" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Model *</label>
+                            <input type="text" class="form-control" id="productModel" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">SKU</label>
+                            <input type="text" class="form-control" id="productSku">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Danh mục *</label>
+                            <select class="form-select" id="productCategory" required>
+                                <option value="">Chọn danh mục</option>
+                                <option value="solar-panels">Tấm Pin Mặt Trời</option>
+                                <option value="inverters">Inverter</option>
+                                <option value="batteries">Pin Lưu Trữ</option>
+                                <option value="mounting-systems">Hệ Thống Lắp Đặt</option>
+                                <option value="monitoring">Giám Sát</option>
+                                <option value="accessories">Phụ Kiện</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Số lượng tồn kho</label>
+                            <input type="number" class="form-control" id="productStock" min="0" value="0">
+                        </div>
+                    </div>
+
+                    <!-- Giá cả -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="section-title"><i class="fas fa-dollar-sign me-2"></i>Thông Tin Giá</h4>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Giá bán (VND) *</label>
+                            <input type="number" class="form-control" id="productPrice" required min="0">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Giá gốc (VND)</label>
+                            <input type="number" class="form-control" id="productOriginalPrice" min="0">
+                        </div>
+                    </div>
+
+                    <!-- Mô tả -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="section-title"><i class="fas fa-align-left me-2"></i>Mô Tả Sản Phẩm</h4>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label fw-bold">Mô tả ngắn *</label>
+                            <textarea class="form-control" id="productShortDescription" rows="2" required></textarea>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label fw-bold">Mô tả chi tiết *</label>
+                            <textarea class="form-control" id="productDescription" rows="4" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Hình ảnh -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="section-title"><i class="fas fa-images me-2"></i>Hình Ảnh Sản Phẩm</h4>
+                        </div>
+                        <div class="col-12">
+                            <div class="image-upload-container" onclick="document.getElementById('imageInput').click()">
+                                <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                                <h5>Tải lên hình ảnh sản phẩm</h5>
+                                <p class="text-muted">Chọn từ 1-5 hình ảnh (JPG, PNG, GIF)</p>
+                                <input type="file" id="imageInput" multiple accept="image/*" style="display: none;" onchange="handleImageUpload(this)">
+                            </div>
+                            <div id="imagePreview" class="image-preview"></div>
+                        </div>
+                    </div>
+
+                    <!-- Thông số kỹ thuật -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="section-title"><i class="fas fa-cogs me-2"></i>Thông Số Kỹ Thuật</h4>
+                        </div>
+                        <div class="col-12">
+                            <div id="specificationsContainer">
+                                <div class="spec-input-group">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-2">
+                                            <input type="text" class="form-control" placeholder="Tên thông số" name="specName">
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <input type="text" class="form-control" placeholder="Giá trị" name="specValue">
+                                        </div>
+                                        <div class="col-md-2 mb-2">
+                                            <button type="button" class="btn btn-outline-danger w-100" onclick="removeSpecification(this)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary" onclick="addSpecification()">
+                                <i class="fas fa-plus me-2"></i>Thêm thông số
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tính năng -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="section-title"><i class="fas fa-star me-2"></i>Tính Năng Nổi Bật</h4>
+                        </div>
+                        <div class="col-12">
+                            <div id="featuresContainer">
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" placeholder="Nhập tính năng" name="feature">
+                                    <button type="button" class="btn btn-outline-danger" onclick="removeFeature(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary" onclick="addFeature()">
+                                <i class="fas fa-plus me-2"></i>Thêm tính năng
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Ứng dụng -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="section-title"><i class="fas fa-tools me-2"></i>Ứng Dụng</h4>
+                        </div>
+                        <div class="col-12">
+                            <div id="applicationsContainer">
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" placeholder="Nhập ứng dụng" name="application">
+                                    <button type="button" class="btn btn-outline-danger" onclick="removeApplication(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary" onclick="addApplication()">
+                                <i class="fas fa-plus me-2"></i>Thêm ứng dụng
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bảo hành -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="section-title"><i class="fas fa-shield-alt me-2"></i>Bảo Hành</h4>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label fw-bold">Thông tin bảo hành</label>
+                            <textarea class="form-control" id="productWarranty" rows="2" placeholder="VD: 25 năm bảo hành sản phẩm, 12 năm bảo hành hiệu suất"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Tùy chọn -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="section-title"><i class="fas fa-sliders-h me-2"></i>Tùy Chọn</h4>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="productFeatured">
+                                <label class="form-check-label fw-bold" for="productFeatured">
+                                    Sản phẩm nổi bật
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="productInStock" checked>
+                                <label class="form-check-label fw-bold" for="productInStock">
+                                    Còn hàng
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="productActive" checked>
+                                <label class="form-check-label fw-bold" for="productActive">
+                                    Kích hoạt
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <button type="button" class="btn btn-secondary me-3" onclick="goBack()">
+                                <i class="fas fa-arrow-left me-2"></i>Quay lại
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Lưu sản phẩm
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/sidebar-loader.js" defer></script>
+    <script>
+        const API_BASE = '/api';
+        let uploadedImages = [];
+
+        // Handle image upload
+        function handleImageUpload(input) {
+            const files = Array.from(input.files);
+            
+            if (files.length + uploadedImages.length > 5) {
+                alert('Chỉ được tải lên tối đa 5 hình ảnh!');
+                return;
+            }
+
+            files.forEach((file, index) => {
+                if (uploadedImages.length >= 5) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageData = {
+                        file: file,
+                        url: e.target.result,
+                        alt: file.name,
+                        isPrimary: uploadedImages.length === 0
+                    };
+                    uploadedImages.push(imageData);
+                    renderImagePreview();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Render image preview
+        function renderImagePreview() {
+            const container = document.getElementById('imagePreview');
+            container.innerHTML = '';
+
+            uploadedImages.forEach((image, index) => {
+                const imageItem = document.createElement('div');
+                imageItem.className = 'image-item';
+                imageItem.innerHTML = `
+                    <img src="${image.url}" alt="${image.alt}">
+                    <button type="button" class="image-remove" onclick="removeImage(${index})">×</button>
+                    ${image.isPrimary ? '<span class="primary-badge">Chính</span>' : ''}
+                    ${!image.isPrimary ? `<button type="button" class="btn btn-sm btn-success" style="position: absolute; bottom: 5px; right: 5px; font-size: 10px;" onclick="setPrimaryImage(${index})">Chính</button>` : ''}
+                `;
+                container.appendChild(imageItem);
+            });
+        }
+
+        // Remove image
+        function removeImage(index) {
+            uploadedImages.splice(index, 1);
+            // Reset primary if removed image was primary
+            if (uploadedImages.length > 0 && !uploadedImages.some(img => img.isPrimary)) {
+                uploadedImages[0].isPrimary = true;
+            }
+            renderImagePreview();
+        }
+
+        // Set primary image
+        function setPrimaryImage(index) {
+            uploadedImages.forEach((img, i) => {
+                img.isPrimary = i === index;
+            });
+            renderImagePreview();
+        }
+
+        // Add specification
+        function addSpecification() {
+            const container = document.getElementById('specificationsContainer');
+            const specGroup = document.createElement('div');
+            specGroup.className = 'spec-input-group';
+            specGroup.innerHTML = `
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <input type="text" class="form-control" placeholder="Tên thông số" name="specName">
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <input type="text" class="form-control" placeholder="Giá trị" name="specValue">
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <button type="button" class="btn btn-outline-danger w-100" onclick="removeSpecification(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(specGroup);
+        }
+
+        // Remove specification
+        function removeSpecification(button) {
+            button.closest('.spec-input-group').remove();
+        }
+
+        // Add feature
+        function addFeature() {
+            const container = document.getElementById('featuresContainer');
+            const featureGroup = document.createElement('div');
+            featureGroup.className = 'input-group mb-2';
+            featureGroup.innerHTML = `
+                <input type="text" class="form-control" placeholder="Nhập tính năng" name="feature">
+                <button type="button" class="btn btn-outline-danger" onclick="removeFeature(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(featureGroup);
+        }
+
+        // Remove feature
+        function removeFeature(button) {
+            button.closest('.input-group').remove();
+        }
+
+        // Add application
+        function addApplication() {
+            const container = document.getElementById('applicationsContainer');
+            const appGroup = document.createElement('div');
+            appGroup.className = 'input-group mb-2';
+            appGroup.innerHTML = `
+                <input type="text" class="form-control" placeholder="Nhập ứng dụng" name="application">
+                <button type="button" class="btn btn-outline-danger" onclick="removeApplication(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(appGroup);
+        }
+
+        // Remove application
+        function removeApplication(button) {
+            button.closest('.input-group').remove();
+        }
+
+        // Go back
+        function goBack() {
+            window.history.back();
+        }
+
+        // Form submission
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = {
+                name: document.getElementById('productName').value,
+                brand: document.getElementById('productBrand').value,
+                model: document.getElementById('productModel').value,
+                sku: document.getElementById('productSku').value,
+                category: document.getElementById('productCategory').value,
+                stockQuantity: parseInt(document.getElementById('productStock').value) || 0,
+                price: parseFloat(document.getElementById('productPrice').value),
+                originalPrice: parseFloat(document.getElementById('productOriginalPrice').value) || null,
+                shortDescription: document.getElementById('productShortDescription').value,
+                description: document.getElementById('productDescription').value,
+                warranty: document.getElementById('productWarranty').value,
+                isFeatured: document.getElementById('productFeatured').checked,
+                inStock: document.getElementById('productInStock').checked,
+                isActive: document.getElementById('productActive').checked
+            };
+
+            // Collect specifications
+            const specifications = {};
+            document.querySelectorAll('#specificationsContainer .spec-input-group').forEach(group => {
+                const name = group.querySelector('input[name="specName"]').value;
+                const value = group.querySelector('input[name="specValue"]').value;
+                if (name && value) {
+                    specifications[name] = value;
+                }
+            });
+            formData.specifications = specifications;
+
+            // Collect features
+            const features = [];
+            document.querySelectorAll('#featuresContainer input[name="feature"]').forEach(input => {
+                if (input.value) features.push(input.value);
+            });
+            formData.features = features;
+
+            // Collect applications
+            const applications = [];
+            document.querySelectorAll('#applicationsContainer input[name="application"]').forEach(input => {
+                if (input.value) applications.push(input.value);
+            });
+            formData.applications = applications;
+
+            // Collect images
+            const images = uploadedImages.map(img => ({
+                url: img.url, // In real app, this would be uploaded to server first
+                alt: img.alt,
+                isPrimary: img.isPrimary
+            }));
+            formData.images = images;
+
+            try {
+                const response = await fetch(`${API_BASE}/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Tạo sản phẩm thành công!');
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert('Lỗi: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi tạo sản phẩm!');
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '../login.html';
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

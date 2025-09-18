@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoạt Động - SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/modern-design.css">
+    <style>
+        .activity-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .activity-timeline {
+            position: relative;
+        }
+        
+        .activity-timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #4ecdc4, #44a08d);
+        }
+        
+        .activity-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .activity-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(8px);
+        }
+        
+        .activity-icon {
+            position: absolute;
+            left: -40px;
+            top: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            padding: 8px 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="activity-container">
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+    
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Page Header -->
+        <div class="glass-card p-8 mb-8">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+                <div>
+                    <h1 class="text-4xl font-bold text-white mb-2">
+                        <i class="fas fa-clock mr-3"></i>Hoạt Động Của Tôi
+                    </h1>
+                    <p class="text-white text-opacity-80">Theo dõi tất cả hoạt động và thành tích của bạn</p>
+                </div>
+                <div class="flex gap-3">
+                    <button class="px-4 py-2 bg-white bg-opacity-20 rounded-lg text-white hover:bg-opacity-30 transition-all" onclick="exportActivity()">
+                        <i class="fas fa-download mr-2"></i>Xuất dữ liệu
+                    </button>
+                    <button class="px-4 py-2 bg-white bg-opacity-20 rounded-lg text-white hover:bg-opacity-30 transition-all" onclick="refreshActivity()">
+                        <i class="fas fa-sync-alt mr-2"></i>Làm mới
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Activity Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card p-6 text-center">
+                <div class="text-3xl font-bold text-white mb-2" id="totalActivities">156</div>
+                <div class="text-white text-opacity-70">Tổng hoạt động</div>
+            </div>
+            <div class="stat-card p-6 text-center">
+                <div class="text-3xl font-bold text-white mb-2" id="todayActivities">12</div>
+                <div class="text-white text-opacity-70">Hôm nay</div>
+            </div>
+            <div class="stat-card p-6 text-center">
+                <div class="text-3xl font-bold text-white mb-2" id="weekActivities">48</div>
+                <div class="text-white text-opacity-70">Tuần này</div>
+            </div>
+            <div class="stat-card p-6 text-center">
+                <div class="text-3xl font-bold text-white mb-2" id="streakDays">7</div>
+                <div class="text-white text-opacity-70">Ngày liên tiếp</div>
+            </div>
+        </div>
+        
+        <!-- Filters -->
+        <div class="glass-card p-6 mb-8">
+            <div class="flex flex-wrap gap-3 mb-4">
+                <button class="filter-btn active" data-filter="all" onclick="filterActivities('all')">
+                    <i class="fas fa-list mr-2"></i>Tất cả
+                </button>
+                <button class="filter-btn" data-filter="login" onclick="filterActivities('login')">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
+                </button>
+                <button class="filter-btn" data-filter="report_created" onclick="filterActivities('report_created')">
+                    <i class="fas fa-file-alt mr-2"></i>Báo cáo
+                </button>
+                <button class="filter-btn" data-filter="dashboard_viewed" onclick="filterActivities('dashboard_viewed')">
+                    <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                </button>
+                <button class="filter-btn" data-filter="profile_update" onclick="filterActivities('profile_update')">
+                    <i class="fas fa-user-edit mr-2"></i>Cập nhật
+                </button>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4">
+                <input type="date" id="dateFilter" class="filter-btn flex-1" onchange="filterByDate()">
+                <select id="timeFilter" class="filter-btn" onchange="filterByTime()">
+                    <option value="all">Tất cả thời gian</option>
+                    <option value="today">Hôm nay</option>
+                    <option value="week">Tuần này</option>
+                    <option value="month">Tháng này</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Activity Timeline -->
+        <div class="glass-card p-8">
+            <h2 class="text-2xl font-bold text-white mb-6">
+                <i class="fas fa-history mr-3"></i>Lịch sử hoạt động
+            </h2>
+            
+            <div class="activity-timeline" id="activityTimeline">
+                <!-- Activity items will be loaded here -->
+            </div>
+            
+            <!-- Load More Button -->
+            <div class="text-center mt-8">
+                <button class="px-6 py-3 bg-white bg-opacity-20 rounded-lg text-white hover:bg-opacity-30 transition-all" onclick="loadMoreActivities()">
+                    <i class="fas fa-plus mr-2"></i>Tải thêm hoạt động
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="/js/header.js"></script>
+    <script>
+        // Activity data and functionality
+        let currentFilter = 'all';
+        let currentPage = 1;
+        let activities = [];
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadActivities();
+            setupEventListeners();
+        });
+        
+        // Load activities from API or demo data
+        async function loadActivities() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/activities', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    activities = data.activities || [];
+                    updateStats(data.stats);
+                } else {
+                    loadDemoActivities();
+                }
+            } catch (error) {
+                console.log('Using demo activities:', error);
+                loadDemoActivities();
+            }
+            
+            renderActivities();
+        }
+        
+        // Load demo activities
+        function loadDemoActivities() {
+            activities = [
+                {
+                    id: 1,
+                    type: 'login',
+                    description: 'Đăng nhập vào hệ thống',
+                    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+                    metadata: { ip: '192.168.1.1', device: 'Chrome on Windows' }
+                },
+                {
+                    id: 2,
+                    type: 'profile_update',
+                    description: 'Cập nhật thông tin hồ sơ cá nhân',
+                    timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+                    metadata: { fields: ['name', 'bio'] }
+                },
+                {
+                    id: 3,
+                    type: 'report_created',
+                    description: 'Tạo báo cáo phân tích năng lượng mặt trời mới',
+                    timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
+                    metadata: { reportId: 'RPT-2025-001', title: 'Phân tích hiệu suất Q1' }
+                },
+                {
+                    id: 4,
+                    type: 'dashboard_viewed',
+                    description: 'Xem dashboard tổng quan',
+                    timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
+                    metadata: { duration: 15 }
+                },
+                {
+                    id: 5,
+                    type: 'report_created',
+                    description: 'Tạo báo cáo phân tích dự án solar farm',
+                    timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+                    metadata: { reportId: 'RPT-2025-002', title: 'Dự án Solar Farm ABC' }
+                }
+            ];
+            
+            updateStats({
+                total: 156,
+                today: 12,
+                week: 48,
+                streak: 7
+            });
+        }
+        
+        // Update statistics
+        function updateStats(stats) {
+            document.getElementById('totalActivities').textContent = stats.total || 156;
+            document.getElementById('todayActivities').textContent = stats.today || 12;
+            document.getElementById('weekActivities').textContent = stats.week || 48;
+            document.getElementById('streakDays').textContent = stats.streak || 7;
+        }
+        
+        // Render activities
+        function renderActivities() {
+            const timeline = document.getElementById('activityTimeline');
+            timeline.innerHTML = '';
+            
+            const filteredActivities = filterActivitiesByType(activities, currentFilter);
+            
+            filteredActivities.forEach((activity, index) => {
+                const activityElement = createActivityElement(activity, index);
+                timeline.appendChild(activityElement);
+            });
+            
+            if (filteredActivities.length === 0) {
+                timeline.innerHTML = `
+                    <div class="text-center py-12">
+                        <i class="fas fa-inbox text-6xl text-white text-opacity-30 mb-4"></i>
+                        <p class="text-white text-opacity-60">Không có hoạt động nào được tìm thấy</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Create activity element
+        function createActivityElement(activity, index) {
+            const activityDiv = document.createElement('div');
+            activityDiv.className = 'activity-item';
+            activityDiv.style.animationDelay = `${index * 100}ms`;
+            
+            const iconConfig = getActivityIcon(activity.type);
+            const timeAgo = getTimeAgo(new Date(activity.timestamp));
+            
+            activityDiv.innerHTML = `
+                <div class="activity-icon ${iconConfig.bgColor}">
+                    <i class="fas ${iconConfig.icon}"></i>
+                </div>
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <h3 class="text-white font-semibold text-lg">${activity.description}</h3>
+                        <p class="text-white text-opacity-60 text-sm">${timeAgo}</p>
+                    </div>
+                    <span class="px-3 py-1 bg-white bg-opacity-20 rounded-full text-white text-xs">
+                        ${getActivityTypeLabel(activity.type)}
+                    </span>
+                </div>
+                ${activity.metadata ? createMetadataHTML(activity.metadata) : ''}
+            `;
+            
+            return activityDiv;
+        }
+        
+        // Get activity icon configuration
+        function getActivityIcon(type) {
+            const icons = {
+                login: { icon: 'fa-sign-in-alt', bgColor: 'bg-blue-500' },
+                logout: { icon: 'fa-sign-out-alt', bgColor: 'bg-gray-500' },
+                profile_update: { icon: 'fa-user-edit', bgColor: 'bg-purple-500' },
+                dashboard_viewed: { icon: 'fa-tachometer-alt', bgColor: 'bg-green-500' },
+                report_created: { icon: 'fa-file-alt', bgColor: 'bg-orange-500' },
+                report_viewed: { icon: 'fa-eye', bgColor: 'bg-indigo-500' },
+                default: { icon: 'fa-circle', bgColor: 'bg-gray-500' }
+            };
+            
+            return icons[type] || icons.default;
+        }
+        
+        // Get activity type label
+        function getActivityTypeLabel(type) {
+            const labels = {
+                login: 'Đăng nhập',
+                logout: 'Đăng xuất',
+                profile_update: 'Cập nhật',
+                dashboard_viewed: 'Xem dashboard',
+                report_created: 'Tạo báo cáo',
+                report_viewed: 'Xem báo cáo'
+            };
+            
+            return labels[type] || 'Khác';
+        }
+        
+        // Create metadata HTML
+        function createMetadataHTML(metadata) {
+            if (!metadata) return '';
+            
+            let html = '<div class="mt-3 p-3 bg-white bg-opacity-10 rounded-lg">';
+            
+            if (metadata.ip) {
+                html += `<div class="text-white text-opacity-70 text-sm mb-1">
+                    <i class="fas fa-map-marker-alt mr-2"></i>IP: ${metadata.ip}
+                </div>`;
+            }
+            
+            if (metadata.device) {
+                html += `<div class="text-white text-opacity-70 text-sm mb-1">
+                    <i class="fas fa-desktop mr-2"></i>Thiết bị: ${metadata.device}
+                </div>`;
+            }
+            
+            if (metadata.reportId) {
+                html += `<div class="text-white text-opacity-70 text-sm mb-1">
+                    <i class="fas fa-hashtag mr-2"></i>ID: ${metadata.reportId}
+                </div>`;
+            }
+            
+            if (metadata.title) {
+                html += `<div class="text-white text-opacity-70 text-sm">
+                    <i class="fas fa-tag mr-2"></i>Tiêu đề: ${metadata.title}
+                </div>`;
+            }
+            
+            html += '</div>';
+            return html;
+        }
+        
+        // Get time ago string
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return 'Vừa xong';
+            if (diffMins < 60) return `${diffMins} phút trước`;
+            if (diffHours < 24) return `${diffHours} giờ trước`;
+            if (diffDays < 7) return `${diffDays} ngày trước`;
+            
+            return date.toLocaleDateString('vi-VN');
+        }
+        
+        // Filter activities by type
+        function filterActivitiesByType(activities, type) {
+            if (type === 'all') return activities;
+            return activities.filter(activity => activity.type === type);
+        }
+        
+        // Filter activities
+        function filterActivities(type) {
+            currentFilter = type;
+            
+            // Update active filter button
+            document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-filter="${type}"]`).classList.add('active');
+            
+            renderActivities();
+        }
+        
+        // Filter by date
+        function filterByDate() {
+            const dateValue = document.getElementById('dateFilter').value;
+            if (dateValue) {
+                const selectedDate = new Date(dateValue);
+                // Filter activities by selected date
+                // Implementation would filter activities array
+                renderActivities();
+            }
+        }
+        
+        // Filter by time
+        function filterByTime() {
+            const timeValue = document.getElementById('timeFilter').value;
+            // Implementation would filter activities by time range
+            renderActivities();
+        }
+        
+        // Load more activities
+        function loadMoreActivities() {
+            currentPage++;
+            // Implementation would load more activities from API
+            showNotification('Đã tải thêm hoạt động', 'success');
+        }
+        
+        // Export activity data
+        function exportActivity() {
+            const csvContent = activities.map(activity => 
+                `"${activity.type}","${activity.description}","${activity.timestamp}"`
+            ).join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `hoat-dong-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            
+            showNotification('Đã xuất dữ liệu hoạt động', 'success');
+        }
+        
+        // Refresh activities
+        function refreshActivity() {
+            const btn = event.target;
+            const icon = btn.querySelector('i');
+            icon.classList.add('fa-spin');
+            
+            setTimeout(() => {
+                loadActivities();
+                icon.classList.remove('fa-spin');
+                showNotification('Đã làm mới dữ liệu', 'success');
+            }, 1000);
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            // Auto-refresh every 5 minutes
+            setInterval(loadActivities, 300000);
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
+            if (window.headerFunctions && window.headerFunctions.showNotification) {
+                window.headerFunctions.showNotification(message, type);
+            }
+        }
+    </script>
+</body>
+</html>

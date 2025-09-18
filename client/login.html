@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập - SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/auth.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+    <link rel="stylesheet" href="/assets/css/modern-design.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div class="form-layout-responsive w-full">
+        <!-- Modern Logo Section -->
+        <div class="text-center mb-8">
+            <a href="/" class="inline-flex items-center gap-3 hover-lift">
+                <div class="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center">
+                    <i class="fas fa-solar-panel text-white text-xl"></i>
+                </div>
+                <span class="text-3xl font-bold text-gradient">SolarAnalytics</span>
+            </a>
+            <p class="text-gray-600 mt-2">Hệ thống phân tích năng lượng mặt trời</p>
+        </div>
+
+        <!-- Modern Login Form -->
+        <div class="form-card-responsive w-full max-w-md">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gradient mb-2">Đăng Nhập</h2>
+                <p class="text-gray-600">Chào mừng bạn quay trở lại</p>
+            </div>
+            
+            <!-- Error Message -->
+            <div id="error-message" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg relative mb-6 text-sm" role="alert">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <div>
+                        <strong class="font-bold">Lỗi!</strong>
+                        <span class="block sm:inline ml-1" id="error-text">Nội dung lỗi sẽ hiện ở đây.</span>
+                    </div>
+                </div>
+            </div>
+
+            <form id="login-form" class="form-responsive space-y-6">
+                <div class="form-group-responsive">
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" id="email" name="email" required 
+                           class="form-input-responsive focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                           placeholder="Nhập email của bạn">
+                </div>
+                
+                <div class="form-group-responsive">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Mật khẩu</label>
+                    <div class="relative">
+                        <input type="password" id="password" name="password" required 
+                               class="form-input-responsive focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors pr-12"
+                               placeholder="Nhập mật khẩu">
+                        <button type="button" id="togglePassword" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                        <span class="ml-2 text-gray-600">Ghi nhớ đăng nhập</span>
+                    </label>
+                    <a href="/forgot-password.html" class="text-blue-600 hover:text-blue-800 font-medium">Quên mật khẩu?</a>
+                </div>
+                
+                <button type="submit" id="submit-btn" class="btn-responsive w-full bg-blue-600 text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-colors font-medium">
+                    <span id="submit-text">Đăng nhập</span>
+                    <i id="submit-spinner" class="fas fa-spinner fa-spin ml-2 hidden"></i>
+                </button>
+            </form>
+            
+            <!-- Divider -->
+            <div class="relative my-8">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-200"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-4 bg-white text-gray-500">hoặc</span>
+                </div>
+            </div>
+            
+            <!-- Register Link -->
+            <div class="text-center">
+                <p class="text-gray-600 mb-4">Chưa có tài khoản?</p>
+                <a class="btn-modern btn-outline w-full" href="/register.html">
+                    <i class="fas fa-user-plus mr-2"></i>
+                    Đăng ký ngay
+                </a>
+            </div>
+        </div>
+
+        <!-- Features Preview -->
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+            <div class="glass-effect p-4 rounded-lg">
+                <i class="fas fa-chart-line text-2xl text-blue-500 mb-2"></i>
+                <p class="text-sm text-gray-600">Phân tích chi tiết</p>
+            </div>
+            <div class="glass-effect p-4 rounded-lg">
+                <i class="fas fa-mobile-alt text-2xl text-green-500 mb-2"></i>
+                <p class="text-sm text-gray-600">Tương thích mobile</p>
+            </div>
+            <div class="glass-effect p-4 rounded-lg">
+                <i class="fas fa-shield-alt text-2xl text-purple-500 mb-2"></i>
+                <p class="text-sm text-gray-600">Bảo mật cao</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('password-toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Password toggle functionality
+        const togglePasswordBtn = document.getElementById('togglePassword');
+        if (togglePasswordBtn) {
+            togglePasswordBtn.addEventListener('click', togglePassword);
+        }
+    </script>
+    <script type="module" src="/js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Báo Cáo - SolarAnalytics</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo_rm_bgr.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --warning-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+        
+        * {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .modern-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 
+                0 8px 32px rgba(31, 38, 135, 0.37),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-header {
+            background: var(--primary-gradient);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gradient-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .stat-card:hover::before {
+            left: 100%;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(31, 38, 135, 0.4);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .scenario-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scenario-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+        
+        .info-table {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .info-row {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.2s ease;
+        }
+        
+        .info-row:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .modern-btn {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 32px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .modern-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .modern-btn:hover::before {
+            left: 100%;
+        }
+        
+        .modern-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            color: white;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .floating-elements::before,
+        .floating-elements::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .floating-elements::before {
+            top: 10%;
+            right: 10%;
+            animation-delay: -2s;
+        }
+        
+        .floating-elements::after {
+            bottom: 10%;
+            left: 10%;
+            animation-delay: -4s;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(30px) rotate(240deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            
+            .modern-container {
+                margin: 1rem;
+                border-radius: 16px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="gradient-header relative py-16 mb-8">
+        <div class="floating-elements"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center justify-between">
+                <div class="text-center lg:text-left mb-6 lg:mb-0">
+                    <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4">
+                        <i class="fas fa-chart-line mr-4 text-yellow-300"></i>
+                        Chi tiết Báo cáo Solar Analytics
+                    </h1>
+                    <p class="text-xl text-white/90 font-light">Xem thông tin chi tiết và kết quả phân tích năng lượng mặt trời</p>
+                </div>
+                <div class="flex gap-4">
+                    <button class="modern-btn" onclick="window.close()">
+                        <i class="fas fa-times mr-2"></i>Đóng
+                    </button>
+                    <a href="index.html" class="modern-btn bg-white/20 hover:bg-white/30">
+                        <i class="fas fa-home mr-2"></i>Trang chủ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 max-w-7xl">
+        <div id="loading" class="loading-container fade-in">
+            <div class="loading-spinner mb-6"></div>
+            <h3 class="text-2xl font-semibold text-white mb-2">Đang tải báo cáo</h3>
+            <p class="text-white/80">Vui lòng chờ trong giây lát...</p>
+        </div>
+
+        <div id="error-message" class="modern-container p-8 mb-8 border-l-4 border-red-500" style="display: none;">
+            <div class="flex items-center text-red-600">
+                <i class="fas fa-exclamation-triangle text-2xl mr-4"></i>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">Có lỗi xảy ra</h3>
+                    <span id="error-text" class="text-gray-700"></span>
+                </div>
+            </div>
+        </div>
+
+        <div id="report-content" class="fade-in" style="display: none;">
+            <!-- Report content will be loaded here -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const loadingDiv = document.getElementById('loading');
+            const errorDiv = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+            const contentDiv = document.getElementById('report-content');
+            
+            // Lấy shareId từ URL
+            const params = new URLSearchParams(window.location.search);
+            const shareId = params.get('id');
+
+            if (!shareId) {
+                showError('Không tìm thấy ID báo cáo trong URL.');
+                return;
+            }
+
+            try {
+                // Thử gọi API để lấy chi tiết báo cáo
+                // Sử dụng endpoint công khai nếu có
+                const response = await fetch(`/api/reports/share/${shareId}`);
+                
+                if (!response.ok) {
+                    // Nếu không có API công khai, hiển thị thông báo
+                    throw new Error('Báo cáo không tồn tại hoặc đã bị xóa.');
+                }
+                
+                const reportData = await response.json();
+                displayReport(reportData);
+                
+            } catch (error) {
+                console.error('Error loading report:', error);
+                showError('Không thể tải chi tiết báo cáo. Báo cáo có thể không tồn tại hoặc đã bị xóa.');
+            }
+        });
+
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error-text').textContent = message;
+            document.getElementById('error-message').style.display = 'block';
+        }
+
+        function displayReport(report) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('report-content').style.display = 'block';
+            
+            const contentDiv = document.getElementById('report-content');
+            contentDiv.innerHTML = `
+                <!-- Report Summary -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="stat-card p-6 text-center slide-up">
+                        <div class="text-4xl mb-4">
+                            <i class="fas fa-id-card text-blue-400"></i>
+                        </div>
+                        <h6 class="text-white/80 text-sm font-semibold mb-2 uppercase tracking-wider">Share ID</h6>
+                        <code class="stat-value text-lg font-mono">${report.shareId}</code>
+                    </div>
+                    <div class="stat-card p-6 text-center slide-up" style="animation-delay: 0.1s">
+                        <div class="text-4xl mb-4">
+                            <i class="fas fa-user text-green-400"></i>
+                        </div>
+                        <h6 class="text-white/80 text-sm font-semibold mb-2 uppercase tracking-wider">Khách hàng</h6>
+                        <div class="stat-value">${report.survey.name}</div>
+                    </div>
+                    <div class="stat-card p-6 text-center slide-up" style="animation-delay: 0.2s">
+                        <div class="text-4xl mb-4">
+                            <i class="fas fa-calendar text-purple-400"></i>
+                        </div>
+                        <h6 class="text-white/80 text-sm font-semibold mb-2 uppercase tracking-wider">Ngày tạo</h6>
+                        <div class="stat-value">${new Date(report.createdAt).toLocaleDateString('vi-VN')}</div>
+                    </div>
+                </div>
+
+                <!-- Customer Information -->
+                <div class="modern-container p-8 mb-8 slide-up" style="animation-delay: 0.3s">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-user-circle text-white text-xl"></i>
+                        </div>
+                        <h5 class="text-2xl font-bold text-white">👤 Thông tin khách hàng</h5>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="info-table p-6">
+                            <div class="info-row flex justify-between py-3 px-4">
+                                <span class="font-semibold text-white/90">Tên khách hàng:</span>
+                                <span class="text-white font-medium">${report.survey.name}</span>
+                            </div>
+                            <div class="info-row flex justify-between py-3 px-4">
+                                <span class="font-semibold text-white/90">Địa chỉ:</span>
+                                <span class="text-white font-medium">${report.survey.address || 'Chưa cung cấp'}</span>
+                            </div>
+                            <div class="info-row flex justify-between py-3 px-4">
+                                <span class="font-semibold text-white/90">Loại khách hàng:</span>
+                                <span class="text-white font-medium">${report.survey.customerType || 'Chưa xác định'}</span>
+                            </div>
+                        </div>
+                        <div class="info-table p-6">
+                            <div class="info-row flex justify-between py-3 px-4">
+                                <span class="font-semibold text-white/90">Khu vực:</span>
+                                <span class="text-white font-medium">${report.survey.region || 'Chưa xác định'}</span>
+                            </div>
+                            <div class="info-row flex justify-between py-3 px-4">
+                                <span class="font-semibold text-white/90">Ngày tạo báo cáo:</span>
+                                <span class="text-white font-medium">${new Date(report.createdAt).toLocaleString('vi-VN')}</span>
+                            </div>
+                            <div class="info-row flex justify-between py-3 px-4">
+                                <span class="font-semibold text-white/90">Share ID:</span>
+                                <code class="text-blue-300 font-mono text-sm bg-black/20 px-2 py-1 rounded">${report.shareId}</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Scenarios -->
+                <div class="modern-container p-8 mb-8 slide-up" style="animation-delay: 0.4s">
+                    <div class="flex items-center mb-8">
+                        <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-chart-line text-white text-xl"></i>
+                        </div>
+                        <h5 class="text-2xl font-bold text-white">📊 Kết quả phân tích (${report.scenarios?.length || 0} kịch bản)</h5>
+                    </div>
+                    <div class="space-y-8">
+                        ${report.scenarios && report.scenarios.length > 0 ? 
+                            report.scenarios.map((scenario, index) => `
+                                <div class="scenario-card p-8 slide-up" style="animation-delay: ${0.5 + index * 0.1}s">
+                                    <div class="flex items-center mb-6">
+                                        <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mr-4">
+                                            <i class="fas fa-cogs text-white"></i>
+                                        </div>
+                                        <h6 class="text-xl font-bold text-white">⚡ ${scenario.scenarioName || `Kịch bản ${index + 1}`}</h6>
+                                    </div>
+                                    
+                                    <!-- Main Stats Grid -->
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                                        <div class="text-center p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
+                                            <div class="text-3xl mb-3">
+                                                <i class="fas fa-solar-panel text-blue-400"></i>
+                                            </div>
+                                            <h6 class="text-white/80 text-sm font-semibold mb-2 uppercase tracking-wider">Công suất khuyến nghị</h6>
+                                            <div class="stat-value text-lg">${scenario.results?.recommendedKwp || 'N/A'} kWp</div>
+                                        </div>
+                                        <div class="text-center p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
+                                            <div class="text-3xl mb-3">
+                                                <i class="fas fa-th text-cyan-400"></i>
+                                            </div>
+                                            <h6 class="text-white/80 text-sm font-semibold mb-2 uppercase tracking-wider">Số tấm pin</h6>
+                                            <div class="stat-value text-lg">${scenario.results?.numberOfPanels || 'N/A'}</div>
+                                        </div>
+                                        <div class="text-center p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
+                                            <div class="text-3xl mb-3">
+                                                <i class="fas fa-piggy-bank text-green-400"></i>
+                                            </div>
+                                            <h6 class="text-white/80 text-sm font-semibold mb-2 uppercase tracking-wider">Tiết kiệm hàng tháng</h6>
+                                            <div class="stat-value text-lg">${scenario.results?.monthlySavings ? scenario.results.monthlySavings.toLocaleString('vi-VN') + ' VND' : 'N/A'}</div>
+                                        </div>
+                                        <div class="text-center p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
+                                            <div class="text-3xl mb-3">
+                                                <i class="fas fa-clock text-yellow-400"></i>
+                                            </div>
+                                            <h6 class="text-white/80 text-sm font-semibold mb-2 uppercase tracking-wider">Thời gian hoàn vốn</h6>
+                                            <div class="stat-value text-lg">${scenario.results?.paybackPeriodYears || 'N/A'} năm</div>
+                                        </div>
+                                    </div>
+                                    
+                                    ${scenario.results?.totalInvestment ? `
+                                        <!-- Financial Stats -->
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                            <div class="text-center p-6 bg-gradient-to-r from-red-500/20 to-pink-500/20 rounded-2xl backdrop-blur-sm border border-red-500/30">
+                                                <h6 class="text-white/80 text-sm font-semibold mb-2 uppercase tracking-wider">💰 Tổng đầu tư</h6>
+                                                <div class="text-2xl font-bold text-red-300">${scenario.results.totalInvestment.toLocaleString('vi-VN')} VND</div>
+                                            </div>
+                                            <div class="text-center p-6 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-2xl backdrop-blur-sm border border-green-500/30">
+                                                <h6 class="text-white/80 text-sm font-semibold mb-2 uppercase tracking-wider">💵 Tiết kiệm hàng năm</h6>
+                                                <div class="text-2xl font-bold text-green-300">${scenario.results?.annualSavings ? scenario.results.annualSavings.toLocaleString('vi-VN') + ' VND' : 'N/A'}</div>
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${scenario.results?.co2ReductionYearly ? `
+                                        <!-- Environmental Impact -->
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div class="text-center p-6 bg-gradient-to-r from-green-500/20 to-teal-500/20 rounded-2xl backdrop-blur-sm border border-green-500/30">
+                                                <div class="text-3xl mb-3">
+                                                    <i class="fas fa-leaf text-green-400"></i>
+                                                </div>
+                                                <h6 class="text-white/80 text-sm font-semibold mb-2 uppercase tracking-wider">🌱 Giảm CO2 hàng năm</h6>
+                                                <div class="text-2xl font-bold text-green-300">${scenario.results.co2ReductionYearly} kg</div>
+                                            </div>
+                                            <div class="text-center p-6 bg-gradient-to-r from-emerald-500/20 to-green-500/20 rounded-2xl backdrop-blur-sm border border-emerald-500/30">
+                                                <div class="text-3xl mb-3">
+                                                    <i class="fas fa-tree text-emerald-400"></i>
+                                                </div>
+                                                <h6 class="text-white/80 text-sm font-semibold mb-2 uppercase tracking-wider">🌳 Tương đương trồng cây</h6>
+                                                <div class="text-2xl font-bold text-emerald-300">${scenario.results?.treeEquivalent || 'N/A'} cây</div>
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `).join('') : 
+                            '<div class="modern-container p-8 bg-blue-500/20 border border-blue-500/30 rounded-2xl"><div class="flex items-center text-blue-300"><i class="fas fa-info-circle text-2xl mr-4"></i><span class="text-lg">Chưa có kịch bản phân tích nào được tạo.</span></div></div>'
+                        }
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="text-center mt-12 mb-8 slide-up" style="animation-delay: 0.6s">
+                    <div class="modern-container p-8 mb-8">
+                        <div class="flex items-center justify-center mb-6">
+                            <div class="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-solar-panel text-white"></i>
+                            </div>
+                            <p class="text-white/90 text-lg font-medium">
+                                ⚡ Báo cáo được tạo bởi Solar Analytics System
+                            </p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                            <button class="modern-btn flex items-center" onclick="window.print()">
+                                <i class="fas fa-print mr-2"></i>🖨️ In báo cáo
+                            </button>
+                            <button class="modern-btn bg-white/20 hover:bg-white/30 flex items-center" onclick="window.close()">
+                                <i class="fas fa-times mr-2"></i>❌ Đóng
+                            </button>
+                            <a href="index.html" class="modern-btn bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 flex items-center">
+                                <i class="fas fa-home mr-2"></i>🏠 Về trang chủ
+                            </a>
+                        </div>
+                    </div>
+                    <div class="text-center text-white/60 text-sm">
+                        <p>© 2024 Solar Analytics - Hệ thống phân tích năng lượng mặt trời thông minh</p>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
